@@ -13,10 +13,21 @@
   <source src="Videos/Fight with you! A Bond Reunited   MLBB × NARUTO   Mobile Legends Bang Bang.mp4" type="video/mp4">
 </video>
 
+<div id="notification" class="notification" style="display:none;"></div>
+
 <nav>
-  <div class="nav-brand" id="navBrand">⚔ Mr. Yoo's MLBB Guide</div>
+  <div class="nav-brand" id="navBrand" onclick="window.nav.goHome()" style="cursor:pointer;">⚔ Mr. Yoo's MLBB Guide</div>
   <div class="nav-back" id="navBack" onclick="window.nav.goHome()">← All Chapters</div>
   <span class="nav-chapter" id="navChapter"></span>
+  
+  <div class="nav-menu" id="navMenu">
+    <button class="nav-menu-btn" onclick="window.app.openDiagnostic()">📊 Diagnostic</button>
+    <button class="nav-menu-btn" onclick="window.app.openGuide()">📖 Book Guide</button>
+    <button class="nav-menu-btn" onclick="window.app.openContact()">📧 Contact</button>
+  </div>
+  
+  <button class="nav-burger" id="navBurger" onclick="window.app.toggleMenu()">☰</button>
+  
   <div class="nav-right">
     <div id="navProgress" class="nav-progress" style="display:none;"><div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div></div>
     <div id="navAuthArea"></div>
@@ -55,16 +66,32 @@
 
     <div class="chapters-label">Book Guide</div>
     <div class="chapters-group">
-      <div class="group-header">Complete Guide</div>
+      <div class="group-header">🟢 Beginner Level</div>
       <div class="chapters-grid">
-        <div class="chapter-btn" data-chapter="introduction"><span class="ch-num">Chapter 01</span><span class="ch-icon">📖</span><span class="ch-title">Introduction</span><span class="ch-desc">Start here before diving into advanced strategies</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="quick-reference"><span class="ch-num">Chapter 02</span><span class="ch-icon">📋</span><span class="ch-title">Quick Reference</span><span class="ch-desc">Fast-access summary cards for all key concepts</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="role-selection"><span class="ch-num">Chapter 03</span><span class="ch-icon">🎭</span><span class="ch-title">Role Selection</span><span class="ch-desc">Find the role that fits your natural playstyle</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="macro-micro"><span class="ch-num">Chapter 04</span><span class="ch-icon">⚔️</span><span class="ch-title">Macro vs Micro</span><span class="ch-desc">Master both playstyle identities to dominate</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="laning"><span class="ch-num">Chapter 05</span><span class="ch-icon">🌿</span><span class="ch-title">Laning</span><span class="ch-desc">Lane fundamentals and wave management mastery</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="banning"><span class="ch-num">Chapter 06</span><span class="ch-icon">🚫</span><span class="ch-title">Banning</span><span class="ch-desc">Smart ban strategies based on role and rank</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="counter-heroes"><span class="ch-num">Chapter 07</span><span class="ch-icon">⚔️</span><span class="ch-title">Counter Heroes</span><span class="ch-desc">Master matchups and adaptation strategies</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-        <div class="chapter-btn" data-chapter="mental-tilt"><span class="ch-num">Chapter 08</span><span class="ch-icon">🧠</span><span class="ch-title">Mental & Tilt</span><span class="ch-desc">Control your mental game to climb consistently</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="introduction"><span class="ch-num">B1</span><span class="ch-icon">📖</span><span class="ch-title">Introduction</span><span class="ch-desc">Start here before diving into strategies</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="quick-reference"><span class="ch-num">B2</span><span class="ch-icon">📋</span><span class="ch-title">Quick Reference</span><span class="ch-desc">Fast-access summary of key concepts</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="role-selection"><span class="ch-num">B3</span><span class="ch-icon">🎭</span><span class="ch-title">Role Selection</span><span class="ch-desc">Find your main role and strengths</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="laning"><span class="ch-num">B4</span><span class="ch-icon">🌿</span><span class="ch-title">Laning</span><span class="ch-desc">Lane fundamentals and farming basics</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="banning"><span class="ch-num">B5</span><span class="ch-icon">🚫</span><span class="ch-title">Banning</span><span class="ch-desc">Ban strategy based on role and rank</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="counter-heroes"><span class="ch-num">B6</span><span class="ch-icon">⚔️</span><span class="ch-title">Counter Heroes</span><span class="ch-desc">Match knowledge and adaptation</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+      </div>
+    </div>
+
+    <div class="chapters-group">
+      <div class="group-header">🟡 Intermediate Level</div>
+      <div class="chapters-grid">
+        <div class="chapter-btn" data-chapter="macro-micro"><span class="ch-num">M1</span><span class="ch-icon">⚔️</span><span class="ch-title">Macro vs Micro</span><span class="ch-desc">Master both playstyle identities</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="mental-tilt"><span class="ch-num">M2</span><span class="ch-icon">🧠</span><span class="ch-title">Mental & Tilt</span><span class="ch-desc">Control mental game and consistency</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+      </div>
+    </div>
+
+    <div class="chapters-group">
+      <div class="group-header">🔴 Advanced Level</div>
+      <div class="chapters-grid">
+        <div class="coming-soon" style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--dim);border:2px dashed rgba(255,215,0,.2);border-radius:8px;">
+          <div style="font-size:1.2rem;margin-bottom:.5rem;">🔒 Advanced Chapters Coming Soon</div>
+          <div style="font-size:.9rem;">Wave management, Win conditions, Vision control, Objective trading, Drafting strategy, In-game mechanics</div>
+        </div>
       </div>
     </div>
   </div>

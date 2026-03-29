@@ -7,6 +7,23 @@ let done = new Set();
 const $ = id => document.getElementById(id);
 const $$ = sel => document.querySelectorAll(sel);
 
+const notify = (msg, type = 'success', duration = 3000) => {
+  const notif = $('notification');
+  notif.textContent = msg;
+  notif.className = `notification ${type}`;
+  notif.style.display = 'block';
+  
+  if (duration > 0) {
+    setTimeout(() => {
+      notif.style.animation = 'slideUp .3s ease-out forwards';
+      setTimeout(() => {
+        notif.style.display = 'none';
+        notif.style.animation = '';
+      }, 300);
+    }, duration);
+  }
+};
+
 const goPage = page => {
   const old = $(`page-${cur}`);
   if (old) old.classList.remove('active');
@@ -209,12 +226,26 @@ const switchTab = t => {
   t === 'login' ? $('tabLogin').classList.add('active') : $('tabSignup').classList.add('active');
 };
 
+const hashCode = str => {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) h = ((h << 5) - h) + str.charCodeAt(i) | 0;
+  return Math.abs(h).toString(36);
+};
+
+const emailFromUsername = nm => `${nm.toLowerCase()}.${hashCode(nm)}@mlbbguide.app`;
+
 const doLogin = async () => {
   const nm = $('loginName').value.trim();
   const pw = $('loginPass').value.trim();
   
   if (!nm || !pw) {
     $('loginErr').textContent = 'Username and password required';
+    notify('Please enter username and password', 'warning', 2000);
+    return;
+  }
+
+  if (nm.length < 3) {
+    $('loginErr').textContent = 'Username must be at least 3 characters';
     return;
   }
 
@@ -222,15 +253,24 @@ const doLogin = async () => {
   $('loginErr').textContent = '';
 
   try {
-    const em = `${nm.toLowerCase()}@mlbbguide.local`;
+    const em = emailFromUsername(nm);
     const { data, error } = await sb.auth.signInWithPassword({ email: em, password: pw });
-    if (error) throw error;
+    if (error) {
+      if (error.message?.includes('Invalid')) {
+        throw new Error('Username or password incorrect');
+      }
+      throw error;
+    }
     session = data.session;
     closeAuth();
     updateAuthUI();
     loadProgress();
+    notify(`Welcome back, ${nm}!`, 'success', 2500);
   } catch (e) {
-    $('loginErr').textContent = e.message || 'Login failed';
+    const msg = e.message || 'Login failed';
+    $('loginErr').textContent = msg;
+    notify(msg, 'error', 3000);
+    console.error('Login error:', e);
   } finally {
     $('loginBtn').disabled = false;
   }
@@ -245,6 +285,21 @@ const doSignup = async () => {
     return;
   }
 
+  if (nm.length < 3) {
+    $('signupErr').textContent = 'Username must be at least 3 characters';
+    return;
+  }
+
+  if (nm.length > 20) {
+    $('signupErr').textContent = 'Username must be 20 characters or less';
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9_]+$/.test(nm)) {
+    $('signupErr').textContent = 'Username can only contain letters, numbers, and underscores';
+    return;
+  }
+
   if (pw.length < 8) {
     $('signupErr').textContent = 'Password must be at least 8 characters';
     return;
@@ -254,13 +309,25 @@ const doSignup = async () => {
   $('signupErr').textContent = '';
 
   try {
-    const em = `${nm.toLowerCase()}_${Date.now()}@mlbbguide.local`;
+    const em = emailFromUsername(nm);
     const { data, error } = await sb.auth.signUp({ 
       email: em, 
       password: pw, 
-      options: { data: { username: nm } } 
+      options: { 
+        data: { username: nm },
+        emailRedirectTo: window.location.origin
+      } 
     });
-    if (error) throw error;
+    
+    if (error) {
+      if (error.message?.includes('already registered')) {
+        throw new Error('This username is already taken');
+      }
+      if (error.message?.includes('rate limit')) {
+        throw new Error('Too many signup attempts. Please wait a moment and try again.');
+      }
+      throw error;
+    }
     
     session = data.session;
     if (session) {
@@ -268,10 +335,12 @@ const doSignup = async () => {
       updateAuthUI();
       loadProgress();
     } else {
-      $('signupErr').textContent = 'Account created. You can now login.';
+      $('signupErr').textContent = 'Account created! You can now login.';
+      setTimeout(() => switchTab('login'), 1500);
     }
   } catch (e) {
-    $('signupErr').textContent = e.message || 'Signup failed';
+    const msg = e.message || 'Signup failed';
+    $('signupErr').textContent = msg.charAt(0).toUpperCase() + msg.slice(1);
   } finally {
     $('signupBtn').disabled = false;
   }
@@ -348,80 +417,110 @@ const init = async () => {
 };
 
 const calculateDarkSystem = () => {
-  const matches = parseInt(document.getElementById('dsMatches').value) || 0;
-  const wr = parseFloat(document.getElementById('dsWinrate').value) || 0;
-  const mvps = parseInt(document.getElementById('dsMvp').value) || 0;
-  
-  if (matches === 0) {
-    document.getElementById('dsResult').style.display = 'none';
-    return;
-  }
-  
-  let expectedWr, expectedMvp;
-  
-  if (matches >= 5000) {
-    expectedWr = 53;
-    expectedMvp = Math.floor(matches / 10);
-  } else if (matches >= 4000) {
-    expectedWr = 52;
-    expectedMvp = Math.floor(matches / 10);
-  } else if (matches >= 3000) {
-    expectedWr = 53;
-    expectedMvp = Math.floor(matches / 10);
-  } else if (matches >= 2000) {
-    expectedWr = 54;
-    expectedMvp = Math.floor(matches / 10);
-  } else if (matches >= 1000) {
-    expectedWr = 55;
-    expectedMvp = Math.floor(matches / 10);
-  } else {
-    expectedWr = 52;
-    expectedMvp = Math.floor(matches / 10);
-  }
-  
-  const wrGood = wr >= expectedWr;
-  const mvpGood = mvps >= expectedMvp;
-  const mvpRatio = matches > 0 ? Math.round((matches / mvps) * 10) / 10 : 0;
-  
-  let status = 'NEUTRAL';
-  let statusClass = 'neutral';
-  
-  if (wrGood && mvpGood) {
-    status = '💚 GOOD PLAYER';
-    statusClass = 'good';
-  } else if (!wrGood && !mvpGood) {
-    status = '🌑 DARK SYSTEM DETECTED';
-    statusClass = 'dark';
-  } else if (!wrGood) {
-    status = '⚠️ UNDERPERFORMING WR';
-    statusClass = 'warning';
-  } else {
-    status = '⚠️ LOW MVP COUNT';
-    statusClass = 'warning';
-  }
-  
-  const resultBox = document.getElementById('dsResult');
-  resultBox.className = `result-box ${statusClass}`;
-  resultBox.innerHTML = `
-    <div class="result-title">${status}</div>
-    <div class="result-stats">
-      <div class="stat">
-        <span class="label">Win Rate</span>
-        <span class="value">${wr.toFixed(1)}% (Expected: ${expectedWr}%+)</span>
-        <span class="verdict ${wrGood ? 'pass' : 'fail'}">${wrGood ? '✓' : '✗'}</span>
+  try {
+    const matches = parseInt($('dsMatches').value) || 0;
+    const wr = parseFloat($('dsWinrate').value) || 0;
+    const mvps = parseInt($('dsMvp').value) || 0;
+    
+    if (matches === 0) {
+      $('dsResult').style.display = 'none';
+      return;
+    }
+    
+    let expectedWr, expectedMvp;
+    
+    if (matches >= 5000) {
+      expectedWr = 53;
+      expectedMvp = Math.floor(matches / 10);
+    } else if (matches >= 4000) {
+      expectedWr = 52;
+      expectedMvp = Math.floor(matches / 10);
+    } else if (matches >= 3000) {
+      expectedWr = 53;
+      expectedMvp = Math.floor(matches / 10);
+    } else if (matches >= 2000) {
+      expectedWr = 54;
+      expectedMvp = Math.floor(matches / 10);
+    } else if (matches >= 1000) {
+      expectedWr = 55;
+      expectedMvp = Math.floor(matches / 10);
+    } else {
+      expectedWr = 52;
+      expectedMvp = Math.floor(matches / 10);
+    }
+    
+    const wrGood = wr >= expectedWr;
+    const mvpGood = mvps >= expectedMvp;
+    const mvpRatio = matches > 0 ? Math.round((matches / mvps) * 10) / 10 : 0;
+    
+    let status = 'NEEDS IMPROVEMENT';
+    let statusClass = 'warning';
+    
+    if (wrGood && mvpGood) {
+      status = '💚 GOOD PLAYER';
+      statusClass = 'good';
+    } else if (!wrGood && !mvpGood) {
+      status = '💀 DARK SYSTEM';
+      statusClass = 'dark';
+    }
+    
+    const resultBox = $('dsResult');
+    resultBox.className = `result-box-dark ${statusClass}`;
+    resultBox.innerHTML = `
+      <div class="result-title">${status}</div>
+      <div class="result-stats">
+        <div class="stat">
+          <span class="label">Win Rate</span>
+          <span class="value">${wr.toFixed(1)}%</span>
+          <span class="verdict ${wrGood ? 'pass' : 'fail'}">${wrGood ? '✓ Good' : '✗ Low'}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Expected WR</span>
+          <span class="value">${expectedWr}%+</span>
+          <span class="verdict"></span>
+        </div>
+        <div class="stat">
+          <span class="label">MVP Count</span>
+          <span class="value">${mvps}</span>
+          <span class="verdict ${mvpGood ? 'pass' : 'fail'}">${mvpGood ? '✓ Good' : '✗ Low'}</span>
+        </div>
+        <div class="stat">
+          <span class="label">Expected MVPs</span>
+          <span class="value">${expectedMvp}+</span>
+          <span class="verdict"></span>
+        </div>
       </div>
-      <div class="stat">
-        <span class="label">MVP Count</span>
-        <span class="value">${mvps} (Expected: ${expectedMvp}+)</span>
-        <span class="verdict ${mvpGood ? 'pass' : 'fail'}">${mvpGood ? '✓' : '✗'}</span>
-      </div>
-      <div class="stat">
-        <span class="label">MVP Ratio</span>
-        <span class="value">1 MVP per ${mvpRatio} matches (Target: 1 per 10)</span>
-      </div>
-    </div>
-  `;
-  resultBox.style.display = 'block';
+    `;
+    resultBox.style.display = 'block';
+  } catch (e) {
+    console.error('Dark system calculation error:', e.message);
+    alert('Error calculating analysis. Please check your inputs.');
+  }
+};
+
+const toggleMenu = () => {
+  const menu = $('navMenu');
+  if (menu) menu.classList.toggle('open');
+};
+
+const closeMenu = () => {
+  const menu = $('navMenu');
+  if (menu) menu.classList.remove('open');
+};
+
+const openDiagnostic = () => {
+  closeMenu();
+  goPage('dark-system');
+};
+
+const openGuide = () => {
+  closeMenu();
+  goPage('introduction');
+};
+
+const openContact = () => {
+  closeMenu();
+  window.location.href = 'mailto:mryoo.guide@gmail.com';
 };
 
 window.app = {
@@ -440,7 +539,13 @@ window.app = {
   doSignup,
   logout,
   init,
-  calculateDarkSystem
+  calculateDarkSystem,
+  toggleMenu,
+  closeMenu,
+  openDiagnostic,
+  openGuide,
+  openContact,
+  notify
 };
 
 window.nav = {

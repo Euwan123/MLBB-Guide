@@ -1,52 +1,119 @@
 <div class="chapter-page">
   <div class="chapter-header">🌑 Are You a Dark System?</div>
-  <p class="chapter-intro">Discover if your performance matches your experience level. A "dark system" is a player who underperforms significantly for their match count.</p>
+  <p class="chapter-intro">Discover if your performance matches your experience. A "dark system" player grinds matches but underperforms for their experience level.</p>
   
-  <div class="calculator-section">
-    <div class="calc-group">
-      <label>Matches Played</label>
-      <input type="number" id="dsMatches" min="0" placeholder="Enter total matches" />
+  <div class="dark-analyzer">
+    <div class="analyzer-inputs">
+      <div class="input-row">
+        <div class="input-group">
+          <label>📊 Total Matches</label>
+          <input type="number" id="dsMatches" min="0" placeholder="e.g., 2500" />
+        </div>
+        <div class="input-group">
+          <label>📈 Win Rate (%)</label>
+          <input type="number" id="dsWinrate" min="0" max="100" step="0.1" placeholder="e.g., 54.5" />
+        </div>
+        <div class="input-group">
+          <label>🏆 MVP Count</label>
+          <input type="number" id="dsMvp" min="0" placeholder="e.g., 180" />
+        </div>
+      </div>
+      <button onclick="window.app.calculateDarkSystem()" class="analyzer-button">🔍 Analyze Now</button>
     </div>
-    
-    <div class="calc-group">
-      <label>Win Rate (%)</label>
-      <input type="number" id="dsWinrate" min="0" max="100" placeholder="e.g., 55.5" />
-    </div>
-    
-    <div class="calc-group">
-      <label>MVP Count</label>
-      <input type="number" id="dsMvp" min="0" placeholder="Total MVPs achieved" />
-    </div>
-    
-    <button onclick="window.app.calculateDarkSystem()" class="calc-button">Analyze</button>
   </div>
   
-  <div id="dsResult" class="result-box" style="display:none;"></div>
+  <div id="dsResult" class="result-box-dark" style="display:none;"></div>
   
   <div class="chapter-content">
-    <h3>What is a Dark System?</h3>
-    <p>A dark system player has a match count that suggests higher competency than their actual results show. They grind matches but don't climb as expected.</p>
-    
-    <h3>Standards by Match Count</h3>
-    <table class="guide-table">
-      <tr><td>1,000 matches</td><td>Expected: 55%+ WR</td><td>Expected: 100+ MVPs</td></tr>
-      <tr><td>2,000 matches</td><td>Expected: 54%+ WR</td><td>Expected: 200+ MVPs</td></tr>
-      <tr><td>3,000 matches</td><td>Expected: 53%+ WR</td><td>Expected: 300+ MVPs</td></tr>
-      <tr><td>4,000 matches</td><td>Expected: 52%+ WR</td><td>Expected: 400+ MVPs</td></tr>
-      <tr><td>5,000+ matches</td><td>Expected: 53%+ WR</td><td>Expected: 500+ MVPs</td></tr>
-    </table>
-    
-    <h3>MVP Ratio</h3>
-    <p>Your MVP ratio should be approximately 1 MVP per 10 matches (10:1 ratio). If you're below 1 per 15 matches, you're not delivering impact consistently.</p>
-    
-    <h3>How to Stop Being Dark System</h3>
-    <ul>
-      <li>Focus on consistency over grinding matches</li>
-      <li>Study your MVP games — what did you do differently?</li>
-      <li>Practice role-specific fundamentals</li>
-      <li>Play with intention, not just to reach a match count</li>
-      <li>Track only solo/duo queue for accurate self-assessment</li>
-    </ul>
+    <div class="content-section">
+      <h3>📖 Understanding Your Classification</h3>
+      <div class="classification-grid">
+        <div class="classification-card good">
+          <div class="class-emoji">💚</div>
+          <div class="class-title">GOOD PLAYER</div>
+          <div class="class-desc">Your stats match expectations. You're on the right path.</div>
+        </div>
+        <div class="classification-card warning">
+          <div class="class-emoji">⚠️</div>
+          <div class="class-title">NEEDS IMPROVEMENT</div>
+          <div class="class-desc">You're underperforming. Focus on weaknesses.</div>
+        </div>
+        <div class="classification-card dark">
+          <div class="class-emoji">💀</div>
+          <div class="class-title">DARK SYSTEM</div>
+          <div class="class-desc">Major gap between experience and performance.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h3>📊 Performance Standards by Match Count</h3>
+      <table class="standards-table">
+        <thead>
+          <tr>
+            <td>Matches</td>
+            <td>Expected WR</td>
+            <td>Expected MVPs</td>
+            <td>Ideal Ratio</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1,000</td><td>55%+</td><td>100+</td><td>1 per 10</td></tr>
+          <tr><td>2,000</td><td>54%+</td><td>200+</td><td>1 per 10</td></tr>
+          <tr><td>3,000</td><td>53%+</td><td>300+</td><td>1 per 10</td></tr>
+          <tr><td>4,000</td><td>52%+</td><td>400+</td><td>1 per 10</td></tr>
+          <tr><td>5,000+</td><td>53%+</td><td>500+</td><td>1 per 10</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="content-section">
+      <h3>🚀 How to Escape Dark System Status</h3>
+      <div class="action-steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Study Your MVPs</strong><br/>Review 5 of your MVP games. What roles, heroes, and decisions led to that success?
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Master One Role</strong><br/>Stop playing all roles. Pick your main and grind 200+ matches there.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Fix Wave Management</strong><br/>Learn when to farm, when to rotate, and when to fight. This is 60% of winning.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Solo Queue Only</strong><br/>Stop playing with friends or trio. Solo/duo reveals your true skill level.
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <strong>Take Breaks</strong><br/>Play 5-10 ranked matches per day, then stop. Mental fatigue kills performance.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h3>💡 Pro Tips</h3>
+      <ul>
+        <li><strong>MVP Ratio is Everything:</strong> If you have 2,000 matches but only 100 MVPs, that's a 1:20 ratio. You need at least 1:10.</li>
+        <li><strong>Win Rate Matters More Than Matches:</strong> 1,000 matches at 60% WR beats 3,000 matches at 49% WR.</li>
+        <li><strong>One Tricking Works:</strong> Most high-rank players dominate 2-3 heroes, not 50 different ones.</li>
+        <li><strong>Watch Pros Play Your Main:</strong> Observe how they farm, rotate, and teamfight with your hero.</li>
+      </ul>
+    </div>
+
+    <button onclick="window.nav.goTo('macro-micro')" class="guide-button">📖 Read Our Full Guide →</button>
   </div>
   
   <div class="chapter-nav">
