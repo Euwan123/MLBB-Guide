@@ -181,15 +181,25 @@ const doSignup = async () => {
 };
 
 const initChapters = async () => {
+  const baseURL = window.location.pathname.includes('/mlbb-guide') ? '/mlbb-guide' : '';
+  
   for (const ch of CHAPTER_ORDER) {
-    const resp = await fetch(`html/${ch}.html`);
-    if (!resp.ok) continue;
-    const html = await resp.text();
-    const el = document.createElement('div');
-    el.innerHTML = html;
-    el.id = `page-${ch}`;
-    el.className = 'page';
-    $('chapters-container').appendChild(el);
+    try {
+      const path = `${baseURL}/html/${ch}.html`;
+      const resp = await fetch(path);
+      if (!resp.ok) {
+        console.warn(`Failed to load ${ch}: ${resp.status}`);
+        continue;
+      }
+      const html = await resp.text();
+      const el = document.createElement('div');
+      el.innerHTML = html;
+      el.id = `page-${ch}`;
+      el.className = 'page';
+      $('chapters-container').appendChild(el);
+    } catch (e) {
+      console.error(`Error loading chapter ${ch}:`, e);
+    }
   }
   
   setTimeout(() => {

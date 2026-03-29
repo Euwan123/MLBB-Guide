@@ -1,0 +1,6 @@
+# Vercel deploy - include all files
+node_modules
+.git
+.gitignore
+GITHUB_UPLOAD_GUIDE.md
+SETUP_COMPLETE.txt
