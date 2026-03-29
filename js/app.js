@@ -181,26 +181,39 @@ const doSignup = async () => {
 };
 
 const initChapters = async () => {
+  console.log('🚀 Initializing chapters...');
+  console.log('📍 PagePathname:', window.location.pathname);
+  console.log('🔗 Origin:', window.location.origin);
+  
   const baseURL = window.location.pathname.includes('/mlbb-guide') ? '/mlbb-guide' : '';
+  console.log('📂 Base URL:', baseURL || '(root)');
   
   for (const ch of CHAPTER_ORDER) {
     try {
       const path = `${baseURL}/html/${ch}.html`;
+      console.log(`⏳ Loading ${ch} from: ${path}`);
+      
       const resp = await fetch(path);
+      
       if (!resp.ok) {
-        console.warn(`Failed to load ${ch}: ${resp.status}`);
+        console.error(`❌ Failed to load ${ch}: ${resp.status} ${resp.statusText}`);
         continue;
       }
+      
       const html = await resp.text();
+      console.log(`✅ Loaded ${ch} (${html.length} bytes)`);
+      
       const el = document.createElement('div');
       el.innerHTML = html;
       el.id = `page-${ch}`;
       el.className = 'page';
       $('chapters-container').appendChild(el);
     } catch (e) {
-      console.error(`Error loading chapter ${ch}:`, e);
+      console.error(`💥 Error loading chapter ${ch}:`, e.message);
     }
   }
+  
+  console.log('📚 Chapter loading complete');
   
   setTimeout(() => {
     $$('[data-chapter]').forEach(btn => {
