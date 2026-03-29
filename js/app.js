@@ -30,6 +30,8 @@ const goPage = page => {
   window.scrollTo(0, 0);
 };
 
+const goHome = () => goPage('home');
+
 const updateProgress = page => {
   const idx = CHAPTER_ORDER.indexOf(page);
   const pct = idx >= 0 ? Math.round(((idx + 1) / CHAPTER_ORDER.length) * 100) : 0;
@@ -84,7 +86,7 @@ const updateAuthUI = () => {
   }
 };
 
-const logoutUser = async () => {
+const logout = async () => {
   await sb.auth.signOut();
   session = null;
   done.clear();
@@ -216,10 +218,21 @@ const initChapters = async () => {
   console.log('📚 Chapter loading complete');
   
   setTimeout(() => {
+    const tabsLogin = $('tabLogin');
+    const tabsSignup = $('tabSignup');
+    if (tabsLogin) tabsLogin.addEventListener('click', () => switchTab('login'));
+    if (tabsSignup) tabsSignup.addEventListener('click', () => switchTab('signup'));
+    
+    const loginBtn = $('loginBtn');
+    const signupBtn = $('signupBtn');
+    if (loginBtn) loginBtn.addEventListener('click', doLogin);
+    if (signupBtn) signupBtn.addEventListener('click', doSignup);
+    
     $$('[data-chapter]').forEach(btn => {
       const ch = btn.dataset.chapter;
       btn.addEventListener('click', () => goPage(ch));
     });
+    updateDoneMarks();
   }, 100);
 };
 
@@ -248,14 +261,13 @@ window.app = {
   switchTab,
   doLogin,
   doSignup,
-  logout: logoutUser,
+  logout,
   init
 };
 
 window.nav = {
-  goHome: () => goPage('home'),
-  goTo: ch => goPage(ch),
-  logout: logoutUser
+  goHome,
+  goTo: goPage
 };
 
 document.addEventListener('DOMContentLoaded', init);

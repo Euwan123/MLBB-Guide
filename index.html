@@ -11,7 +11,7 @@
 
 <nav>
   <div class="nav-brand" id="navBrand">⚔ Mr. Yoo's MLBB Guide</div>
-  <div class="nav-back" id="navBack">← All Chapters</div>
+  <div class="nav-back" id="navBack" onclick="window.nav.goHome()">← All Chapters</div>
   <span class="nav-chapter" id="navChapter"></span>
   <div class="nav-right">
     <div id="navProgress" class="nav-progress" style="display:none;"><div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div></div>
@@ -37,17 +37,35 @@
       <div class="stat-item"><span class="stat-num">200+</span><span class="stat-label">Pro Matches Studied</span></div>
       <div class="stat-item"><span class="stat-num">300+</span><span class="stat-label">Pro Streams Analyzed</span></div>
     </div>
-    <div class="chapters-label">Choose a Chapter</div>
-    <div class="chapters-grid">
-      <div class="chapter-btn" data-chapter="macro-micro" onclick="nav.goTo('macro-micro')"><span class="ch-num">Chapter 01</span><span class="ch-icon">⚔️</span><span class="ch-title">Macro vs Micro</span><span class="ch-desc">Discover your natural playstyle identity before you grind ranked</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="player-tiers" onclick="nav.goTo('player-tiers')"><span class="ch-num">Chapter 02</span><span class="ch-icon">📊</span><span class="ch-title">Player Tiers</span><span class="ch-desc">Match count to rank expectations — where do you stand?</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="dark-system" onclick="nav.goTo('dark-system')"><span class="ch-num">Chapter 03</span><span class="ch-icon">🌑</span><span class="ch-title">Are You a Dark System?</span><span class="ch-desc">Hidden player archetypes that define how you rank</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="hero-requirements" onclick="nav.goTo('hero-requirements')"><span class="ch-num">Chapter 04</span><span class="ch-icon">🗡️</span><span class="ch-title">Hero Requirements</span><span class="ch-desc">Minimum hero mastery benchmarks per tier and difficulty</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="quick-reference" onclick="nav.goTo('quick-reference')"><span class="ch-num">Chapter 05</span><span class="ch-icon">📋</span><span class="ch-title">Quick Reference</span><span class="ch-desc">Fast-access summary cards for all tiers and benchmarks</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="role-selection" onclick="nav.goTo('role-selection')"><span class="ch-num">Chapter 06</span><span class="ch-icon">🎭</span><span class="ch-title">Role Selection</span><span class="ch-desc">Which role fits your personality and natural tendencies</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="mental-tilt" onclick="nav.goTo('mental-tilt')"><span class="ch-num">Chapter 07</span><span class="ch-icon">🧠</span><span class="ch-title">Mental & Tilt</span><span class="ch-desc">The skill nobody talks about — controlling your mental state</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="laning" onclick="nav.goTo('laning')"><span class="ch-num">Chapter 08</span><span class="ch-icon">🌿</span><span class="ch-title">Laning</span><span class="ch-desc">Lane fundamentals, wave management, and how to win your lane</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
-      <div class="chapter-btn" data-chapter="banning" onclick="nav.goTo('banning')"><span class="ch-num">Chapter 09</span><span class="ch-icon">🚫</span><span class="ch-title">Banning</span><span class="ch-desc">Smart ban strategy based on your role and rank</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+    <div class="chapters-label">Test Yourself</div>
+    <div class="chapters-group">
+      <div class="group-header">Diagnostic Tools</div>
+      <div class="chapters-grid">
+        <div class="chapter-btn" data-chapter="dark-system"><span class="ch-num">Tool 01</span><span class="ch-icon">🌑</span><span class="ch-title">Are You a Dark System?</span><span class="ch-desc">Calculate if you're underperforming your match count</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Done</span></div>
+      </div>
+    </div>
+
+    <div class="chapters-label">Hero & Player Analysis</div>
+    <div class="chapters-group">
+      <div class="group-header">Foundation</div>
+      <div class="chapters-grid">
+        <div class="chapter-btn" data-chapter="player-tiers"><span class="ch-num">Chapter 01</span><span class="ch-icon">📊</span><span class="ch-title">Player Tiers</span><span class="ch-desc">Match count to rank expectations — where do you stand?</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="hero-requirements"><span class="ch-num">Chapter 02</span><span class="ch-icon">🗡️</span><span class="ch-title">Hero Requirements</span><span class="ch-desc">Minimum mastery benchmarks per tier and difficulty</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+      </div>
+    </div>
+
+    <div class="chapters-label">Book Guide</div>
+    <div class="chapters-group">
+      <div class="group-header">Complete Guide</div>
+      <div class="chapters-grid">
+        <div class="chapter-btn" data-chapter="introduction"><span class="ch-num">Chapter 01</span><span class="ch-icon">📖</span><span class="ch-title">Introduction</span><span class="ch-desc">Start here before diving into advanced strategies</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="quick-reference"><span class="ch-num">Chapter 02</span><span class="ch-icon">📋</span><span class="ch-title">Quick Reference</span><span class="ch-desc">Fast-access summary cards for all key concepts</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="role-selection"><span class="ch-num">Chapter 03</span><span class="ch-icon">🎭</span><span class="ch-title">Role Selection</span><span class="ch-desc">Find the role that fits your natural playstyle</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="macro-micro"><span class="ch-num">Chapter 04</span><span class="ch-icon">⚔️</span><span class="ch-title">Macro vs Micro</span><span class="ch-desc">Master both playstyle identities to dominate</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="laning"><span class="ch-num">Chapter 05</span><span class="ch-icon">🌿</span><span class="ch-title">Laning</span><span class="ch-desc">Lane fundamentals and wave management mastery</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="banning"><span class="ch-num">Chapter 06</span><span class="ch-icon">🚫</span><span class="ch-title">Banning</span><span class="ch-desc">Smart ban strategies based on role and rank</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+        <div class="chapter-btn" data-chapter="mental-tilt"><span class="ch-num">Chapter 07</span><span class="ch-icon">🧠</span><span class="ch-title">Mental & Tilt</span><span class="ch-desc">Control your mental game to climb consistently</span><span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span></div>
+      </div>
     </div>
   </div>
 </div>
@@ -81,19 +99,21 @@
     </div>
   </div>
 </div>
+
+<div class="modal-overlay" id="authModal">
   <div class="modal">
     <button class="modal-close" onclick="window.app.closeAuth()">✕</button>
     <div class="modal-title">⚔️ MLBB Guide</div>
     <div class="modal-sub">Save your reading progress across devices</div>
     <div class="modal-tabs">
-      <div class="modal-tab active" id="tabLogin" onclick="window.app.switchTab('login')">Login</div>
-      <div class="modal-tab" id="tabSignup" onclick="window.app.switchTab('signup')">Sign Up</div>
+      <div class="modal-tab active" id="tabLogin">Login</div>
+      <div class="modal-tab" id="tabSignup">Sign Up</div>
     </div>
     <div id="formLogin" class="modal-form">
       <input class="modal-input" id="loginEmail" type="email" placeholder="Email address"/>
       <input class="modal-input" id="loginPass" type="password" placeholder="Password"/>
       <div class="modal-err" id="loginErr"></div>
-      <button class="modal-submit" id="loginBtn" onclick="window.app.doLogin()">Login</button>
+      <button class="modal-submit" id="loginBtn">Login</button>
       <div class="modal-divider">or</div>
       <button class="modal-submit" style="background:transparent;border:1px solid rgba(255,215,0,.3);color:var(--gold);" onclick="window.app.switchTab('signup')">Create an Account</button>
     </div>
@@ -102,7 +122,7 @@
       <input class="modal-input" id="signupEmail" type="email" placeholder="Email address"/>
       <input class="modal-input" id="signupPass" type="password" placeholder="Password (min 6 chars)"/>
       <div class="modal-err" id="signupErr"></div>
-      <button class="modal-submit" id="signupBtn" onclick="window.app.doSignup()">Create Account</button>
+      <button class="modal-submit" id="signupBtn">Create Account</button>
     </div>
   </div>
 </div>

@@ -1,18 +1,134 @@
 <div class="chapter-page">
-  <div class="ch-page-header"><div class="ch-page-num">Chapter 03</div><div class="ch-page-title">Are You a <span>Dark System?</span></div><div class="ch-page-sub">Beyond Micro and Macro — every player has a hidden archetype that quietly shapes how they climb, stall, or self-destruct.</div></div>
-  <div class="s-label">Hidden Player Archetypes</div><div class="s-title">Which One Are You?</div>
-  <div class="dark-type-grid">
-    <div class="dark-card" style="border-color:rgba(124,58,237,.32);"><div class="dark-card-header" style="background:linear-gradient(135deg,rgba(124,58,237,.22),rgba(13,19,30,.9));"><div class="dark-card-icon">🌑</div><div class="dark-card-name" style="color:var(--micro-light);">The Dark Carry</div><div class="dark-card-tag" style="color:var(--micro-light);">Silent Hypercarry</div></div><div class="dark-card-body">Plays quietly, says nothing, but carries through pure mechanics. Nobody notices them until the game is already won. Most dangerous type in solo queue.</div><div class="dark-card-traits"><div class="dark-trait">⚡ Rarely dies — plays extremely safe until they strike</div><div class="dark-trait">⚡ Never argues in chat — fully focused on the game</div><div class="dark-trait">⚡ KDA tells half the story — impact tells all of it</div></div></div>
-    <div class="dark-card" style="border-color:rgba(5,150,105,.32);"><div class="dark-card-header" style="background:linear-gradient(135deg,rgba(5,150,105,.18),rgba(13,19,30,.9));"><div class="dark-card-icon">🧩</div><div class="dark-card-name" style="color:var(--macro-light);">The Invisible Win Condition</div><div class="dark-card-tag" style="color:var(--macro-light);">System Player</div></div><div class="dark-card-body">Doesn't need to shine individually. Sets up every situation for the team. Nobody gives them MVP but without them, the whole system collapses.</div><div class="dark-card-traits"><div class="dark-trait">🎯 Rotates before teammates realize they need help</div><div class="dark-trait">🎯 Controls vision — denies information to enemy</div><div class="dark-trait">🎯 Calls objectives 60 seconds before they spawn</div></div></div>
-    <div class="dark-card" style="border-color:rgba(234,88,12,.32);"><div class="dark-card-header" style="background:linear-gradient(135deg,rgba(234,88,12,.18),rgba(13,19,30,.9));"><div class="dark-card-icon">🔥</div><div class="dark-card-name" style="color:#fdba74;">The Flameout</div><div class="dark-card-tag" style="color:#fdba74;">High Peak, High Risk</div></div><div class="dark-card-body">Capable of insane outplays. But one bad game and they collapse mentally, flame teammates, and throw a 3-game streak into a 5-game loss streak.</div><div class="dark-card-traits"><div class="dark-trait">🔥 Incredible when winning — unbearable when losing</div><div class="dark-trait">🔥 Queues again immediately after every loss in anger</div><div class="dark-trait">🔥 Fix: force yourself to stop after 2 losses. No exceptions.</div></div></div>
-    <div class="dark-card" style="border-color:rgba(220,38,38,.32);"><div class="dark-card-header" style="background:linear-gradient(135deg,rgba(220,38,38,.18),rgba(13,19,30,.9));"><div class="dark-card-icon">🕳️</div><div class="dark-card-name" style="color:#fca5a5;">The Stuck Loop</div><div class="dark-card-tag" style="color:#fca5a5;">Comfort Zone Prisoner</div></div><div class="dark-card-body">Same rank for 3+ seasons. Same hero, same build, same mistakes. Technically decent but refuses to adapt or acknowledge their own patterns as the problem.</div><div class="dark-card-traits"><div class="dark-trait">🕳️ Same hero. Same build. Same mistakes. Same rank.</div><div class="dark-trait">🕳️ Never reviews replays or questions own decisions</div><div class="dark-trait">🕳️ Fix: force 1 replay review per loss. Find your mistake.</div></div></div>
-    <div class="dark-card" style="border-color:rgba(255,215,0,.28);"><div class="dark-card-header" style="background:linear-gradient(135deg,rgba(255,215,0,.09),rgba(13,19,30,.9));"><div class="dark-card-icon">👁️</div><div class="dark-card-name" style="color:var(--gold);">The Analyst</div><div class="dark-card-tag" style="color:var(--gold);">The Rare Breed</div></div><div class="dark-card-body">Studies the game more than they play it. Understands every system deeply but lacks the mechanical execution to match their knowledge. Most improvable type.</div><div class="dark-card-traits"><div class="dark-trait">👁️ Can explain every macro concept but still loses lane</div><div class="dark-trait">👁️ Watches pro streams but struggles to replicate it</div><div class="dark-trait">👁️ Fix: bridge the knowledge-execution gap with reps.</div></div></div>
-    <div class="dark-card" style="border-color:rgba(8,145,178,.32);"><div class="dark-card-header" style="background:linear-gradient(135deg,rgba(8,145,178,.18),rgba(13,19,30,.9));"><div class="dark-card-icon">🌊</div><div class="dark-card-name" style="color:#67e8f9;">The Adapter</div><div class="dark-card-tag" style="color:#67e8f9;">The True Climber</div></div><div class="dark-card-body">Reads every situation and adjusts. Uses Micro when needed, switches to Macro when the game demands it. The rarest and most dangerous type in high elo.</div><div class="dark-card-traits"><div class="dark-trait">🌊 Comfortable on 10+ heroes across multiple roles</div><div class="dark-trait">🌊 Never complains — immediately finds the next win condition</div><div class="dark-trait">🌊 This is the goal. Becoming this is the entire journey.</div></div></div>
+  <div class="chapter-header">🌑 Are You a Dark System?</div>
+  <p class="chapter-intro">Discover if your performance matches your experience level. A "dark system" is a player who underperforms significantly for their match count.</p>
+  
+  <div class="calculator-section">
+    <div class="calc-group">
+      <label>Matches Played</label>
+      <input type="number" id="dsMatches" min="0" placeholder="Enter total matches" />
+    </div>
+    
+    <div class="calc-group">
+      <label>Win Rate (%)</label>
+      <input type="number" id="dsWinrate" min="0" max="100" placeholder="e.g., 55.5" />
+    </div>
+    
+    <div class="calc-group">
+      <label>MVP Count</label>
+      <input type="number" id="dsMvp" min="0" placeholder="Total MVPs achieved" />
+    </div>
+    
+    <button onclick="window.app.calculateDarkSystem()" class="calc-button">Analyze</button>
   </div>
-  <hr class="divider"/>
-  <div class="warn-box gold"><div class="warn-title">💡 Mr. Yoo's Honest Take</div><div class="warn-text">Most solo queue players are a mix of The Flameout and The Stuck Loop without realizing it. The ones who reach Mythical Glory and beyond are always moving toward becoming The Adapter. Identify which type you lean toward — then work specifically against that tendency every session.</div></div>
-  <div class="next-chapter">
-    <div><div class="next-label">Next Chapter</div><div class="next-title">Hero Requirements by Tier</div></div>
-    <div style="display:flex;gap:.8rem;"><button class="btn-back" onclick="nav.goHome()">← Chapters</button><button class="btn-next" onclick="nav.goTo('hero-requirements')">Hero Requirements →</button></div>
+  
+  <div id="dsResult" class="result-box" style="display:none;"></div>
+  
+  <div class="chapter-content">
+    <h3>What is a Dark System?</h3>
+    <p>A dark system player has a match count that suggests higher competency than their actual results show. They grind matches but don't climb as expected.</p>
+    
+    <h3>Standards by Match Count</h3>
+    <table class="guide-table">
+      <tr><td>1,000 matches</td><td>Expected: 55%+ WR</td><td>Expected: 100+ MVPs</td></tr>
+      <tr><td>2,000 matches</td><td>Expected: 54%+ WR</td><td>Expected: 200+ MVPs</td></tr>
+      <tr><td>3,000 matches</td><td>Expected: 53%+ WR</td><td>Expected: 300+ MVPs</td></tr>
+      <tr><td>4,000 matches</td><td>Expected: 52%+ WR</td><td>Expected: 400+ MVPs</td></tr>
+      <tr><td>5,000+ matches</td><td>Expected: 53%+ WR</td><td>Expected: 500+ MVPs</td></tr>
+    </table>
+    
+    <h3>MVP Ratio</h3>
+    <p>Your MVP ratio should be approximately 1 MVP per 10 matches (10:1 ratio). If you're below 1 per 15 matches, you're not delivering impact consistently.</p>
+    
+    <h3>How to Stop Being Dark System</h3>
+    <ul>
+      <li>Focus on consistency over grinding matches</li>
+      <li>Study your MVP games — what did you do differently?</li>
+      <li>Practice role-specific fundamentals</li>
+      <li>Play with intention, not just to reach a match count</li>
+      <li>Track only solo/duo queue for accurate self-assessment</li>
+    </ul>
+  </div>
+  
+  <div class="chapter-nav">
+    <button onclick="window.nav.goHome()" class="nav-button backbutton">← Back to Home</button>
   </div>
 </div>
+
+<script>
+window.app.calculateDarkSystem = function() {
+  const matches = parseInt(document.getElementById('dsMatches').value) || 0;
+  const wr = parseFloat(document.getElementById('dsWinrate').value) || 0;
+  const mvps = parseInt(document.getElementById('dsMvp').value) || 0;
+  
+  if (matches === 0) {
+    document.getElementById('dsResult').style.display = 'none';
+    return;
+  }
+  
+  let expectedWr, expectedMvp;
+  
+  if (matches >= 5000) {
+    expectedWr = 53;
+    expectedMvp = Math.floor(matches / 10);
+  } else if (matches >= 4000) {
+    expectedWr = 52;
+    expectedMvp = Math.floor(matches / 10);
+  } else if (matches >= 3000) {
+    expectedWr = 53;
+    expectedMvp = Math.floor(matches / 10);
+  } else if (matches >= 2000) {
+    expectedWr = 54;
+    expectedMvp = Math.floor(matches / 10);
+  } else if (matches >= 1000) {
+    expectedWr = 55;
+    expectedMvp = Math.floor(matches / 10);
+  } else {
+    expectedWr = 52;
+    expectedMvp = Math.floor(matches / 10);
+  }
+  
+  const wrGood = wr >= expectedWr;
+  const mvpGood = mvps >= expectedMvp;
+  const mvpRatio = matches > 0 ? Math.round((matches / mvps) * 10) / 10 : 0;
+  
+  let status = 'NEUTRAL';
+  let statusClass = 'neutral';
+  
+  if (wrGood && mvpGood) {
+    status = '💚 GOOD PLAYER';
+    statusClass = 'good';
+  } else if (!wrGood && !mvpGood) {
+    status = '🌑 DARK SYSTEM DETECTED';
+    statusClass = 'dark';
+  } else if (!wrGood) {
+    status = '⚠️ UNDERPERFORMING WR';
+    statusClass = 'warning';
+  } else {
+    status = '⚠️ LOW MVP COUNT';
+    statusClass = 'warning';
+  }
+  
+  const resultBox = document.getElementById('dsResult');
+  resultBox.className = `result-box ${statusClass}`;
+  resultBox.innerHTML = `
+    <div class="result-title">${status}</div>
+    <div class="result-stats">
+      <div class="stat">
+        <span class="label">Win Rate</span>
+        <span class="value">${wr.toFixed(1)}% (Expected: ${expectedWr}%+)</span>
+        <span class="verdict ${wrGood ? 'pass' : 'fail'}">${wrGood ? '✓' : '✗'}</span>
+      </div>
+      <div class="stat">
+        <span class="label">MVP Count</span>
+        <span class="value">${mvps} (Expected: ${expectedMvp}+)</span>
+        <span class="verdict ${mvpGood ? 'pass' : 'fail'}">${mvpGood ? '✓' : '✗'}</span>
+      </div>
+      <div class="stat">
+        <span class="label">MVP Ratio</span>
+        <span class="value">1 MVP per ${mvpRatio} matches (Target: 1 per 10)</span>
+      </div>
+    </div>
+  `;
+  resultBox.style.display = 'block';
+};
+</script>
