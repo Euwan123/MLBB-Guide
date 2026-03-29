@@ -5,18 +5,21 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export const CHAPTER_ORDER = ['macro-micro','player-tiers','dark-system','hero-requirements','quick-reference','role-selection','mental-tilt','laning','banning'];
+export const CHAPTER_ORDER = ['introduction','quick-reference','role-selection','macro-micro','laning','banning','counter-heroes','mental-tilt','dark-system','meta-tracker','player-tiers','hero-requirements'];
 
 export const CHAPTER_META = {
-  'macro-micro':{n:'01',t:'Macro vs Micro'},
-  'player-tiers':{n:'02',t:'Player Tiers'},
-  'dark-system':{n:'03',t:'Are You a Dark System?'},
-  'hero-requirements':{n:'04',t:'Hero Requirements'},
-  'quick-reference':{n:'05',t:'Quick Reference'},
-  'role-selection':{n:'06',t:'Role Selection'},
-  'mental-tilt':{n:'07',t:'Mental & Tilt'},
-  'laning':{n:'08',t:'Laning'},
-  'banning':{n:'09',t:'Banning'}
+  'introduction':{n:'01',t:'Introduction'},
+  'quick-reference':{n:'02',t:'Quick Reference'},
+  'role-selection':{n:'03',t:'Role Selection'},
+  'macro-micro':{n:'04',t:'Macro vs Micro'},
+  'laning':{n:'05',t:'Laning'},
+  'banning':{n:'06',t:'Banning'},
+  'counter-heroes':{n:'07',t:'Counter Heroes'},
+  'mental-tilt':{n:'08',t:'Mental & Tilt'},
+  'dark-system':{n:'D1',t:'Are You a Dark System?'},
+  'meta-tracker':{n:'D2',t:'Meta Tracker'},
+  'player-tiers':{n:'D3',t:'Player Tiers'},
+  'hero-requirements':{n:'D4',t:'Hero Requirements'}
 };
 
 export const CHAPTER_PATHS = CHAPTER_ORDER.map(ch => `html/${ch}.html`);

@@ -78,9 +78,9 @@ const updateAuthUI = () => {
   authArea.innerHTML = '';
 
   if (session) {
-    const usr = session.user.user_metadata?.username || session.user.email;
+    const usr = session.user.user_metadata?.username || 'User';
     const nm = (usr || '').substring(0, 1).toUpperCase();
-    authArea.innerHTML = `<div class="nav-user"><div class="nav-avatar">${nm}</div><span>${usr}</span></div><button class="nav-auth-btn logout" onclick="window.app.logout()">Logout</button>`;
+    authArea.innerHTML = `<div class="nav-user" onclick="window.app.openProfile()" style="cursor:pointer;"><div class="nav-avatar">${nm}</div><span>${usr}</span></div><button class="nav-auth-btn logout" onclick="window.app.logout()">Logout</button>`;
   } else {
     authArea.innerHTML = `<button class="nav-auth-btn login" onclick="window.app.openAuth()">Login</button>`;
   }
@@ -97,7 +97,7 @@ const logout = async () => {
 const openAuth = () => {
   $('authModal').classList.add('open');
   switchTab('login');
-  $('loginEmail').focus();
+  $('loginName').focus();
 };
 
 const closeAuth = () => {
@@ -112,6 +112,96 @@ const closeTerms = () => {
   $('termsModal').classList.remove('open');
 };
 
+const openProfile = () => {
+  if (!session) {
+    window.app.openAuth();
+    return;
+  }
+  $('profileModal').classList.add('open');
+  loadProfile();
+};
+
+const closeProfile = () => {
+  $('profileModal').classList.remove('open');
+};
+
+const uploadProfileImage = async (file) => {
+  if (!session) return null;
+  
+  try {
+    const fileName = `${session.user.id}-${Date.now()}.jpg`;
+    const { data, error } = await sb.storage
+      .from('profile_images')
+      .upload(fileName, file, { upsert: true });
+    
+    if (error) throw error;
+    
+    const { data: { publicUrl } } = sb.storage
+      .from('profile_images')
+      .getPublicUrl(fileName);
+    
+    return publicUrl;
+  } catch (e) {
+    console.error('Image upload error:', e.message);
+    throw e;
+  }
+};
+
+const updateProfile = async (bio, rank, mainHeroes) => {
+  if (!session) return;
+  
+  try {
+    const imageFile = $('profileImageInput')?.files?.[0];
+    let profileImageUrl = null;
+    
+    if (imageFile) {
+      profileImageUrl = await uploadProfileImage(imageFile);
+    }
+    
+    const usr = session.user.user_metadata?.username || 'User';
+    const updateData = { 
+      user_id: session.user.id, 
+      username: usr, 
+      bio: bio || null, 
+      rank: rank || null, 
+      main_heroes: mainHeroes ? mainHeroes.split(',').map(h => h.trim()) : null
+    };
+    
+    if (profileImageUrl) {
+      updateData.profile_image_url = profileImageUrl;
+    }
+    
+    const { error } = await sb.from('user_profiles').upsert(updateData);
+    if (error) throw error;
+    
+    closeProfile();
+    alert('Profile updated!');
+  } catch (e) {
+    alert('Profile update failed: ' + e.message);
+  }
+};
+
+const loadProfile = async () => {
+  if (!session) return;
+  
+  try {
+    const { data } = await sb.from('user_profiles').select('*').eq('user_id', session.user.id).single();
+    
+    if (data) {
+      $('profileBio').value = data.bio || '';
+      $('profileRank').value = data.rank || '';
+      $('profileHeroes').value = data.main_heroes?.join(', ') || '';
+      
+      if (data.profile_image_url) {
+        $('profileImagePreview').src = data.profile_image_url;
+        $('profileImagePreview').style.display = 'block';
+      }
+    }
+  } catch (e) {
+    console.log('No profile found, creating new one');
+  }
+};
+
 const switchTab = t => {
   $('formLogin').style.display = t === 'login' ? 'flex' : 'none';
   $('formSignup').style.display = t === 'signup' ? 'flex' : 'none';
@@ -120,11 +210,11 @@ const switchTab = t => {
 };
 
 const doLogin = async () => {
-  const em = $('loginEmail').value.trim();
+  const nm = $('loginName').value.trim();
   const pw = $('loginPass').value.trim();
   
-  if (!em || !pw) {
-    $('loginErr').textContent = 'Email and password required';
+  if (!nm || !pw) {
+    $('loginErr').textContent = 'Username and password required';
     return;
   }
 
@@ -132,6 +222,7 @@ const doLogin = async () => {
   $('loginErr').textContent = '';
 
   try {
+    const em = `${nm.toLowerCase()}@mlbbguide.local`;
     const { data, error } = await sb.auth.signInWithPassword({ email: em, password: pw });
     if (error) throw error;
     session = data.session;
@@ -147,16 +238,15 @@ const doLogin = async () => {
 
 const doSignup = async () => {
   const nm = $('signupName').value.trim();
-  const em = $('signupEmail').value.trim();
   const pw = $('signupPass').value.trim();
   
-  if (!nm || !em || !pw) {
-    $('signupErr').textContent = 'All fields required';
+  if (!nm || !pw) {
+    $('signupErr').textContent = 'Username and password required';
     return;
   }
 
-  if (pw.length < 6) {
-    $('signupErr').textContent = 'Password must be at least 6 characters';
+  if (pw.length < 8) {
+    $('signupErr').textContent = 'Password must be at least 8 characters';
     return;
   }
 
@@ -164,7 +254,12 @@ const doSignup = async () => {
   $('signupErr').textContent = '';
 
   try {
-    const { data, error } = await sb.auth.signUp({ email: em, password: pw, options: { data: { username: nm } } });
+    const em = `${nm.toLowerCase()}_${Date.now()}@mlbbguide.local`;
+    const { data, error } = await sb.auth.signUp({ 
+      email: em, 
+      password: pw, 
+      options: { data: { username: nm } } 
+    });
     if (error) throw error;
     
     session = data.session;
@@ -173,7 +268,7 @@ const doSignup = async () => {
       updateAuthUI();
       loadProgress();
     } else {
-      $('signupErr').textContent = 'Check your email to confirm';
+      $('signupErr').textContent = 'Account created. You can now login.';
     }
   } catch (e) {
     $('signupErr').textContent = e.message || 'Signup failed';
@@ -335,6 +430,11 @@ window.app = {
   closeAuth,
   openTerms,
   closeTerms,
+  openProfile,
+  closeProfile,
+  uploadProfileImage,
+  updateProfile,
+  loadProfile,
   switchTab,
   doLogin,
   doSignup,
