@@ -11,8 +11,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "VERCEL_URL": "@vercel_url"
-  }
+  ]
 }
