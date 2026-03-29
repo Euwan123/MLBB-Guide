@@ -481,7 +481,7 @@ footer{background:rgba(7,17,31,.98);border-top:1.5px solid rgba(255,215,0,.2);pa
 .guide-button{width:100%;padding:1.2rem;margin-top:2rem;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-family:'Cinzel',serif;font-size:1rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 24px rgba(255,215,0,.3);text-transform:uppercase;letter-spacing:.08em;}
 .guide-button:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(255,215,0,.45);}
 
-.content-section{margin:2rem 0;'}
+.content-section{margin:2rem 0;}
 .chapter-content h3{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);margin:1.5rem 0 1rem;letter-spacing:.08em;}
 .chapter-content ul{list-style:none;padding:0;}
 .chapter-content li{padding:.6rem 0 .6rem 1.5rem;position:relative;color:var(--white);line-height:1.7;}
