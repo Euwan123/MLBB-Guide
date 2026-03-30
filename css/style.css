@@ -318,7 +318,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,17,31,.97)
 .calc-group input{padding:.75rem 1rem;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,215,0,.15);border-radius:8px;color:var(--white);font-family:'Exo 2',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;}
 .calc-group input:focus{border-color:rgba(255,215,0,.5);box-shadow:0 0 12px rgba(255,215,0,.15);}
 input[type="number"]::-webkit-outer-spin-button,input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-input[type="number"]{-moz-appearance:textfield;}
+input[type="number"]{-moz-appearance:textfield;appearance:textfield;}
 #dsWinrate::after{content:'%';}
 .calc-group:has(#dsWinrate) label::after{content:' (auto %)';}
 .modal-input{width:100%;padding:1rem 1.2rem;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,215,0,.15);border-radius:10px;color:var(--white);font-family:'Exo 2',sans-serif;font-size:.95rem;outline:none;transition:border-color .3s,background .2s,box-shadow .2s;box-shadow:inset 0 1px 3px rgba(0,0,0,.2);}
