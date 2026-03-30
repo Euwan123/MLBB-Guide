@@ -1,0 +1,144 @@
+<div class="chapter-page">
+  <div class="ch-page-header">
+    <div class="ch-page-num">D3</div>
+    <div class="ch-page-title"><span>Reaction</span> Challenge</div>
+    <div class="ch-page-sub">Click when it turns gold. Five rounds. Consistency matters.</div>
+  </div>
+
+  <div class="content-section">
+    <div class="chapter-content">
+      <h3>Test</h3>
+      <div style="display:grid;gap:1rem;max-width:720px;margin:0 auto;">
+        <div id="rcBox" style="height:180px;border-radius:16px;border:1px solid rgba(255,149,0,.22);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;color:var(--dim);letter-spacing:.06em;text-align:center;padding:1rem;user-select:none;cursor:pointer;">
+          Press Start
+        </div>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center;">
+          <button class="btn-next" type="button" onclick="window.rcStart()">Start</button>
+          <button class="btn-back" type="button" onclick="window.rcReset()">Reset</button>
+        </div>
+        <div id="rcStats" style="display:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,149,0,.22);border-radius:16px;padding:1rem;">
+          <div style="display:flex;flex-wrap:wrap;gap:.8rem;justify-content:space-between;">
+            <div style="color:#cfe6ff;"><span style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;">Average</span>: <span id="rcAvg"></span> ms</div>
+            <div style="color:#cfe6ff;"><span style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;">Best</span>: <span id="rcBest"></span> ms</div>
+            <div style="color:#cfe6ff;"><span style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;">Rounds</span>: <span id="rcRound"></span>/5</div>
+          </div>
+          <div id="rcVerdict" style="margin-top:.6rem;color:#a9c4df;line-height:1.7;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <button class="btn-back" type="button" onclick="NAV.goHome()">← Chapters</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function $(id) { return document.getElementById(id); }
+    function now() { return performance.now(); }
+    function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+
+    var box = $('rcBox');
+    var stats = $('rcStats');
+    var avgEl = $('rcAvg');
+    var bestEl = $('rcBest');
+    var roundEl = $('rcRound');
+    var verdict = $('rcVerdict');
+
+    var running = false;
+    var armed = false;
+    var goAt = 0;
+    var round = 0;
+    var times = [];
+    var timer = null;
+
+    function render() {
+      if (stats) stats.style.display = times.length ? 'block' : 'none';
+      if (roundEl) roundEl.textContent = String(round);
+      if (!times.length) return;
+      var sum = times.reduce(function(a, b) { return a + b; }, 0);
+      var avg = Math.round(sum / times.length);
+      var best = Math.round(Math.min.apply(null, times));
+      if (avgEl) avgEl.textContent = String(avg);
+      if (bestEl) bestEl.textContent = String(best);
+      var score = clamp((320 - avg) / 170, 0, 1);
+      var pct = Math.round(score * 99);
+      if (verdict) verdict.textContent = 'Consistency score: ' + pct + '/99. Focus on clean clicks, not panic.';
+    }
+
+    function setIdle() {
+      armed = false;
+      running = false;
+      if (timer) { clearTimeout(timer); timer = null; }
+      if (box) {
+        box.style.background = 'rgba(255,255,255,.04)';
+        box.style.borderColor = 'rgba(255,149,0,.22)';
+        box.style.color = 'var(--dim)';
+        box.textContent = 'Press Start';
+      }
+      render();
+    }
+
+    window.rcReset = function() {
+      times = [];
+      round = 0;
+      setIdle();
+    };
+
+    window.rcStart = function() {
+      if (running) return;
+      running = true;
+      armed = false;
+      if (box) {
+        box.style.background = 'rgba(255,255,255,.04)';
+        box.style.borderColor = 'rgba(255,149,0,.22)';
+        box.style.color = '#cfe6ff';
+        box.textContent = 'Wait...';
+      }
+      var delay = 650 + Math.random() * 1800;
+      timer = setTimeout(function() {
+        armed = true;
+        goAt = now();
+        if (box) {
+          box.style.background = 'linear-gradient(135deg,#ff8800,#ffd700)';
+          box.style.borderColor = 'rgba(255,215,0,.45)';
+          box.style.color = 'rgba(7,17,31,.95)';
+          box.textContent = 'CLICK';
+        }
+      }, delay);
+    };
+
+    if (box) {
+      box.addEventListener('click', function() {
+        if (!running) return;
+        if (!armed) {
+          if (timer) { clearTimeout(timer); timer = null; }
+          running = false;
+          if (box) {
+            box.style.background = 'rgba(220,38,38,.12)';
+            box.style.borderColor = 'rgba(220,38,38,.35)';
+            box.style.color = '#fca5a5';
+            box.textContent = 'Too early. Press Start.';
+          }
+          return;
+        }
+        armed = false;
+        running = false;
+        var t = now() - goAt;
+        times.push(t);
+        round = Math.min(5, round + 1);
+        if (box) {
+          box.style.background = 'rgba(34,197,94,.12)';
+          box.style.borderColor = 'rgba(34,197,94,.35)';
+          box.style.color = '#bbf7d0';
+          box.textContent = Math.round(t) + ' ms';
+        }
+        render();
+        if (round < 5) return;
+      });
+    }
+
+    setIdle();
+  })();
+</script>

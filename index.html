@@ -37,6 +37,7 @@
         <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">📱 Install</button>
         <button class="nav-menu-btn" onclick="NAV.goTo('dark-system')">📊 Diagnostic</button>
         <button class="nav-menu-btn" onclick="NAV.goTo('introduction')">📖 Book Guide</button>
+        <button class="nav-menu-btn" onclick="NAV.goTo('hero-system')">🎮 Game Hub</button>
         <button class="nav-menu-btn" onclick="NAV.openModal('contactModal')">📧 Contact</button>
         <button class="nav-menu-btn" id="navSignIn" onclick="NAV.openModal('authModal')">🔐 Sign In</button>
       </div>
@@ -84,27 +85,27 @@
             <span class="ch-arrow">→</span>
             <span class="ch-done-badge">✓ Done</span>
           </div>
-          <div class="chapter-btn" onclick="NAV.goTo('meta-tracker')">
+          <div class="chapter-btn" onclick="NAV.goTo('profile-percentile')">
             <span class="ch-num">02</span>
-            <span class="ch-icon">📊</span>
-            <span class="ch-title">Meta Tracker</span>
-            <span class="ch-desc">Track current hero meta and trending builds</span>
+            <span class="ch-icon">🌍</span>
+            <span class="ch-title">Profile Percentile</span>
+            <span class="ch-desc">Upload your profile and get an estimate vs the world</span>
             <span class="ch-arrow">→</span>
             <span class="ch-done-badge">✓ Read</span>
           </div>
-          <div class="chapter-btn" onclick="NAV.goTo('player-tiers')">
+          <div class="chapter-btn" onclick="NAV.goTo('reaction-challenge')">
             <span class="ch-num">03</span>
-            <span class="ch-icon">🏆</span>
-            <span class="ch-title">Player Tiers</span>
-            <span class="ch-desc">Match count to rank expectations — where do you stand?</span>
+            <span class="ch-icon">⚡</span>
+            <span class="ch-title">Reaction Challenge</span>
+            <span class="ch-desc">Test your reflexes and consistency under pressure</span>
             <span class="ch-arrow">→</span>
             <span class="ch-done-badge">✓ Read</span>
           </div>
-          <div class="chapter-btn" onclick="NAV.goTo('hero-requirements')">
+          <div class="chapter-btn" onclick="NAV.goTo('itemization-quiz')">
             <span class="ch-num">04</span>
-            <span class="ch-icon">🗡️</span>
-            <span class="ch-title">Hero Requirements</span>
-            <span class="ch-desc">Minimum mastery benchmarks per tier and difficulty</span>
+            <span class="ch-icon">🧪</span>
+            <span class="ch-title">Itemization Quiz</span>
+            <span class="ch-desc">Choose builds for scenarios and get scored</span>
             <span class="ch-arrow">→</span>
             <span class="ch-done-badge">✓ Read</span>
           </div>
@@ -205,10 +206,52 @@
             <span class="ch-desc">Track rotations, fog threats, and objective setups</span>
             <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
           </div>
-          <div class="chapter-btn" onclick="NAV.goTo('win-conditions')">
+          <div class="chapter-btn" onclick="NAV.goTo('power-spikes')">
             <span class="ch-num">A3</span><span class="ch-icon">🏁</span>
+            <span class="ch-title">Power Spikes</span>
+            <span class="ch-desc">Know when you’re strongest and force fights then</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('win-conditions')">
+            <span class="ch-num">A4</span><span class="ch-icon">🏁</span>
             <span class="ch-title">Win Conditions</span>
             <span class="ch-desc">Identify your win path and force the game there</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('common-sense')">
+            <span class="ch-num">A5</span><span class="ch-icon">🧠</span>
+            <span class="ch-title">Common Sense</span>
+            <span class="ch-desc">Simple rules that stop you from throwing games</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chapters-group">
+        <div class="group-header"><span class="lvl-dot advanced"></span> Game Hub</div>
+        <div class="chapters-scroll">
+          <div class="chapter-btn" onclick="NAV.goTo('hero-system')">
+            <span class="ch-num">GH1</span><span class="ch-icon">🛡️</span>
+            <span class="ch-title">Hero System</span>
+            <span class="ch-desc">Roles, archetypes, and how to build a hero pool</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('tier-lists')">
+            <span class="ch-num">GH2</span><span class="ch-icon">📊</span>
+            <span class="ch-title">Tier Lists</span>
+            <span class="ch-desc">S/A/B tiers by role with quick reasons</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('content-creators')">
+            <span class="ch-num">GH3</span><span class="ch-icon">🎥</span>
+            <span class="ch-title">Content Creators</span>
+            <span class="ch-desc">Curated channels to learn faster</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('faq')">
+            <span class="ch-num">GH4</span><span class="ch-icon">❓</span>
+            <span class="ch-title">FAQ</span>
+            <span class="ch-desc">Quick answers to common ranked problems</span>
             <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
           </div>
         </div>
@@ -342,18 +385,18 @@
     }
 
     const CHAPTER_PAGES = [
-      'dark-system','meta-tracker','player-tiers','hero-requirements',
-      'introduction','quick-reference','role-selection','laning',
-      'banning','counter-heroes','common-mistakes','macro-micro',
-      'rotation-system','mental-tilt','decision-making',
-      'wave-management','vision-map-awareness','win-conditions'
+      'dark-system','profile-percentile','reaction-challenge','itemization-quiz',
+      'introduction','quick-reference','role-selection','laning','banning','counter-heroes',
+      'common-mistakes','macro-micro','rotation-system','mental-tilt','decision-making',
+      'wave-management','vision-map-awareness','power-spikes','win-conditions','common-sense',
+      'hero-system','tier-lists','content-creators','faq'
     ];
 
     const CHAPTER_TITLES = {
       'dark-system': 'Are You a Dark System?',
-      'meta-tracker': 'Meta Tracker',
-      'player-tiers': 'Player Tiers',
-      'hero-requirements': 'Hero Requirements',
+      'profile-percentile': 'Profile Percentile',
+      'reaction-challenge': 'Reaction Challenge',
+      'itemization-quiz': 'Itemization Quiz',
       'introduction': 'Introduction',
       'quick-reference': 'Quick Reference',
       'role-selection': 'Role Selection',
@@ -367,7 +410,13 @@
       'decision-making': 'Decision Making',
       'wave-management': 'Wave Management',
       'vision-map-awareness': 'Vision & Map Awareness',
-      'win-conditions': 'Win Conditions'
+      'power-spikes': 'Power Spikes',
+      'win-conditions': 'Win Conditions',
+      'common-sense': 'Common Sense',
+      'hero-system': 'Hero System',
+      'tier-lists': 'Tier Lists',
+      'content-creators': 'Content Creators',
+      'faq': 'FAQ'
     };
 
     var currentPage = 'home';

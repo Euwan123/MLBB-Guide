@@ -1,0 +1,85 @@
+<div class="chapter-page">
+  <div class="ch-page-header">
+    <div class="ch-page-num">D2</div>
+    <div class="ch-page-title"><span>Profile</span> Percentile</div>
+    <div class="ch-page-sub">Upload your profile screenshot and enter a few stats to get an estimate vs the world.</div>
+  </div>
+
+  <div class="content-section">
+    <div class="chapter-content">
+      <h3>Upload</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:start;">
+        <div>
+          <input id="ppFile" class="modal-input" type="file" accept="image/*">
+          <div style="margin-top:.8rem;display:grid;gap:.8rem;">
+            <input id="ppMatches" class="modal-input" type="number" min="0" placeholder="Total matches (e.g. 2500)">
+            <input id="ppWr" class="modal-input" type="number" min="0" max="100" step="0.1" placeholder="Win rate % (e.g. 54.5)">
+            <input id="ppStars" class="modal-input" type="number" min="0" placeholder="Current stars (e.g. 25)">
+            <button class="modal-submit" type="button" onclick="window.ppEstimate()">Estimate</button>
+          </div>
+        </div>
+        <div>
+          <img id="ppPreview" alt="Profile preview" style="display:none;width:100%;border-radius:14px;border:1px solid rgba(255,149,0,.25);box-shadow:0 10px 30px rgba(0,0,0,.35);object-fit:cover;">
+          <div id="ppResult" style="margin-top:.8rem;display:none;background:rgba(255,255,255,.05);border:1px solid rgba(255,149,0,.25);border-radius:14px;padding:1rem;">
+            <div style="font-family:'Cinzel',serif;color:var(--gold);font-weight:700;letter-spacing:.06em;margin-bottom:.4rem;">Result</div>
+            <div id="ppLine1" style="font-size:1.05rem;line-height:1.7;color:#cfe6ff;"></div>
+            <div id="ppLine2" style="margin-top:.35rem;font-size:.95rem;line-height:1.7;color:#a9c4df;"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>How it works</h3>
+      <ul>
+        <li><strong>Screenshot:</strong> saved locally in your browser for preview only.</li>
+        <li><strong>Estimate:</strong> based on the stats you enter. It’s a guide, not official ranking.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chapter-nav">
+    <button class="btn-back" type="button" onclick="NAV.goHome()">← Chapters</button>
+  </div>
+</div>
+
+<script>
+  (function() {
+    function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
+    function $(id) { return document.getElementById(id); }
+
+    var fileEl = $('ppFile');
+    var preview = $('ppPreview');
+    if (fileEl) {
+      fileEl.addEventListener('change', function() {
+        var f = fileEl.files && fileEl.files[0];
+        if (!f) return;
+        var url = URL.createObjectURL(f);
+        preview.src = url;
+        preview.style.display = 'block';
+      });
+    }
+
+    window.ppEstimate = function() {
+      var matches = parseInt($('ppMatches') ? $('ppMatches').value : '0', 10) || 0;
+      var wr = parseFloat($('ppWr') ? $('ppWr').value : '0') || 0;
+      var stars = parseInt($('ppStars') ? $('ppStars').value : '0', 10) || 0;
+
+      var wrScore = clamp((wr - 45) / 25, 0, 1);
+      var matchScore = clamp(Math.log10(Math.max(1, matches)) / 4, 0, 1);
+      var starScore = clamp(stars / 100, 0, 1);
+      var score = (wrScore * 0.55) + (starScore * 0.30) + (matchScore * 0.15);
+
+      var percentile = Math.round(clamp(score, 0, 1) * 99);
+      var betterThan = percentile;
+
+      var line1 = 'You are better than ' + betterThan + '% of players (estimate).';
+      var line2 = 'Higher WR and higher stars increase the score. More matches helps a little, but quality matters most.';
+
+      var box = $('ppResult');
+      var l1 = $('ppLine1');
+      var l2 = $('ppLine2');
+      if (box) box.style.display = 'block';
+      if (l1) l1.textContent = line1;
+      if (l2) l2.textContent = line2;
+    };
+  })();
+</script>

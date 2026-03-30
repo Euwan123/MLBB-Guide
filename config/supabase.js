@@ -18,12 +18,18 @@ export const CHAPTER_ORDER = [
   'counter-heroes',
   'mental-tilt',
   'dark-system',
-  'meta-tracker',
-  'player-tiers',
-  'hero-requirements',
   'wave-management',
   'vision-map-awareness',
-  'win-conditions'
+  'power-spikes',
+  'win-conditions',
+  'common-sense',
+  'profile-percentile',
+  'reaction-challenge',
+  'itemization-quiz',
+  'hero-system',
+  'tier-lists',
+  'content-creators',
+  'faq'
 ];
 
 export const CHAPTER_META = {
@@ -39,12 +45,18 @@ export const CHAPTER_META = {
   'counter-heroes':    { n: '07', t: 'Counter Heroes' },
   'mental-tilt':       { n: 'M3', t: 'Mental & Tilt' },
   'dark-system':       { n: 'A1', t: 'Are You a Dark System?' },
-  'meta-tracker':      { n: 'A2', t: 'Meta Tracker' },
-  'player-tiers':      { n: 'A3', t: 'Player Tiers' },
-  'hero-requirements': { n: 'A4', t: 'Hero Requirements' },
   'wave-management':   { n: 'A5', t: 'Wave Management' },
   'vision-map-awareness': { n: 'A6', t: 'Vision & Map Awareness' },
-  'win-conditions':    { n: 'A7', t: 'Win Conditions' }
+  'power-spikes':      { n: 'A3', t: 'Power Spikes' },
+  'win-conditions':    { n: 'A4', t: 'Win Conditions' },
+  'common-sense':      { n: 'A5', t: 'Common Sense' },
+  'profile-percentile': { n: 'D2', t: 'Profile Percentile' },
+  'reaction-challenge': { n: 'D3', t: 'Reaction Challenge' },
+  'itemization-quiz':  { n: 'D4', t: 'Itemization Quiz' },
+  'hero-system':       { n: 'GH1', t: 'Hero System' },
+  'tier-lists':        { n: 'GH2', t: 'Tier Lists' },
+  'content-creators':  { n: 'GH3', t: 'Content Creators' },
+  'faq':               { n: 'GH4', t: 'FAQ' }
 };
 
 export const CHAPTER_PATHS = CHAPTER_ORDER.map(ch => `html/${ch}.html`);
