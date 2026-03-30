@@ -1,6 +1,6 @@
 import { sb } from '../config/supabase.js';
 
-const toEmail = (username) => `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@mlbbguide.app`;
+const toEmail = (username) => `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@gmail.com`;
 
 export async function loginWithCredentials(username, password) {
   const email = toEmail(username);
