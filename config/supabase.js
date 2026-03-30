@@ -9,7 +9,10 @@ export const CHAPTER_ORDER = [
   'introduction',
   'quick-reference',
   'role-selection',
+  'common-mistakes',
   'macro-micro',
+  'rotation-system',
+  'decision-making',
   'laning',
   'banning',
   'counter-heroes',
@@ -17,22 +20,31 @@ export const CHAPTER_ORDER = [
   'dark-system',
   'meta-tracker',
   'player-tiers',
-  'hero-requirements'
+  'hero-requirements',
+  'wave-management',
+  'vision-map-awareness',
+  'win-conditions'
 ];
 
 export const CHAPTER_META = {
   'introduction':      { n: '01', t: 'Introduction' },
   'quick-reference':   { n: '02', t: 'Quick Reference' },
   'role-selection':    { n: '03', t: 'Role Selection' },
+  'common-mistakes':   { n: 'B7', t: 'Common Mistakes' },
   'macro-micro':       { n: '04', t: 'Macro vs Micro' },
+  'rotation-system':   { n: 'M2', t: 'Rotation System' },
+  'decision-making':   { n: 'M4', t: 'Decision Making' },
   'laning':            { n: '05', t: 'Laning' },
   'banning':           { n: '06', t: 'Banning' },
   'counter-heroes':    { n: '07', t: 'Counter Heroes' },
-  'mental-tilt':       { n: '08', t: 'Mental & Tilt' },
+  'mental-tilt':       { n: 'M3', t: 'Mental & Tilt' },
   'dark-system':       { n: 'A1', t: 'Are You a Dark System?' },
   'meta-tracker':      { n: 'A2', t: 'Meta Tracker' },
   'player-tiers':      { n: 'A3', t: 'Player Tiers' },
-  'hero-requirements': { n: 'A4', t: 'Hero Requirements' }
+  'hero-requirements': { n: 'A4', t: 'Hero Requirements' },
+  'wave-management':   { n: 'A5', t: 'Wave Management' },
+  'vision-map-awareness': { n: 'A6', t: 'Vision & Map Awareness' },
+  'win-conditions':    { n: 'A7', t: 'Win Conditions' }
 };
 
 export const CHAPTER_PATHS = CHAPTER_ORDER.map(ch => `html/${ch}.html`);

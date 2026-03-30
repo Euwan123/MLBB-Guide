@@ -151,6 +151,12 @@
             <span class="ch-desc">Match knowledge and adaptation</span>
             <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
           </div>
+          <div class="chapter-btn" onclick="NAV.goTo('common-mistakes')">
+            <span class="ch-num">B7</span><span class="ch-icon">🧩</span>
+            <span class="ch-title">Common Mistakes</span>
+            <span class="ch-desc">The biggest habits that quietly lose games</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
         </div>
       </div>
 
@@ -163,10 +169,22 @@
             <span class="ch-desc">Master both playstyle identities</span>
             <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
           </div>
+          <div class="chapter-btn" onclick="NAV.goTo('rotation-system')">
+            <span class="ch-num">M2</span><span class="ch-icon">🧭</span>
+            <span class="ch-title">Rotation System</span>
+            <span class="ch-desc">Rotate with purpose: tempo, lanes, and objectives</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
           <div class="chapter-btn" onclick="NAV.goTo('mental-tilt')">
-            <span class="ch-num">M2</span><span class="ch-icon">🧠</span>
+            <span class="ch-num">M3</span><span class="ch-icon">🧠</span>
             <span class="ch-title">Mental &amp; Tilt</span>
             <span class="ch-desc">Control mental game and consistency</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('decision-making')">
+            <span class="ch-num">M4</span><span class="ch-icon">🎯</span>
+            <span class="ch-title">Decision Making</span>
+            <span class="ch-desc">Pick the right fight, trade, or reset every time</span>
             <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
           </div>
         </div>
@@ -175,10 +193,23 @@
       <div class="chapters-group">
         <div class="group-header"><span class="lvl-dot advanced"></span> Advanced Level</div>
         <div class="chapters-grid">
-          <div class="coming-soon-card">
-            <div class="cs-lock">🔒</div>
-            <div class="cs-title">Advanced Chapters Coming Soon</div>
-            <div class="cs-desc">Wave management · Win conditions · Vision control · Objective trading · Drafting strategy</div>
+          <div class="chapter-btn" onclick="NAV.goTo('wave-management')">
+            <span class="ch-num">A1</span><span class="ch-icon">🌊</span>
+            <span class="ch-title">Wave Management</span>
+            <span class="ch-desc">Control waves to control tempo and map pressure</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('vision-map-awareness')">
+            <span class="ch-num">A2</span><span class="ch-icon">🗺️</span>
+            <span class="ch-title">Vision &amp; Map Awareness</span>
+            <span class="ch-desc">Track rotations, fog threats, and objective setups</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
+          </div>
+          <div class="chapter-btn" onclick="NAV.goTo('win-conditions')">
+            <span class="ch-num">A3</span><span class="ch-icon">🏁</span>
+            <span class="ch-title">Win Conditions</span>
+            <span class="ch-desc">Identify your win path and force the game there</span>
+            <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
           </div>
         </div>
       </div>
@@ -273,7 +304,9 @@
     const CHAPTER_PAGES = [
       'dark-system','meta-tracker','player-tiers','hero-requirements',
       'introduction','quick-reference','role-selection','laning',
-      'banning','counter-heroes','macro-micro','mental-tilt'
+      'banning','counter-heroes','common-mistakes','macro-micro',
+      'rotation-system','mental-tilt','decision-making',
+      'wave-management','vision-map-awareness','win-conditions'
     ];
 
     const CHAPTER_TITLES = {
@@ -288,7 +321,13 @@
       'banning': 'Banning',
       'counter-heroes': 'Counter Heroes',
       'macro-micro': 'Macro vs Micro',
-      'mental-tilt': 'Mental & Tilt'
+      'mental-tilt': 'Mental & Tilt',
+      'common-mistakes': 'Common Mistakes',
+      'rotation-system': 'Rotation System',
+      'decision-making': 'Decision Making',
+      'wave-management': 'Wave Management',
+      'vision-map-awareness': 'Vision & Map Awareness',
+      'win-conditions': 'Win Conditions'
     };
 
     var currentPage = 'home';
