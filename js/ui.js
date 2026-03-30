@@ -79,9 +79,11 @@ export function closeProfileModal() { const m = $('profileModal'); if (m) m.clas
 export function updateAuthUI(session) {
   const authArea = $('navAuthArea');
   const menuAuth = $('navMenuAuth');
+  const signInBtn = $('navSignIn');
+  
   if (authArea) authArea.innerHTML = '';
   if (menuAuth) menuAuth.innerHTML = '';
-
+  
   if (session) {
     const username = session.user.user_metadata?.username || 'User';
     const initial = (username || 'U').substring(0, 1).toUpperCase();
@@ -94,12 +96,14 @@ export function updateAuthUI(session) {
     if (menuAuth) menuAuth.innerHTML = `
       <button class="nav-menu-btn" onclick="window.app.openProfile()">👤 Profile</button>
       <button class="nav-menu-btn" onclick="window.app.logout()">🚪 Logout</button>`;
+    if (signInBtn) signInBtn.style.display = 'none';
   } else {
     if (authArea) authArea.innerHTML = `
       <button class="nav-auth-btn login" onclick="window.app.openAuth()">Login</button>
       <button class="nav-auth-btn signup" onclick="window.app.openAuth(); window.app.switchTab('signup')">Sign Up</button>`;
     if (menuAuth) menuAuth.innerHTML = `
       <button class="nav-menu-btn" onclick="window.app.openAuth()">🔐 Login / Sign Up</button>`;
+    if (signInBtn) signInBtn.style.display = 'block';
   }
 }
 
