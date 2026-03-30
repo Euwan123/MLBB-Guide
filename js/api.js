@@ -128,7 +128,10 @@ export async function loadChapterProgress(userId) {
 export async function saveChapterProgress(userId, chapter) {
   try {
     if (!userId || !chapter) throw new Error('User ID and chapter required');
-    const { error } = await sb.from('chapter_progress').insert([{ user_id: userId, chapter }]).on('*', 'upsert').eq('user_id', userId);
+    const { error } = await sb.from('chapter_progress').upsert(
+      [{ user_id: userId, chapter }],
+      { onConflict: 'user_id,chapter' }
+    );
     if (error) throw new Error(error.message || 'Save failed');
   } catch (e) {
     console.error('Progress save error:', e);

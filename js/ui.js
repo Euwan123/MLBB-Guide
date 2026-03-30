@@ -28,10 +28,7 @@ export function navigateToPage(pageId) {
     updateProgressBar(pageId);
   }
 
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 export function navigateHome() {
@@ -61,13 +58,54 @@ export function notify(message, type = 'success', duration = 3000) {
   }
 }
 
-/**
- * AUTHENTICATION UI
- */
+export function openAuthModal() {
+  const modal = $('authModal');
+  if (modal) modal.classList.add('open');
+  switchAuthTab('login');
+  const loginName = $('loginName');
+  if (loginName) loginName.focus();
+}
 
-/**
- * Update authentication UI based on session
- */
+export function closeAuthModal() {
+  const modal = $('authModal');
+  if (modal) modal.classList.remove('open');
+}
+
+export function switchAuthTab(tabName) {
+  const formLogin = $('formLogin');
+  const formSignup = $('formSignup');
+  const tabLogin = $('tabLogin');
+  const tabSignup = $('tabSignup');
+
+  if (!formLogin || !formSignup) return;
+
+  formLogin.style.display = tabName === 'login' ? 'flex' : 'none';
+  formSignup.style.display = tabName === 'signup' ? 'flex' : 'none';
+
+  if (tabLogin) tabLogin.classList.toggle('active', tabName === 'login');
+  if (tabSignup) tabSignup.classList.toggle('active', tabName === 'signup');
+}
+
+export function openTermsModal() {
+  const modal = $('termsModal');
+  if (modal) modal.classList.add('open');
+}
+
+export function closeTermsModal() {
+  const modal = $('termsModal');
+  if (modal) modal.classList.remove('open');
+}
+
+export function openProfileModal() {
+  const modal = $('profileModal');
+  if (modal) modal.classList.add('open');
+}
+
+export function closeProfileModal() {
+  const modal = $('profileModal');
+  if (modal) modal.classList.remove('open');
+}
+
 export function updateAuthUI(session) {
   const authArea = $('navAuthArea');
   const menuAuth = $('navMenuAuth');
@@ -85,7 +123,7 @@ export function updateAuthUI(session) {
       </div>
       <button class="nav-auth-btn logout" onclick="window.app.logout()">Logout</button>
     `;
-    
+
     if (menuAuth) {
       menuAuth.innerHTML = `
         <button class="nav-menu-btn" onclick="window.app.openProfile()">👤 Profile</button>
@@ -95,9 +133,9 @@ export function updateAuthUI(session) {
   } else {
     authArea.innerHTML = `
       <button class="nav-auth-btn login" onclick="window.app.openAuth()">Login</button>
-      <button class="nav-auth-btn login" style="background: rgba(255, 215, 0, 0.2); color: var(--gold);" onclick="window.app.openAuth()">Sign Up</button>
+      <button class="nav-auth-btn login" style="background:rgba(255,215,0,.2);color:var(--gold);" onclick="window.app.openAuth()">Sign Up</button>
     `;
-    
+
     if (menuAuth) {
       menuAuth.innerHTML = `
         <button class="nav-menu-btn" onclick="window.app.openAuth()">🔐 Login / Sign Up</button>
@@ -106,67 +144,6 @@ export function updateAuthUI(session) {
   }
 }
 
-export function switchAuthTab(tabName) {
-  closeMenuIfOpen();
-  const modal = $('authModal');
-  if (modal) {
-    modal.classList.add('open');
-    switchAuthTab('login');
-    $('loginName').focus();
-  }
-}
-
-/**
- * Close authentication modal
- */
-export function closeAuthModal() {
-  const modal = $('authModal');
-  if (modal) modal.classList.remove('open');
-}
-
-/**
- * Open terms modal
- */
-export function openTermsModal() {
-  const modal = $('termsModal');
-  if (modal) modal.classList.add('open');
-}
-
-/**
- * Close terms modal
- */
-export function closeTermsModal() {
-  const modal = $('termsModal');
-  if (modal) modal.classList.remove('open');
-}
-
-/**
- * Open profile modal
- */
-export function openProfileModal() {
-  if (!window.currentSession) {
-    openAuthModal();
-    return;
-  }
-  const modal = $('profileModal');
-  if (modal) modal.classList.add('open');
-}
-
-/**
- * Close profile modal
- */
-export function closeProfileModal() {
-  const modal = $('profileModal');
-  if (modal) modal.classList.remove('open');
-}
-
-/**
- * PROGRESS TRACKING - UI UPDATES
- */
-
-/**
- * Update completed chapter badges
- */
 export function updateCompletedBadges() {
   $$('.chapter-btn').forEach((btn) => {
     const ch = btn.dataset.chapter;
@@ -178,60 +155,34 @@ export function updateCompletedBadges() {
   });
 }
 
-/**
- * Mark chapter as done
- */
 export function markChapterDone(chapter) {
   completedChapters.add(chapter);
   updateCompletedBadges();
 }
 
-/**
- * Load completed chapters and update UI
- */
 export function loadCompletedChapters(chapters) {
   completedChapters.clear();
   chapters.forEach((ch) => completedChapters.add(ch));
   updateCompletedBadges();
 }
 
-/**
- * MENU
- */
-
-/**
- * Toggle mobile menu
- */
 export function toggleMenu() {
   const menu = $('navMenu');
   if (menu) menu.classList.toggle('open');
 }
 
-/**
- * NAVBAR COMPONENT
- * Reusable navbar template for future extensibility
- * Can be injected into dynamic pages if needed
- */
-
-/**
- * Generate navbar HTML component
- * @returns {string} HTML string for navbar element
- */
 export function getNavbarHTML() {
   return `
     <nav>
       <div class="nav-brand" id="navBrand" onclick="window.nav.goHome()" style="cursor:pointer;">⚔ Mr. Yoo's MLBB Guide</div>
       <div class="nav-back" id="navBack" onclick="window.nav.goHome()">← All Chapters</div>
       <span class="nav-chapter" id="navChapter"></span>
-      
       <div class="nav-menu" id="navMenu">
         <button class="nav-menu-btn" onclick="window.app.openDiagnostic()">📊 Diagnostic</button>
         <button class="nav-menu-btn" onclick="window.app.openGuide()">📖 Book Guide</button>
         <button class="nav-menu-btn" onclick="window.app.openContact()">📧 Contact</button>
       </div>
-      
       <button class="nav-burger" id="navBurger" onclick="window.app.toggleMenu()">☰</button>
-      
       <div class="nav-right">
         <div id="navProgress" class="nav-progress" style="display:none;"><div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div></div>
         <div id="navAuthArea"></div>
@@ -240,10 +191,6 @@ export function getNavbarHTML() {
   `;
 }
 
-/**
- * Inject navbar into a container element
- * @param {string} containerId - ID of element to inject navbar into
- */
 export function injectNavbar(containerId) {
   const container = $(containerId);
   if (container) {
@@ -251,38 +198,21 @@ export function injectNavbar(containerId) {
   }
 }
 
-/**
- * Close menu if open
- * @private
- */
 function closeMenuIfOpen() {
   const menu = $('navMenu');
   if (menu) menu.classList.remove('open');
 }
 
-/**
- * NAVIGATION HELPERS
- */
-
-/**
- * Navigate to diagnostic (dark system)
- */
 export function openDiagnostic() {
   closeMenuIfOpen();
   navigateToPage('dark-system');
 }
 
-/**
- * Navigate to guide content
- */
 export function openGuide() {
   closeMenuIfOpen();
   navigateToPage('introduction');
 }
 
-/**
- * Open contact email
- */
 export function openContact() {
   closeMenuIfOpen();
   window.location.href = 'mailto:mryoo.guide@gmail.com';

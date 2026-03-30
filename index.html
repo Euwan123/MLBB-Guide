@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <style>
+    #navAuthArea{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+    .nav-user span{display:none;}
+    @media(min-width:600px){.nav-user span{display:inline;}}
+  </style>
 </head>
 <body>
 
@@ -16,11 +21,11 @@
   </video>
 
   <div id="notification" class="notification" style="display:none;"></div>
+
   <nav>
     <div class="nav-brand" id="navBrand" onclick="window.nav.goHome()" style="cursor:pointer;">⚔ Mr. Yoo's MLBB Guide</div>
     <div class="nav-back" id="navBack" onclick="window.nav.goHome()">← All Chapters</div>
     <span class="nav-chapter" id="navChapter"></span>
-    
     <div class="nav-menu" id="navMenu">
       <button class="nav-menu-btn" onclick="window.app.openDiagnostic()">📊 Diagnostic</button>
       <button class="nav-menu-btn" onclick="window.app.openGuide()">📖 Book Guide</button>
@@ -28,27 +33,24 @@
       <div class="nav-menu-divider"></div>
       <div id="navMenuAuth"></div>
     </div>
-    
     <button class="nav-burger" id="navBurger" onclick="window.app.toggleMenu()">☰</button>
-    
     <div class="nav-right">
-      <div id="navProgress" class="nav-progress" style="display:none;"><div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div></div>
+      <div id="navProgress" class="nav-progress" style="display:none;">
+        <div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div>
+      </div>
       <div id="navAuthArea"></div>
     </div>
   </nav>
 
-  <!-- Main Content Container -->
   <div id="page-home" class="page active">
     <div class="hero-page">
       <div class="hero-grid"></div>
       <div class="hero-glow"></div>
       <div class="hero-particles"></div>
       <div class="hero-badge">⚡ The Guide No Other Content Creator Will Tell You</div>
-      
       <div class="hero">
         <h1>Mr. Yoo's<br><span>MLBB Guide</span></h1>
       </div>
-      
       <p class="hero-sub">Non-Smurf · Real Account · Solo / Duo Queue</p>
       <p class="hero-desc">Built from 8,000+ matches, 3 champion tournament wins, and deep analysis of 400+ pro matches across MPL, MDL, M7 and more. Playing since Season 1. My only purpose: guide you toward the correct patterns that will 98% certainly improve how you think and play.</p>
       <div class="stats-strip">
@@ -66,39 +68,28 @@
       <div class="group-header">Diagnostic & Foundation</div>
       <div class="chapters-grid">
         <div class="chapter-btn" data-chapter="dark-system">
-          <span class="ch-num">01</span>
-          <span class="ch-icon">🌑</span>
+          <span class="ch-num">01</span><span class="ch-icon">🌑</span>
           <span class="ch-title">Are You a Dark System?</span>
           <span class="ch-desc">Calculate if you're underperforming your match count</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Done</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Done</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="meta-tracker">
-          <span class="ch-num">02</span>
-          <span class="ch-icon">📊</span>
+          <span class="ch-num">02</span><span class="ch-icon">📊</span>
           <span class="ch-title">Meta Tracker</span>
           <span class="ch-desc">Track current hero meta and trending builds</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="player-tiers">
-          <span class="ch-num">03</span>
-          <span class="ch-icon">📊</span>
+          <span class="ch-num">03</span><span class="ch-icon">📊</span>
           <span class="ch-title">Player Tiers</span>
           <span class="ch-desc">Match count to rank expectations — where do you stand?</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="hero-requirements">
-          <span class="ch-num">04</span>
-          <span class="ch-icon">🗡️</span>
+          <span class="ch-num">04</span><span class="ch-icon">🗡️</span>
           <span class="ch-title">Hero Requirements</span>
           <span class="ch-desc">Minimum mastery benchmarks per tier and difficulty</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
       </div>
     </div>
@@ -108,57 +99,40 @@
       <div class="group-header">🟢 Beginner Level</div>
       <div class="chapters-grid">
         <div class="chapter-btn" data-chapter="introduction">
-          <span class="ch-num">B1</span>
-          <span class="ch-icon">📖</span>
+          <span class="ch-num">B1</span><span class="ch-icon">📖</span>
           <span class="ch-title">Introduction</span>
           <span class="ch-desc">Start here before diving into strategies</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="quick-reference">
-          <span class="ch-num">B2</span>
-          <span class="ch-icon">📋</span>
+          <span class="ch-num">B2</span><span class="ch-icon">📋</span>
           <span class="ch-title">Quick Reference</span>
           <span class="ch-desc">Fast-access summary of key concepts</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="role-selection">
-          <span class="ch-num">B3</span>
-          <span class="ch-icon">🎭</span>
+          <span class="ch-num">B3</span><span class="ch-icon">🎭</span>
           <span class="ch-title">Role Selection</span>
           <span class="ch-desc">Find your main role and strengths</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="laning">
-          <span class="ch-num">B4</span>
-          <span class="ch-icon">🌿</span>
+          <span class="ch-num">B4</span><span class="ch-icon">🌿</span>
           <span class="ch-title">Laning</span>
           <span class="ch-desc">Lane fundamentals and farming basics</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="banning">
-          <span class="ch-num">B5</span>
-          <span class="ch-icon">🚫</span>
+          <span class="ch-num">B5</span><span class="ch-icon">🚫</span>
           <span class="ch-title">Banning</span>
           <span class="ch-desc">Ban strategy based on role and rank</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="counter-heroes">
-          <span class="ch-num">B6</span>
-          <span class="ch-icon">⚔️</span>
+          <span class="ch-num">B6</span><span class="ch-icon">⚔️</span>
           <span class="ch-title">Counter Heroes</span>
           <span class="ch-desc">Match knowledge and adaptation</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
       </div>
     </div>
@@ -167,21 +141,16 @@
       <div class="group-header">🟡 Intermediate Level</div>
       <div class="chapters-grid">
         <div class="chapter-btn" data-chapter="macro-micro">
-          <span class="ch-num">M1</span>
-          <span class="ch-icon">⚔️</span>
+          <span class="ch-num">M1</span><span class="ch-icon">⚔️</span>
           <span class="ch-title">Macro vs Micro</span>
           <span class="ch-desc">Master both playstyle identities</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
-        
         <div class="chapter-btn" data-chapter="mental-tilt">
-          <span class="ch-num">M2</span>
-          <span class="ch-icon">🧠</span>
+          <span class="ch-num">M2</span><span class="ch-icon">🧠</span>
           <span class="ch-title">Mental & Tilt</span>
           <span class="ch-desc">Control mental game and consistency</span>
-          <span class="ch-arrow">→</span>
-          <span class="ch-done-badge">✓ Read</span>
+          <span class="ch-arrow">→</span><span class="ch-done-badge">✓ Read</span>
         </div>
       </div>
     </div>
@@ -202,9 +171,8 @@
   <div id="authModal" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" onclick="window.app.closeAuth()">✕</button>
-      <div class="modal-title">Elite Access</div>
-      <div class="modal-sub">Track progress • Save builds • Compete</div>
-      
+      <div class="modal-title">⚔️ MLBB Guide</div>
+      <div class="modal-sub">Save your reading progress across devices</div>
       <div class="modal-tabs">
         <div class="modal-tab active" id="tabLogin" onclick="window.app.switchTab('login')">Login</div>
         <div class="modal-tab" id="tabSignup" onclick="window.app.switchTab('signup')">Sign Up</div>
@@ -212,17 +180,16 @@
       <div id="formLogin" class="modal-form" style="display:flex;">
         <input class="modal-input" id="loginName" type="text" placeholder="Username">
         <input class="modal-input" id="loginPass" type="password" placeholder="Password">
-        <button class="modal-submit" id="loginBtn">Login</button>
         <div class="modal-err" id="loginErr"></div>
+        <button class="modal-submit" id="loginBtn">Login</button>
+        <div class="modal-divider">or</div>
+        <button class="modal-submit" style="background:transparent;border:1px solid rgba(255,215,0,.3);color:var(--gold);" onclick="window.app.switchTab('signup')">Create an Account</button>
       </div>
       <div id="formSignup" class="modal-form" style="display:none;">
         <input class="modal-input" id="signupName" type="text" placeholder="Username (3-20 chars)">
         <input class="modal-input" id="signupPass" type="password" placeholder="Password (8+ chars)">
-        <button class="modal-submit" id="signupBtn">Create Account</button>
         <div class="modal-err" id="signupErr"></div>
-        <div class="modal-divider">or</div>
-        <label class="modal-label">By signing up, you agree to our</label>
-        <button class="nav-button" onclick="window.app.openTerms()">Terms of Service</button>
+        <button class="modal-submit" id="signupBtn">Create Account</button>
       </div>
     </div>
   </div>
@@ -230,29 +197,20 @@
   <div id="profileModal" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" onclick="window.app.closeProfile()">✕</button>
-      <div class="modal-title">Your Profile</div>
-      
+      <div class="modal-title">👤 Your Profile</div>
       <div class="modal-form">
         <div id="profileImageSection">
           <label class="modal-label">Profile Picture</label>
-          <img id="profileImagePreview" style="display:none; width:64px; height:64px; border-radius:50%; margin-bottom:0.5rem;">
+          <img id="profileImagePreview" src="" alt="Profile" style="display:none;width:64px;height:64px;border-radius:50%;margin-bottom:.5rem;">
           <input type="file" id="profileImageInput" class="modal-input" accept="image/*">
         </div>
-        
         <label class="modal-label">Bio</label>
-        <textarea id="profileBio" class="modal-input" placeholder="Your gaming bio" style="resize:vertical; height:60px;"></textarea>
-        
+        <textarea id="profileBio" class="modal-input" placeholder="Your gaming bio" style="resize:vertical;height:60px;"></textarea>
         <label class="modal-label">Current Rank</label>
-        <input type="text" id="profileRank" class="modal-input" placeholder="e.g., Legend 3">
-        
+        <input type="text" id="profileRank" class="modal-input" placeholder="e.g., Mythic Glory">
         <label class="modal-label">Main Heroes</label>
         <input type="text" id="profileHeroes" class="modal-input" placeholder="e.g., Ling, Selena, Gusion">
-        
-        <button class="modal-submit" onclick="window.app.updateProfile(
-          document.getElementById('profileBio').value,
-          document.getElementById('profileRank').value,
-          document.getElementById('profileHeroes').value
-        )">Save Profile</button>
+        <button class="modal-submit" onclick="window.app.updateProfile(document.getElementById('profileBio').value,document.getElementById('profileRank').value,document.getElementById('profileHeroes').value)">Save Profile</button>
       </div>
     </div>
   </div>
@@ -261,14 +219,13 @@
     <div class="modal">
       <button class="modal-close" onclick="window.app.closeTerms()">✕</button>
       <div class="modal-title">Terms of Service</div>
-      
-      <div class="modal-form">
-        <p style="font-size:0.9rem; color:var(--dim); line-height:1.6;">
-          By creating an account, you agree to use this guide responsibly. This is an educational resource for Mobile Legends players. 
-          All strategies discussed are based on public meta analysis and personal experience. 
-          Use responsibly in ranked matches.
-        </p>
-        <button class="modal-submit" onclick="window.app.closeTerms()">I Agree</button>
+      <div style="max-height:60vh;overflow-y:auto;font-size:.9rem;line-height:1.8;color:#c0d4e0;padding:1.5rem 0;">
+        <p><strong style="color:var(--gold);">1. Usage Rights</strong><br/>This guide is provided for personal, educational use only. You may not reproduce, distribute, or sell this content without permission.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">2. Account Security</strong><br/>You are responsible for maintaining the confidentiality of your account credentials.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">3. Privacy</strong><br/>Your reading progress and account data are stored securely. We do not share your information with third parties.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">4. Content Accuracy</strong><br/>While we strive for accuracy, MLBB strategies and meta may change. Use this guide alongside real-world game experience.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">5. Disclaimers</strong><br/>This guide does not guarantee rank increases or wins. Results vary by individual.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">6. Changes to Terms</strong><br/>We reserve the right to modify these terms. Continued use implies acceptance of updated terms.</p>
       </div>
     </div>
   </div>
@@ -276,18 +233,18 @@
   <footer>
     <div class="footer-content">
       <div class="footer-links">
-        <span class="footer-link">© 2026 Mr. Yoo's MLBB Guide</span>
+        <span class="footer-link">Contact: mryoo.guide@gmail.com</span>
         <div class="footer-divider"></div>
-        <a href="mailto:mryoo.guide@gmail.com" class="footer-link">Contact</a>
+        <a href="https://mryooguide.com" target="_blank" class="footer-link">Website</a>
         <div class="footer-divider"></div>
-        <span class="footer-link">v2.0 - Advanced Edition</span>
+        <a href="https://www.facebook.com/profile.php?id=61586395430330" target="_blank" class="footer-link">📘 Facebook</a>
+        <div class="footer-divider"></div>
+        <span class="footer-link" onclick="window.app.openTerms()">Terms of Service</span>
       </div>
-      <div class="footer-credit">Built with 🔥 for competitive Mobile Legends players</div>
+      <div class="footer-credit">© 2026 Mr. Yoo's MLBB Guide. All rights reserved.</div>
     </div>
   </footer>
 
-  <!-- Main Application Script -->
   <script type="module" src="js/app.js"></script>
-
 </body>
 </html>

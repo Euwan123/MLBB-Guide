@@ -9,7 +9,6 @@ const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
 
 const goPage = (pageId) => ui.navigateToPage(pageId);
-
 const goHome = () => ui.navigateHome();
 
 const doLogin = async () => {
@@ -40,7 +39,6 @@ const doLogin = async () => {
     const msg = e.message?.includes('Invalid') ? 'Username or password incorrect' : (e.message || 'Login failed');
     $('loginErr').textContent = msg;
     ui.notify(msg, 'error', 3000);
-    console.error('Login error:', e);
   } finally {
     $('loginBtn').disabled = false;
   }
@@ -54,22 +52,18 @@ const doSignup = async () => {
     $('signupErr').textContent = 'Username and password required';
     return;
   }
-
   if (nm.length < 3) {
     $('signupErr').textContent = 'Username must be at least 3 characters';
     return;
   }
-
   if (nm.length > 20) {
     $('signupErr').textContent = 'Username must be 20 characters or less';
     return;
   }
-
   if (!/^[a-zA-Z0-9_]+$/.test(nm)) {
     $('signupErr').textContent = 'Username can only contain letters, numbers, and underscores';
     return;
   }
-
   if (pw.length < 8) {
     $('signupErr').textContent = 'Password must be at least 8 characters';
     return;
@@ -80,7 +74,6 @@ const doSignup = async () => {
 
   try {
     session = await api.signupWithCredentials(nm, pw);
-
     if (session) {
       ui.closeAuthModal();
       ui.updateAuthUI(session);
@@ -108,10 +101,6 @@ const logout = async () => {
   ui.navigateHome();
 };
 
-/**
- * PROFILE MANAGEMENT
- */
-
 const openProfile = () => {
   if (!session) {
     ui.openAuthModal();
@@ -123,15 +112,12 @@ const openProfile = () => {
 
 const loadProfile = async () => {
   if (!session) return;
-
   try {
     const profile = await api.loadUserProfile(session.user.id);
-
     if (profile) {
       $('profileBio').value = profile.bio || '';
       $('profileRank').value = profile.rank || '';
       $('profileHeroes').value = profile.main_heroes?.join(', ') || '';
-
       if (profile.profile_image_url) {
         $('profileImagePreview').src = profile.profile_image_url;
         $('profileImagePreview').style.display = 'block';
@@ -144,17 +130,13 @@ const loadProfile = async () => {
 
 const updateProfile = async (bio, rank, mainHeroes) => {
   if (!session) return;
-
   try {
     const imageFile = $('profileImageInput')?.files?.[0];
     let profileImageUrl = null;
-
     if (imageFile) {
       profileImageUrl = await api.uploadProfileImage(session.user.id, imageFile);
     }
-
     const username = session.user.user_metadata?.username || 'User';
-
     await api.saveUserProfile(session.user.id, {
       username,
       bio: bio || null,
@@ -162,18 +144,12 @@ const updateProfile = async (bio, rank, mainHeroes) => {
       mainHeroes,
       profileImageUrl,
     });
-
     ui.closeProfileModal();
     ui.notify('Profile updated!', 'success', 2000);
   } catch (e) {
     ui.notify('Profile update failed: ' + e.message, 'error', 3000);
-    console.error('Profile update error:', e);
   }
 };
-
-/**
- * CHAPTER MANAGEMENT
- */
 
 const loadProgressForSession = async () => {
   if (!session) return;
@@ -187,7 +163,6 @@ const loadProgressForSession = async () => {
 
 const markChapterCompleted = async (chapter) => {
   if (!session) return;
-
   try {
     await api.saveChapterProgress(session.user.id, chapter);
     ui.markChapterDone(chapter);
@@ -196,25 +171,17 @@ const markChapterCompleted = async (chapter) => {
   }
 };
 
-/**
- * CHAPTER LOADING
- */
-
 const initChapters = async () => {
-  console.log('🚀 Initializing chapters...');
-
   const baseURL = window.location.pathname.includes('/mlbb-guide') ? '/mlbb-guide' : '';
 
   for (const ch of CHAPTER_ORDER) {
     try {
       const path = `${baseURL}/html/${ch}.html`;
       const resp = await fetch(path);
-
       if (!resp.ok) {
-        console.error(`❌ Failed to load ${ch}: ${resp.status}`);
+        console.error(`Failed to load ${ch}: ${resp.status}`);
         continue;
       }
-
       const html = await resp.text();
       const el = document.createElement('div');
       el.innerHTML = html;
@@ -222,22 +189,16 @@ const initChapters = async () => {
       el.className = 'page';
       $('chapters-container').appendChild(el);
     } catch (e) {
-      console.error(`❌ Error loading chapter ${ch}:`, e.message);
+      console.error(`Error loading chapter ${ch}:`, e.message);
     }
   }
 
-  // Setup event listeners
   setTimeout(() => {
     setupEventListeners();
   }, 100);
 };
 
 const setupEventListeners = () => {
-  const tabLogin = $('tabLogin');
-  const tabSignup = $('tabSignup');
-  if (tabLogin) tabLogin.addEventListener('click', () => ui.switchAuthTab('login'));
-  if (tabSignup) tabSignup.addEventListener('click', () => ui.switchAuthTab('signup'));
-
   const loginBtn = $('loginBtn');
   const signupBtn = $('signupBtn');
   if (loginBtn) loginBtn.addEventListener('click', doLogin);
@@ -254,10 +215,6 @@ const setupEventListeners = () => {
   ui.updateCompletedBadges();
 };
 
-/**
- * DARK SYSTEM CALCULATOR
- */
-
 const calculateDarkSystem = () => {
   try {
     const matches = parseInt($('dsMatches').value) || 0;
@@ -270,7 +227,6 @@ const calculateDarkSystem = () => {
     }
 
     const result = logic.analyzeDarkSystem(matches, wr, mvps);
-
     if (!result) {
       $('dsResult').style.display = 'none';
       return;
@@ -284,9 +240,7 @@ const calculateDarkSystem = () => {
         <div class="stat">
           <span class="label">Win Rate</span>
           <span class="value">${result.currentWR.toFixed(1)}%</span>
-          <span class="verdict ${result.wrPasses ? 'pass' : 'fail'}">${
-            result.wrPasses ? '✓ Good' : '✗ Low'
-          }</span>
+          <span class="verdict ${result.wrPasses ? 'pass' : 'fail'}">${result.wrPasses ? '✓ Good' : '✗ Low'}</span>
         </div>
         <div class="stat">
           <span class="label">Expected WR</span>
@@ -296,9 +250,7 @@ const calculateDarkSystem = () => {
         <div class="stat">
           <span class="label">MVP Count</span>
           <span class="value">${result.currentMVP}</span>
-          <span class="verdict ${result.mvpPasses ? 'pass' : 'fail'}">${
-            result.mvpPasses ? '✓ Good' : '✗ Low'
-          }</span>
+          <span class="verdict ${result.mvpPasses ? 'pass' : 'fail'}">${result.mvpPasses ? '✓ Good' : '✗ Low'}</span>
         </div>
         <div class="stat">
           <span class="label">Expected MVPs</span>
@@ -309,17 +261,11 @@ const calculateDarkSystem = () => {
     `;
     resultBox.style.display = 'block';
   } catch (e) {
-    console.error('Dark system calculation error:', e.message);
     ui.notify('Error calculating analysis. Please check your inputs.', 'error', 3000);
   }
 };
 
-/**
- * INITIALIZATION
- */
-
 const init = async () => {
-  // Restore session
   session = await api.getSession();
   ui.updateAuthUI(session);
 
@@ -343,30 +289,24 @@ const init = async () => {
 window.app = {
   navigateToPage: ui.navigateToPage,
   navigateHome: ui.navigateHome,
-
   openAuth: ui.openAuthModal,
   closeAuth: ui.closeAuthModal,
   doLogin,
   doSignup,
   logout,
-
   openProfile,
   closeProfile: ui.closeProfileModal,
   loadProfile,
   updateProfile,
-
   toggleMenu: ui.toggleMenu,
   openDiagnostic: ui.openDiagnostic,
   openGuide: ui.openGuide,
   openContact: ui.openContact,
   notify: ui.notify,
   switchTab: ui.switchAuthTab,
-
   openTerms: ui.openTermsModal,
   closeTerms: ui.closeTermsModal,
-
   calculateDarkSystem,
-
   init,
 };
 
