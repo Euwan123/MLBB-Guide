@@ -64,8 +64,9 @@ nav {
 .nav-center-menu {
   display:flex;
   align-items:center;
-  gap:.25rem;
+  gap:.5rem;
   margin-left:auto;
+  flex-shrink:0;
 }
 
 .nav-menu-btn {
@@ -73,11 +74,16 @@ nav {
   color:var(--dim);
   border:none;
   font-family:'Rajdhani', sans-serif;
-  font-weight:700;
-  font-size:.78rem;
+  font-weight:800;
+  font-size:.8rem;
   cursor:pointer;
-  padding:.45rem .9rem;
+  padding:.5rem 1rem;
   border-radius:6px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  transition:all .2s;
+  white-space:nowrap;
+}
   letter-spacing:.06em;
   text-transform:uppercase;
   transition:color .2s, background .2s;

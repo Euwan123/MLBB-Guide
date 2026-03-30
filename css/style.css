@@ -59,7 +59,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,17,31,.97)
 .nav-menu-btn:hover{color:var(--gold);background:rgba(255,215,0,.12);transform:translateY(-2px);}
 .nav-menu-btn:active{transform:translateY(0);animation:clickPulse .15s ease-out;}
 .nav-menu-btn:hover::after{width:80%;}
-.nav-menu-btn#navSignIn{display:inline-block;background:rgba(255,149,0,.15);border:1.5px solid rgba(255,149,0,.5);padding:.5rem 1.4rem;color:#ff9500;animation:slideInDown .6s ease-out .3s both;font-weight:800;letter-spacing:.12em;font-size:.85rem;}
+.nav-menu-btn#navSignIn{display:inline-block;background:rgba(255,149,0,.18);border:1.5px solid rgba(255,149,0,.6);padding:.5rem 1.4rem;color:#ff9500;animation:slideInDown .6s ease-out .3s both;font-weight:800;letter-spacing:.12em;font-size:.82rem;white-space:nowrap;}
 .nav-menu-btn#navSignIn:hover{background:rgba(255,149,0,.25);border-color:rgba(255,149,0,.8);box-shadow:0 0 12px rgba(255,149,0,.4);color:#ffd700;}
 .nav-menu-btn#navSignIn:active{animation:clickPulse .15s ease-out;}
 body.user-logged-in #navSignIn{display:none !important;}
@@ -126,7 +126,7 @@ body.user-logged-in #navSignIn{display:none !important;}
 
 .coming-soon{color:var(--dim) !important;}
 .chapters-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;width:100%;max-width:1050px;margin:0 auto;animation:slideInGold 2s ease-out;}
-.chapter-btn{background:linear-gradient(135deg,var(--panel),rgba(30,45,65,.5));border:1.5px solid rgba(255,215,0,.15);border-radius:14px;padding:1.5rem;cursor:pointer;text-align:left;transition:transform .3s cubic-bezier(.34,.1,.68,.55),border-color .3s,box-shadow .3s,background .3s;display:flex;flex-direction:column;gap:.5rem;position:relative;overflow:hidden;animation:fadeInUp .6s ease-out backwards;min-height:200px;justify-content:space-between;}
+.chapter-btn{background:linear-gradient(135deg,var(--panel),rgba(30,45,65,.5));border:1.5px solid rgba(255,215,0,.15);border-radius:14px;padding:1.5rem;cursor:pointer;text-align:left;transition:transform .3s cubic-bezier(.34,.1,.68,.55),border-color .3s,box-shadow .3s,background .3s;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;animation:fadeInUp .6s ease-out backwards;min-height:220px;}
 .chapters-grid .chapter-btn:nth-child(1){animation-delay:.1s}
 .chapters-grid .chapter-btn:nth-child(2){animation-delay:.15s}
 .chapters-grid .chapter-btn:nth-child(3){animation-delay:.2s}
