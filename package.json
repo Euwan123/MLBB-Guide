@@ -2,38 +2,19 @@
   "name": "mlbb-guide",
   "version": "1.0.0",
   "description": "Elite Mobile Legends Bang Bang Strategy Guide - PWA",
-  "main": "Index.html",
+  "private": true,
   "scripts": {
     "start": "python -m http.server 8000",
-    "serve": "python -m http.server 8000",
-    "build": "echo 'Building PWA...' && echo '✅ PWA build complete - Ready for deployment'",
-    "deploy": "echo '🚀 Deploying PWA...' && echo 'Upload all files to your web server'",
-    "clean": "echo 'Cleaning cache files...' && find . -name '*.map' -delete 2>/dev/null || true"
+    "serve": "python -m http.server 8000"
   },
-  "keywords": [
-    "mobile-legends",
-    "mlbb",
-    "strategy-guide",
-    "gaming",
-    "pwa",
-    "offline",
-    "mobile-games"
-  ],
+  "keywords": ["mobile-legends", "mlbb", "strategy-guide", "gaming", "pwa", "offline", "mobile-games"],
   "author": "Mr. Yoo",
   "license": "UNLICENSED",
-  "homepage": "https://mryooguide.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mryoo/mlbb-guide"
+    "url": "https://github.com/Euwan123/MLBB-Guide"
   },
-  "bugs": {
-    "url": "https://github.com/mryoo/mlbb-guide/issues"
-  },
-  "devDependencies": {},
-  "dependencies": {},
   "engines": {
     "node": "18.17.0"
-  },
-  "private": true,
-  "preferGlobal": false
+  }
 }
