@@ -1,0 +1,27 @@
+{
+  "name": "Mr. Yoo's MLBB Guide",
+  "short_name": "MLBB Guide",
+  "description": "Elite Mobile Legends Bang Bang Strategy Guide",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07111f",
+  "theme_color": "#ffd700",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMDcxMTFmIi8+CjxwYXRoIGQ9Ik05NiA0OEMxMjQuNDE4IDQ4IDE0OCA3MS41ODIgMTQ4IDEwMEMxNDggMTI4LjQxOCAxMjQuNDE4IDE1MiA5NiAxNTJDNjcuNTgyIDE1MiA0NCAxMjguNDE4IDQ0IDEwMEM0NCA3MS41ODIgNjcuNTgyIDQ4IDk2IDQ4Wk05NiA2OEMxMTMuNjczIDY4IDEyOCA4Mi4zMjcgMTI4IDEwMEMxMjggMTE3LjY3MyAxMTMuNjczIDEzMiA5NiAxMzJDNzguMzI3IDEzMiA2NCAxMTcuNjczIDY0IDEwMEM2NCA4Mi4zMjcgNzguMzI3IDY4IDk2IDY4WiIgZmlsbD0iI2ZmZDcwMCIvPgo8cGF0aCBkPSJNODAgODBIMTEyVjExMkg4MFY4MFoiIGZpbGw9IiMwNzExMWYiLz4KPHN2Zz4=",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMDcxMTFmIi8+CjxwYXRoIGQ9Ik0yNTYgMTI4QzMzMi4zNjggMTI4IDQwOCAyMDMuNjMyIDQwOCAyNTZDNDA4IDMwOC4zNjggMzMyLjM2OCAzODQgMjU2IDM4NEMxNzkuNjMyIDM4NCAxMDQgMzA4LjM2OCAxMDQgMjU2QzEwNCAyMDMuNjMyIDE3OS42MzIgMTI4IDI1NiAxMjh6TTI1NiAxODBDNjk0LjQ1IDE4MCAzMTIgMjE3LjU1IDMxMiAyNTZDMzEyIDI5NC40NSAyOTQuNDUgMzMyIDI1NiAzMzJDMjE3LjU1IDMzMiAxODAgMjk0LjQ1IDE4MCAyNTZDMTgwIDIxNy41NSAyMTcuNTUgMTgwIDI1NiAxODB6IiBmaWxsPSIjZmZkNzAwIi8+CjxwYXRoIGQ9Ik0yMTYgMjE2SDI5NlYyOTZIMjE2VjIxNloiIGZpbGw9IiMwNzExMWYiLz4KPHN2Zz4=",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["games", "education", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false
+}

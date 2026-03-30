@@ -4,6 +4,7 @@ import * as ui from './ui.js';
 import * as logic from './logic.js';
 
 let session = null;
+let deferredPrompt = null;
 
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
@@ -283,7 +284,42 @@ const init = async () => {
     }
   });
 
+  initPWAInstall();
   initChapters();
+};
+
+const initPWAInstall = () => {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = $('pwaInstallBtn');
+    if (installBtn) {
+      installBtn.style.display = 'block';
+      installBtn.addEventListener('click', installPWA);
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    const installBtn = $('pwaInstallBtn');
+    if (installBtn) {
+      installBtn.style.display = 'none';
+    }
+    ui.notify('App installed successfully!', 'success', 3000);
+  });
+};
+
+const installPWA = async () => {
+  if (!deferredPrompt) return;
+  
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  
+  if (outcome === 'accepted') {
+    ui.notify('Installing app...', 'success', 2000);
+  }
+  
+  deferredPrompt = null;
 };
 
 window.app = {
@@ -307,6 +343,7 @@ window.app = {
   openTerms: ui.openTermsModal,
   closeTerms: ui.closeTermsModal,
   calculateDarkSystem,
+  installPWA,
   init,
 };
 
