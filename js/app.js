@@ -155,18 +155,33 @@ const calculateDarkSystem = () => {
 
 const initChapters = async () => {
   const baseURL = window.location.pathname.includes('/mlbb-guide') ? '/mlbb-guide' : '';
+  const container = $('chapters-container');
+  if (!container) {
+    console.error('chapters-container not found!');
+    return;
+  }
+  
+  let loadedCount = 0;
   for (const ch of CHAPTER_ORDER) {
     try {
-      const resp = await fetch(`${baseURL}/html/${ch}.html`);
-      if (!resp.ok) continue;
+      const url = `${baseURL}/html/${ch}.html`;
+      const resp = await fetch(url);
+      if (!resp.ok) {
+        console.warn(`Failed to load ${ch}: ${resp.status}`);
+        continue;
+      }
       const html = await resp.text();
       const el = document.createElement('div');
       el.innerHTML = html;
       el.id = `page-${ch}`;
       el.className = 'page';
-      $('chapters-container').appendChild(el);
-    } catch {}
+      container.appendChild(el);
+      loadedCount++;
+    } catch (e) {
+      console.error(`Error loading chapter ${ch}:`, e);
+    }
   }
+  console.log(`Loaded ${loadedCount}/${CHAPTER_ORDER.length} chapters`);
   setupEventListeners();
 };
 
@@ -183,19 +198,27 @@ const setupEventListeners = () => {
     if (signupPass) signupPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSignup(); });
 
     const chapterBtns = document.querySelectorAll('[data-chapter]');
+    console.log(`Found ${chapterBtns.length} chapter buttons`);
+    
     chapterBtns.forEach((btn) => {
+      const ch = btn.dataset.chapter;
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const ch = btn.dataset.chapter;
+        console.log(`Clicked chapter button: ${ch}`);
         if (ch) {
-          ui.navigateToPage(ch);
+          const pageId = ch;
+          console.log(`Navigating to: ${pageId}`);
+          const page = $(`page-${pageId}`);
+          console.log(`Page element found: ${!!page}`);
+          ui.navigateToPage(pageId);
           markChapterCompleted(ch);
         }
       });
     });
 
     ui.updateCompletedBadges();
+    console.log('setupEventListeners complete');
   } catch (e) {
     console.error('setupEventListeners error:', e);
   }
