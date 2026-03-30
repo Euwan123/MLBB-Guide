@@ -19,6 +19,8 @@
 @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes clickPulse{0%{transform:scale(1)}50%{transform:scale(.95)}100%{transform:scale(1)}}
 button,a[role="button"],.chapter-btn,[role="button"]{-webkit-tap-highlight-color:transparent;}
+.hidden{display:none !important;}
+[hidden]{display:none !important;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Exo 2',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;min-height:100vh;display:flex;flex-direction:column;position:relative;}
@@ -57,9 +59,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(7,17,31,.97)
 .nav-menu-btn:hover{color:var(--gold);background:rgba(255,215,0,.12);transform:translateY(-2px);}
 .nav-menu-btn:active{transform:translateY(0);animation:clickPulse .15s ease-out;}
 .nav-menu-btn:hover::after{width:80%;}
-.nav-menu-btn#navSignIn{display:block !important;background:rgba(255,149,0,.15);border:1.5px solid rgba(255,149,0,.5);padding:.5rem 1.2rem;color:#ff9500;animation:slideInDown .6s ease-out .3s both;}
+.nav-menu-btn#navSignIn{display:inline-block;background:rgba(255,149,0,.15);border:1.5px solid rgba(255,149,0,.5);padding:.5rem 1.2rem;color:#ff9500;animation:slideInDown .6s ease-out .3s both;}
 .nav-menu-btn#navSignIn:hover{background:rgba(255,149,0,.25);border-color:rgba(255,149,0,.8);box-shadow:0 0 12px rgba(255,149,0,.4);color:#ffd700;}
 .nav-menu-btn#navSignIn:active{animation:clickPulse .15s ease-out;}
+body.user-logged-in #navSignIn{display:none !important;}
 
 .nav-burger{display:none;background:transparent;color:var(--gold);border:none;font-size:1.5rem;cursor:pointer;padding:.5rem;transition:transform .2s;animation:slideInDown .6s ease-out .2s both;}
 .nav-burger:hover{transform:scale(1.15);}

@@ -1,18 +1,20 @@
-const CACHE_NAME = 'mlbb-guide-v2';
+const CACHE_NAME = 'mlbb-guide-v3';
 const STATIC_ASSETS = [
   '/',
+  '/Index.html',
   '/index.html',
+  '/manifest.json',
   '/css/base.css',
   '/css/layout.css',
   '/css/components.css',
+  '/css/style.css',
   '/js/app.js',
   '/js/api.js',
   '/js/logic.js',
   '/js/ui.js',
   '/config/supabase.js',
   '/config/env.js',
-  '/config.json',
-  '/manifest.json'
+  '/config.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -34,15 +36,31 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  
+  const isAsset = /\.(js|css|json|png|jpg|jpeg|svg|woff|woff2)$/i.test(event.request.url);
+  const strategy = isAsset ? 'cache-first' : 'network-first';
+  
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== 'basic') return response;
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
-        return response;
-      }).catch(() => caches.match('/index.html'));
-    })
+    strategy === 'cache-first' 
+      ? caches.match(event.request).then((cached) => {
+          if (cached) return cached;
+          return fetch(event.request).then((response) => {
+            if (!response || response.status !== 200) return response;
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+            return response;
+          }).catch(() => new Response('Offline - Asset not available', { status: 503 }));
+        })
+      : fetch(event.request).then((response) => {
+          if (!response || response.status !== 200) return response;
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+          return response;
+        }).catch(() => {
+          return caches.match(event.request).then((cached) => {
+            if (cached) return cached;
+            return caches.match('/Index.html');
+          });
+        })
   );
 });

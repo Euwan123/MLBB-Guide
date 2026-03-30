@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/style.css">
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
@@ -25,7 +26,7 @@
 <body>
 
   <video autoplay muted loop playsinline class="bg-video">
-    <source src="assest/videos/Fight With You! A Bond Reunited   Mlbb × Naruto   Mobile Legends Bang Bang.mp4" type="video/mp4">
+    <source src="assets/videos/Video_1.mp4" type="video/mp4">
   </video>
 
   <div id="notification" class="notification" style="display:none;"></div>
@@ -40,7 +41,7 @@
       <button class="nav-menu-btn" onclick="window.app.openDiagnostic()">📊 Diagnostic</button>
       <button class="nav-menu-btn" onclick="window.app.openGuide()">📖 Book Guide</button>
       <button class="nav-menu-btn" onclick="window.app.openContact()">📧 Contact</button>
-      <button class="nav-menu-btn" id="navSignIn" onclick="window.app.openAuth()" style="display:none;">🔐 Sign In</button>
+      <button class="nav-menu-btn" id="navSignIn" onclick="window.app.openAuth()">🔐 Sign In</button>
     </div>
 
     <button class="nav-burger" id="navBurger" onclick="window.app.toggleMenu()" aria-label="Menu">☰</button>

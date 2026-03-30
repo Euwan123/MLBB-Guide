@@ -96,14 +96,22 @@ export function updateAuthUI(session) {
     if (menuAuth) menuAuth.innerHTML = `
       <button class="nav-menu-btn" onclick="window.app.openProfile()">👤 Profile</button>
       <button class="nav-menu-btn" onclick="window.app.logout()">🚪 Logout</button>`;
-    if (signInBtn) signInBtn.style.display = 'none';
+    if (signInBtn) {
+      signInBtn.classList.add('hidden');
+      signInBtn.style.display = 'none';
+    }
+    if (document.body) document.body.classList.add('user-logged-in');
   } else {
     if (authArea) authArea.innerHTML = `
       <button class="nav-auth-btn login" onclick="window.app.openAuth()">Login</button>
       <button class="nav-auth-btn signup" onclick="window.app.openAuth(); window.app.switchTab('signup')">Sign Up</button>`;
     if (menuAuth) menuAuth.innerHTML = `
       <button class="nav-menu-btn" onclick="window.app.openAuth()">🔐 Login / Sign Up</button>`;
-    if (signInBtn) signInBtn.style.display = 'block';
+    if (signInBtn) {
+      signInBtn.classList.remove('hidden');
+      signInBtn.style.display = '';
+    }
+    if (document.body) document.body.classList.remove('user-logged-in');
   }
 }
 
