@@ -1,26 +1,16 @@
-/**
- * BASE.CSS - Foundation
- * Color variables, resets, animations, typography, and fundamental styles
- * Used as base layer for all components
- */
-
 :root {
-  /* Primary Colors */
   --navy: #07111f;
   --deep: #0d1e30;
   --mid: #122840;
   --panel: #172f47;
 
-  /* Gold/Primary */
   --gold: #ffd700;
   --gold2: #e6b800;
   --gold3: #c9920a;
 
-  /* Text Colors */
   --white: #f0f4ff;
   --dim: #8ba3c0;
 
-  /* Role Colors */
   --micro: #7c3aed;
   --micro-light: #c4b5fd;
   --micro-soft: #e8d5f5;
@@ -28,17 +18,12 @@
   --macro-light: #6ee7b7;
   --macro-soft: #d5f5e3;
 
-  /* Status Colors */
   --red: #dc2626;
   --red-light: #fee2e2;
   --orange: #ea580c;
   --indigo: #4f46e5;
   --teal: #0891b2;
 }
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
 
 @keyframes floatGlow {
   0% {
@@ -145,10 +130,6 @@
   }
 }
 
-/* ============================================
-   RESETS & BASE STYLES
-   ============================================ */
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -169,10 +150,6 @@ body {
   flex-direction: column;
   position: relative;
 }
-
-/* ============================================
-   BACKGROUND EFFECTS
-   ============================================ */
 
 .bg-video {
   position: fixed;
@@ -198,10 +175,6 @@ body::before {
   opacity: 0.4;
 }
 
-/* ============================================
-   TYPOGRAPHY
-   ============================================ */
-
 h1,
 h2,
 h3,
@@ -211,10 +184,6 @@ h6 {
   font-weight: 700;
   line-height: 1.2;
 }
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
 
 .page {
   display: none;

@@ -1,36 +1,21 @@
-/**
- * APP.JS - Main Application Orchestrator
- * Coordinates between API (data), UI (rendering), and Logic (calculations)
- * Entry point for initialization and event handling
- */
-
 import { sb, CHAPTER_ORDER, CHAPTER_META, CHAPTER_PATHS } from '../config/supabase.js';
 import * as api from './api.js';
 import * as ui from './ui.js';
 import * as logic from './logic.js';
 
-// Application state
 let session = null;
 
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
 
-/**
- * Navigation wrapper - delegates to ui.navigateToPage with smooth scroll
- */
 const goPage = (pageId) => ui.navigateToPage(pageId);
 
 const goHome = () => ui.navigateHome();
-
-/**
- * AUTHENTICATION HANDLERS
- */
 
 const doLogin = async () => {
   const nm = $('loginName').value.trim();
   const pw = $('loginPass').value.trim();
 
-  // Validation
   if (!nm || !pw) {
     $('loginErr').textContent = 'Username and password required';
     ui.notify('Please enter username and password', 'warning', 2000);
@@ -65,7 +50,6 @@ const doSignup = async () => {
   const nm = $('signupName').value.trim();
   const pw = $('signupPass').value.trim();
 
-  // Validation
   if (!nm || !pw) {
     $('signupErr').textContent = 'Username and password required';
     return;
@@ -248,24 +232,17 @@ const initChapters = async () => {
   }, 100);
 };
 
-/**
- * EVENT LISTENER SETUP
- */
-
 const setupEventListeners = () => {
-  // Auth tabs
   const tabLogin = $('tabLogin');
   const tabSignup = $('tabSignup');
   if (tabLogin) tabLogin.addEventListener('click', () => ui.switchAuthTab('login'));
   if (tabSignup) tabSignup.addEventListener('click', () => ui.switchAuthTab('signup'));
 
-  // Auth buttons
   const loginBtn = $('loginBtn');
   const signupBtn = $('signupBtn');
   if (loginBtn) loginBtn.addEventListener('click', doLogin);
   if (signupBtn) signupBtn.addEventListener('click', doSignup);
 
-  // Chapter navigation
   $$('[data-chapter]').forEach((btn) => {
     const ch = btn.dataset.chapter;
     btn.addEventListener('click', () => {
@@ -350,7 +327,6 @@ const init = async () => {
     await loadProgressForSession();
   }
 
-  // Listen to auth changes
   api.onAuthStateChange((event, newSession) => {
     session = newSession;
     ui.updateAuthUI(newSession);
@@ -361,33 +337,24 @@ const init = async () => {
     }
   });
 
-  // Load chapters
   initChapters();
 };
 
-/**
- * EXPORT PUBLIC API
- */
-
 window.app = {
-  // Navigation
   navigateToPage: ui.navigateToPage,
   navigateHome: ui.navigateHome,
 
-  // Auth
   openAuth: ui.openAuthModal,
   closeAuth: ui.closeAuthModal,
   doLogin,
   doSignup,
   logout,
 
-  // Profile
   openProfile,
   closeProfile: ui.closeProfileModal,
   loadProfile,
   updateProfile,
 
-  // UI
   toggleMenu: ui.toggleMenu,
   openDiagnostic: ui.openDiagnostic,
   openGuide: ui.openGuide,
@@ -395,14 +362,11 @@ window.app = {
   notify: ui.notify,
   switchTab: ui.switchAuthTab,
 
-  // Terms
   openTerms: ui.openTermsModal,
   closeTerms: ui.closeTermsModal,
 
-  // Logic
   calculateDarkSystem,
 
-  // Config
   init,
 };
 

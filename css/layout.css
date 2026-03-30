@@ -1,13 +1,3 @@
-/**
- * LAYOUT.CSS - Structure & Navigation
- * Navigation, page layouts, grid systems, flex layouts
- * Controls overall page structure and positioning
- */
-
-/* ============================================
-   NAVIGATION BAR
-   ============================================ */
-
 nav {
   position: fixed;
   top: 0;
@@ -220,10 +210,6 @@ nav {
   }
 }
 
-/* ============================================
-   HERO PAGE LAYOUT
-   ============================================ */
-
 .hero-page {
   display: flex;
   flex-direction: column;
@@ -289,14 +275,22 @@ nav {
     50px 200px var(--gold), 700px 300px var(--gold), 200px 500px var(--gold);
 }
 
-/* ============================================
-   GRID SYSTEMS
-   ============================================ */
-
 .chapters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
+}
+
+@media (max-width: 1400px) {
+  .chapters-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  .chapters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .chapters-group {
@@ -335,10 +329,6 @@ nav {
   margin-bottom: 1.8rem;
 }
 
-/* ============================================
-   CHAPTER PAGE LAYOUT
-   ============================================ */
-
 .chapter-page {
   padding: 76px 1.5rem 5rem;
   max-width: 1060px;
@@ -356,10 +346,6 @@ nav {
 .content-section {
   margin: 2rem 0;
 }
-
-/* ============================================
-   FOOTER
-   ============================================ */
 
 footer {
   background: rgba(7, 17, 31, 0.98);
@@ -416,7 +402,7 @@ footer {
   }
 
   .chapters-grid {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .nav-chapter {

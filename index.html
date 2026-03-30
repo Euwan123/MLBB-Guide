@@ -5,23 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mr. Yoo's MLBB Guide - Elite Gaming Strategy</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  
-  <!-- CSS System - Organized into logical layers -->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
 
-  <!-- Background Video -->
   <video autoplay muted loop class="bg-video">
-    <source src="Videos/Fight with you! A Bond Reunited   MLBB × NARUTO   Mobile Legends Bang Bang.mp4" type="video/mp4">
+    <source src="assets/videos/Fight with you! A Bond Reunited   MLBB × NARUTO   Mobile Legends Bang Bang.mp4" type="video/mp4">
   </video>
 
-  <!-- Notification System -->
   <div id="notification" class="notification" style="display:none;"></div>
-
-  <!-- Navigation Bar -->
   <nav>
     <div class="nav-brand" id="navBrand" onclick="window.nav.goHome()" style="cursor:pointer;">⚔ Mr. Yoo's MLBB Guide</div>
     <div class="nav-back" id="navBack" onclick="window.nav.goHome()">← All Chapters</div>
@@ -43,7 +37,6 @@
 
   <!-- Main Content Container -->
   <div id="page-home" class="page active">
-    <!-- Hero Section -->
     <div class="hero-page">
       <div class="hero-grid"></div>
       <div class="hero-glow"></div>
@@ -56,8 +49,6 @@
       
       <p class="hero-sub">Non-Smurf · Real Account · Solo / Duo Queue</p>
       <p class="hero-desc">Built from 8,000+ matches, 3 champion tournament wins, and deep analysis of 400+ pro matches across MPL, MDL, M7 and more. Playing since Season 1. My only purpose: guide you toward the correct patterns that will 98% certainly improve how you think and play.</p>
-      
-      <!-- Stats Strip -->
       <div class="stats-strip">
         <div class="stat-item"><span class="stat-num">70%</span><span class="stat-label">Solo WR</span></div>
         <div class="stat-item"><span class="stat-num">8,000+</span><span class="stat-label">Total Matches</span></div>
@@ -68,7 +59,6 @@
       </div>
     </div>
 
-    <!-- Diagnostic & Foundation Section -->
     <div class="chapters-label">Test Yourself</div>
     <div class="chapters-group">
       <div class="group-header">Diagnostic & Foundation</div>
@@ -111,10 +101,7 @@
       </div>
     </div>
 
-    <!-- Book Guide Section -->
     <div class="chapters-label">Book Guide</div>
-    
-    <!-- Beginner Level -->
     <div class="chapters-group">
       <div class="group-header">🟢 Beginner Level</div>
       <div class="chapters-grid">
@@ -174,7 +161,6 @@
       </div>
     </div>
 
-    <!-- Intermediate Level -->
     <div class="chapters-group">
       <div class="group-header">🟡 Intermediate Level</div>
       <div class="chapters-grid">
@@ -198,7 +184,6 @@
       </div>
     </div>
 
-    <!-- Advanced Level (Coming Soon) -->
     <div class="chapters-group">
       <div class="group-header">🔴 Advanced Level</div>
       <div class="chapters-grid">
@@ -210,10 +195,8 @@
     </div>
   </div>
 
-  <!-- Chapters Container (for dynamic loading) -->
   <div id="chapters-container"></div>
 
-  <!-- Auth Modal -->
   <div id="authModal" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" onclick="window.app.closeAuth()">✕</button>
@@ -224,16 +207,12 @@
         <div class="modal-tab active" id="tabLogin" onclick="window.app.switchTab('login')">Login</div>
         <div class="modal-tab" id="tabSignup" onclick="window.app.switchTab('signup')">Sign Up</div>
       </div>
-      
-      <!-- Login Form -->
       <div id="formLogin" class="modal-form" style="display:flex;">
         <input class="modal-input" id="loginName" type="text" placeholder="Username">
         <input class="modal-input" id="loginPass" type="password" placeholder="Password">
         <button class="modal-submit" id="loginBtn">Login</button>
         <div class="modal-err" id="loginErr"></div>
       </div>
-      
-      <!-- Signup Form -->
       <div id="formSignup" class="modal-form" style="display:none;">
         <input class="modal-input" id="signupName" type="text" placeholder="Username (3-20 chars)">
         <input class="modal-input" id="signupPass" type="password" placeholder="Password (8+ chars)">
@@ -246,7 +225,6 @@
     </div>
   </div>
 
-  <!-- Profile Modal -->
   <div id="profileModal" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" onclick="window.app.closeProfile()">✕</button>
@@ -277,7 +255,6 @@
     </div>
   </div>
 
-  <!-- Terms Modal -->
   <div id="termsModal" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" onclick="window.app.closeTerms()">✕</button>
@@ -294,7 +271,6 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <footer>
     <div class="footer-content">
       <div class="footer-links">
