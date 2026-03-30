@@ -32,19 +32,19 @@
   <div id="notification" class="notification" style="display:none;"></div>
 
   <nav id="mainNav">
-    <div class="nav-brand" onclick="window.nav.goHome()">⚔ Mr. Yoo's MLBB Guide</div>
-    <div class="nav-back" id="navBack" onclick="window.nav.goHome()">← Back</div>
+    <div class="nav-brand" onclick="window.nav && window.nav.goHome()">⚔ Mr. Yoo's MLBB Guide</div>
+    <div class="nav-back" id="navBack" onclick="window.nav && window.nav.goHome()">← Back</div>
     <span class="nav-chapter" id="navChapter"></span>
 
     <div class="nav-center-menu" id="navMenu">
       <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">📱 Install</button>
-      <button class="nav-menu-btn" onclick="window.app.openDiagnostic()">📊 Diagnostic</button>
-      <button class="nav-menu-btn" onclick="window.app.openGuide()">📖 Book Guide</button>
-      <button class="nav-menu-btn" onclick="window.app.openContact()">📧 Contact</button>
-      <button class="nav-menu-btn" id="navSignIn" onclick="window.app.openAuth()">🔐 Sign In</button>
+      <button class="nav-menu-btn" onclick="window.app && window.app.openDiagnostic()">📊 Diagnostic</button>
+      <button class="nav-menu-btn" onclick="window.app && window.app.openGuide()">📖 Book Guide</button>
+      <button class="nav-menu-btn" onclick="window.app && window.app.openContact()">📧 Contact</button>
+      <button class="nav-menu-btn" id="navSignIn" onclick="window.app && window.app.openAuth()">🔐 Sign In</button>
     </div>
 
-    <button class="nav-burger" id="navBurger" onclick="window.app.toggleMenu()" aria-label="Menu">☰</button>
+    <button class="nav-burger" id="navBurger" onclick="window.app && window.app.toggleMenu()" aria-label="Menu">☰</button>
 
     <div class="nav-right">
       <div id="navProgress" class="nav-progress" style="display:none;">
@@ -200,7 +200,7 @@
           <div class="footer-divider"></div>
           <a href="https://www.facebook.com/profile.php?id=61586395430330" target="_blank" rel="noopener" class="footer-link">📘 Facebook</a>
           <div class="footer-divider"></div>
-          <span class="footer-link" onclick="window.app.openTerms()">Terms of Service</span>
+          <span class="footer-link" onclick="window.app && window.app.openTerms()">Terms of Service</span>
         </div>
         <div class="footer-credit">© 2026 Mr. Yoo's MLBB Guide. All rights reserved.</div>
       </div>
@@ -211,12 +211,12 @@
 
   <div id="authModal" class="modal-overlay">
     <div class="modal">
-      <button class="modal-close" onclick="window.app.closeAuth()">✕</button>
+      <button class="modal-close" onclick="window.app && window.app.closeAuth()">✕</button>
       <div class="modal-title">⚔️ MLBB Guide</div>
       <div class="modal-sub">Save your reading progress across devices</div>
       <div class="modal-tabs">
-        <div class="modal-tab active" id="tabLogin" onclick="window.app.switchTab('login')">Login</div>
-        <div class="modal-tab" id="tabSignup" onclick="window.app.switchTab('signup')">Sign Up</div>
+        <div class="modal-tab active" id="tabLogin" onclick="window.app && window.app.switchTab('login')">Login</div>
+        <div class="modal-tab" id="tabSignup" onclick="window.app && window.app.switchTab('signup')">Sign Up</div>
       </div>
       <div id="formLogin" class="modal-form" style="display:flex;">
         <input class="modal-input" id="loginName" type="text" placeholder="Username" autocomplete="username">
@@ -224,7 +224,7 @@
         <div class="modal-err" id="loginErr"></div>
         <button class="modal-submit" id="loginBtn" type="button">Login</button>
         <div class="modal-divider">or</div>
-        <button class="modal-submit modal-submit-alt" type="button" onclick="window.app.switchTab('signup')">Create an Account</button>
+        <button class="modal-submit modal-submit-alt" type="button" onclick="window.app && window.app.switchTab('signup')">Create an Account</button>
       </div>
       <div id="formSignup" class="modal-form" style="display:none;">
         <input class="modal-input" id="signupName" type="text" placeholder="Username (3–20 chars)" autocomplete="username">
@@ -237,7 +237,7 @@
 
   <div id="profileModal" class="modal-overlay">
     <div class="modal">
-      <button class="modal-close" onclick="window.app.closeProfile()">✕</button>
+      <button class="modal-close" onclick="window.app && window.app.closeProfile()">✕</button>
       <div class="modal-title">👤 Your Profile</div>
       <div class="modal-form">
         <div id="profileImageSection">
@@ -251,25 +251,28 @@
         <input type="text" id="profileRank" class="modal-input" placeholder="e.g., Mythic Glory">
         <label class="modal-label">Main Heroes</label>
         <input type="text" id="profileHeroes" class="modal-input" placeholder="e.g., Ling, Selena, Gusion">
-        <button class="modal-submit" type="button" onclick="window.app.updateProfile(document.getElementById('profileBio').value, document.getElementById('profileRank').value, document.getElementById('profileHeroes').value)">Save Profile</button>
+        <button class="modal-submit" type="button" onclick="window.app && window.app.updateProfile(document.getElementById('profileBio').value, document.getElementById('profileRank').value, document.getElementById('profileHeroes').value)">Save Profile</button>
       </div>
     </div>
   </div>
 
   <div id="termsModal" class="modal-overlay">
     <div class="modal">
-      <button class="modal-close" onclick="window.app.closeTerms()">✕</button>
+      <button class="modal-close" onclick="window.app && window.app.closeTerms()">✕</button>
       <div class="modal-title">Terms of Service</div>
       <div style="max-height:60vh;overflow-y:auto;font-size:.9rem;line-height:1.8;color:#c0d4e0;padding:1.5rem 0;">
         <p><strong style="color:var(--gold);">1. Usage Rights</strong><br>This guide is for personal, educational use only.</p>
         <p style="margin-top:1rem;"><strong style="color:var(--gold);">2. Account Security</strong><br>You are responsible for your account credentials.</p>
         <p style="margin-top:1rem;"><strong style="color:var(--gold);">3. Privacy</strong><br>Your data is stored securely. We do not share it with third parties.</p>
         <p style="margin-top:1rem;"><strong style="color:var(--gold);">4. Content Accuracy</strong><br>MLBB strategies may change with patches. Use alongside real-world experience.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">5. Disclaimers</strong><br>This guide does not guarantee rank increases. Results vary.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">5. Disclaimers</strong><br>This guide does not guarantee rank increases. Results depend on individual effort and practice.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">6. Intellectual Property</strong><br>All content belongs to Mr. Yoo's MLBB Guide. Do not reproduce without permission.</p>
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">7. Changes</strong><br>We reserve the right to update these terms at any time.</p>
       </div>
     </div>
   </div>
 
   <script type="module" src="js/app.js"></script>
+
 </body>
 </html>
