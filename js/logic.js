@@ -5,7 +5,7 @@ export function analyzeDarkSystem(totalMatches, winRate, mvpCount) {
   const expectedMVP = benchmarks.mvpCount;
   const wrGood = winRate >= expectedWR;
   const mvpGood = mvpCount >= expectedMVP;
-  const mvpRatio = totalMatches > 0 ? Math.round((totalMatches / mvpCount) * 10) / 10 : 0;
+  const mvpRatio = mvpCount > 0 ? Math.round((totalMatches / mvpCount) * 10) / 10 : 0;
 
   let classification = '⚠️ NEEDS IMPROVEMENT';
   let classificationClass = 'warning';

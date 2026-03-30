@@ -30,17 +30,16 @@
     <div class="nav-back" id="navBack" onclick="NAV.goHome()">← Back</div>
     <span class="nav-chapter" id="navChapter"></span>
 
-    <div class="nav-center-menu" id="navMenu">
-      <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">📱 Install</button>
-      <button class="nav-menu-btn" onclick="NAV.goTo('dark-system')">📊 Diagnostic</button>
-      <button class="nav-menu-btn" onclick="NAV.goTo('introduction')">📖 Book Guide</button>
-      <button class="nav-menu-btn" onclick="window.location.href='mailto:mryoo.guide@gmail.com'">📧 Contact</button>
-      <button class="nav-menu-btn" id="navSignIn" onclick="NAV.openModal('authModal')">🔐 Sign In</button>
-    </div>
-
     <button class="nav-burger" id="navBurger" onclick="NAV.toggleMenu()" aria-label="Menu">☰</button>
 
     <div class="nav-right">
+      <div class="nav-center-menu" id="navMenu">
+        <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">📱 Install</button>
+        <button class="nav-menu-btn" onclick="NAV.goTo('dark-system')">📊 Diagnostic</button>
+        <button class="nav-menu-btn" onclick="NAV.goTo('introduction')">📖 Book Guide</button>
+        <button class="nav-menu-btn" onclick="window.location.href='mailto:mryoo.guide@gmail.com'">📧 Contact</button>
+        <button class="nav-menu-btn" id="navSignIn" onclick="NAV.openModal('authModal')">🔐 Sign In</button>
+      </div>
       <div id="navProgress" class="nav-progress" style="display:none;">
         <div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div>
       </div>
