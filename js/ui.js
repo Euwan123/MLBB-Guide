@@ -106,8 +106,8 @@ export function updateAuthUI(session) {
       </div>
       <button class="nav-auth-btn logout" onclick="window.app.logout()">Logout</button>`;
     if (menuAuth) menuAuth.innerHTML = `
-      <button class="nav-menu-btn" onclick="window.app.openProfile()">👤 Profile</button>
-      <button class="nav-menu-btn" onclick="window.app.logout()">🚪 Logout</button>`;
+      <button class="nav-menu-btn" onclick="window.app.openProfile()">Profile</button>
+      <button class="nav-menu-btn" onclick="window.app.logout()">Logout</button>`;
     if (signInBtn) {
       signInBtn.classList.add('hidden');
       signInBtn.style.display = 'none';
@@ -118,7 +118,7 @@ export function updateAuthUI(session) {
       <button class="nav-auth-btn login" onclick="window.app.openAuth()">Login</button>
       <button class="nav-auth-btn signup" onclick="window.app.openAuth(); window.app.switchTab('signup')">Sign Up</button>`;
     if (menuAuth) menuAuth.innerHTML = `
-      <button class="nav-menu-btn" onclick="window.app.openAuth()">🔐 Login / Sign Up</button>`;
+      <button class="nav-menu-btn" onclick="window.app.openAuth()">Login / Sign Up</button>`;
     if (signInBtn) {
       signInBtn.classList.remove('hidden');
       signInBtn.style.display = '';
@@ -157,4 +157,4 @@ function closeMenuIfOpen() {
 
 export function openDiagnostic() { closeMenuIfOpen(); navigateToPage('dark-system'); }
 export function openGuide() { closeMenuIfOpen(); navigateToPage('introduction'); }
-export function openContact() { closeMenuIfOpen(); window.location.href = 'mailto:mryoo.guide@gmail.com'; }
+export function openContact() { closeMenuIfOpen(); const m = $('contactModal'); if (m) m.classList.add('open'); }

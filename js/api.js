@@ -112,3 +112,53 @@ export async function saveChapterProgress(userId, chapter) {
   );
   if (error) throw new Error(error.message || 'Save failed');
 }
+
+export async function loadQuizQuestions(quizKey) {
+  try {
+    const { data, error } = await sb
+      .from('quiz_questions')
+      .select('question, options, correct_index, explanation, difficulty')
+      .eq('quiz_key', quizKey)
+      .order('created_at', { ascending: true });
+    if (error || !Array.isArray(data) || data.length === 0) return [];
+    return data.map((q) => ({
+      question: q.question,
+      options: Array.isArray(q.options) ? q.options : [],
+      correctIndex: typeof q.correct_index === 'number' ? q.correct_index : 0,
+      explanation: q.explanation || '',
+      difficulty: q.difficulty || 'normal',
+    }));
+  } catch {
+    return [];
+  }
+}
+
+export async function saveQuizResult(userId, quizKey, score, total, elapsedMs) {
+  if (!userId || !quizKey) return;
+  const payload = {
+    user_id: userId,
+    quiz_key: quizKey,
+    score: Number(score) || 0,
+    total_questions: Number(total) || 0,
+    elapsed_ms: Number(elapsedMs) || 0,
+    created_at: new Date().toISOString(),
+  };
+  const { error } = await sb.from('quiz_results').insert([payload]);
+  if (error) throw new Error(error.message || 'Could not save quiz result');
+}
+
+export async function loadQuizLeaderboard(quizKey, limit = 10) {
+  try {
+    const { data, error } = await sb
+      .from('quiz_results')
+      .select('user_id, score, total_questions, elapsed_ms, created_at')
+      .eq('quiz_key', quizKey)
+      .order('score', { ascending: false })
+      .order('elapsed_ms', { ascending: true })
+      .limit(limit);
+    if (error || !Array.isArray(data)) return [];
+    return data;
+  } catch {
+    return [];
+  }
+}

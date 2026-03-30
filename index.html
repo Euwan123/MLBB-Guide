@@ -34,12 +34,12 @@
 
     <div class="nav-right">
       <div class="nav-center-menu" id="navMenu">
-        <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">📱 Install</button>
-        <button class="nav-menu-btn" onclick="NAV.goTo('dark-system')">📊 Diagnostic</button>
-        <button class="nav-menu-btn" onclick="NAV.goTo('introduction')">📖 Book Guide</button>
-        <button class="nav-menu-btn" onclick="NAV.goTo('hero-system')">🎮 Game Hub</button>
-        <button class="nav-menu-btn" onclick="NAV.openModal('contactModal')">📧 Contact</button>
-        <button class="nav-menu-btn" id="navSignIn" onclick="NAV.openModal('authModal')">🔐 Sign In</button>
+        <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">Install</button>
+        <button class="nav-menu-btn" onclick="NAV.goTo('dark-system')">Diagnostic</button>
+        <button class="nav-menu-btn" onclick="NAV.goTo('introduction')">Book Guide</button>
+        <button class="nav-menu-btn" onclick="NAV.goTo('hero-system')">Game Hub</button>
+        <button class="nav-menu-btn" onclick="NAV.openModal('contactModal')">Contact</button>
+        <button class="nav-menu-btn" id="navSignIn" onclick="NAV.openModal('authModal')">Sign In</button>
       </div>
       <div id="navProgress" class="nav-progress" style="display:none;">
         <div class="nav-progress-bar" id="navProgressBar" style="width:0%"></div>
@@ -73,8 +73,11 @@
     </div>
 
     <div class="chapters-wrapper">
-      <div class="section-label">Test Yourself</div>
-      <div class="chapters-group">
+      <div class="section-row">
+        <div class="section-label">Test Yourself</div>
+        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-diagnostic', this)">Minimize</button>
+      </div>
+      <div class="chapters-group" id="group-diagnostic">
         <div class="group-header">Diagnostic &amp; Foundation</div>
         <div class="chapters-grid">
           <div class="chapter-btn" onclick="NAV.goTo('dark-system')">
@@ -112,7 +115,11 @@
         </div>
       </div>
 
-      <div class="section-label">Book Guide</div>
+      <div class="section-row">
+        <div class="section-label">Book Guide</div>
+        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-book', this)">Minimize</button>
+      </div>
+      <div id="group-book">
       <div class="chapters-group">
         <div class="group-header"><span class="lvl-dot beginner"></span> Beginner Level</div>
         <div class="chapters-scroll">
@@ -226,8 +233,13 @@
           </div>
         </div>
       </div>
+      </div>
 
-      <div class="chapters-group">
+      <div class="section-row">
+        <div class="section-label">Game Hub</div>
+        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-gamehub', this)">Minimize</button>
+      </div>
+      <div class="chapters-group" id="group-gamehub">
         <div class="group-header"><span class="lvl-dot advanced"></span> Game Hub</div>
         <div class="chapters-scroll">
           <div class="chapter-btn" onclick="NAV.goTo('hero-system')">
@@ -467,6 +479,14 @@
       toggleMenu: function() {
         var menu = document.getElementById('navMenu');
         if (menu) menu.classList.toggle('open');
+      },
+
+      toggleGroup: function(id, btn) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        var isHidden = el.style.display === 'none';
+        el.style.display = isHidden ? '' : 'none';
+        if (btn) btn.textContent = isHidden ? 'Minimize' : 'Expand';
       },
 
       openModal: function(id) {

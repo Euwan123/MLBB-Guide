@@ -5,6 +5,8 @@ import * as logic from './logic.js';
 
 let session = null;
 let deferredPrompt = null;
+let reactionState = null;
+let quizState = null;
 
 const $ = (id) => document.getElementById(id);
 
@@ -126,6 +128,218 @@ const markChapterCompleted = async (chapter) => {
   try { await api.saveChapterProgress(session.user.id, chapter); ui.markChapterDone(chapter); } catch {}
 };
 
+const ensureReactionGame = () => {
+  const box = $('rcBox');
+  if (!box || reactionState) return;
+  const stats = $('rcStats');
+  const avgEl = $('rcAvg');
+  const bestEl = $('rcBest');
+  const roundEl = $('rcRound');
+  const verdict = $('rcVerdict');
+  reactionState = { running: false, armed: false, goAt: 0, round: 0, times: [], timer: null, box, stats, avgEl, bestEl, roundEl, verdict };
+
+  const render = () => {
+    if (!reactionState) return;
+    const { times, stats, roundEl, avgEl, bestEl, verdict, round } = reactionState;
+    if (stats) stats.style.display = times.length ? 'block' : 'none';
+    if (roundEl) roundEl.textContent = String(round);
+    if (!times.length) return;
+    const sum = times.reduce((a, b) => a + b, 0);
+    const avg = Math.round(sum / times.length);
+    const best = Math.round(Math.min(...times));
+    if (avgEl) avgEl.textContent = String(avg);
+    if (bestEl) bestEl.textContent = String(best);
+    const score = Math.max(0, Math.min(1, (320 - avg) / 170));
+    const pct = Math.round(score * 99);
+    if (verdict) verdict.textContent = `Consistency score: ${pct}/99. Focus on clean clicks, not panic.`;
+  };
+
+  const setIdle = () => {
+    if (!reactionState) return;
+    reactionState.armed = false;
+    reactionState.running = false;
+    if (reactionState.timer) {
+      clearTimeout(reactionState.timer);
+      reactionState.timer = null;
+    }
+    if (reactionState.box) {
+      reactionState.box.style.background = 'rgba(255,255,255,.04)';
+      reactionState.box.style.borderColor = 'rgba(255,149,0,.22)';
+      reactionState.box.style.color = 'var(--dim)';
+      reactionState.box.textContent = 'Press Start';
+    }
+    render();
+  };
+
+  window.rcReset = () => {
+    if (!reactionState) return;
+    reactionState.times = [];
+    reactionState.round = 0;
+    setIdle();
+  };
+
+  window.rcStart = () => {
+    if (!reactionState || reactionState.running) return;
+    reactionState.running = true;
+    reactionState.armed = false;
+    if (reactionState.box) {
+      reactionState.box.style.background = 'rgba(255,255,255,.04)';
+      reactionState.box.style.borderColor = 'rgba(255,149,0,.22)';
+      reactionState.box.style.color = '#cfe6ff';
+      reactionState.box.textContent = 'Wait...';
+    }
+    const delay = 650 + Math.random() * 1800;
+    reactionState.timer = setTimeout(() => {
+      if (!reactionState) return;
+      reactionState.armed = true;
+      reactionState.goAt = performance.now();
+      if (reactionState.box) {
+        reactionState.box.style.background = 'linear-gradient(135deg,#ff8800,#ffd700)';
+        reactionState.box.style.borderColor = 'rgba(255,215,0,.45)';
+        reactionState.box.style.color = 'rgba(7,17,31,.95)';
+        reactionState.box.textContent = 'CLICK';
+      }
+    }, delay);
+  };
+
+  box.addEventListener('click', () => {
+    if (!reactionState || !reactionState.running) return;
+    if (!reactionState.armed) {
+      if (reactionState.timer) {
+        clearTimeout(reactionState.timer);
+        reactionState.timer = null;
+      }
+      reactionState.running = false;
+      reactionState.box.style.background = 'rgba(220,38,38,.12)';
+      reactionState.box.style.borderColor = 'rgba(220,38,38,.35)';
+      reactionState.box.style.color = '#fca5a5';
+      reactionState.box.textContent = 'Too early. Press Start.';
+      return;
+    }
+    reactionState.armed = false;
+    reactionState.running = false;
+    const t = performance.now() - reactionState.goAt;
+    reactionState.times.push(t);
+    reactionState.round = Math.min(5, reactionState.round + 1);
+    reactionState.box.style.background = 'rgba(34,197,94,.12)';
+    reactionState.box.style.borderColor = 'rgba(34,197,94,.35)';
+    reactionState.box.style.color = '#bbf7d0';
+    reactionState.box.textContent = `${Math.round(t)} ms`;
+    render();
+  });
+
+  setIdle();
+};
+
+const defaultQuizQuestions = [
+  {
+    question: 'You are marksman. Enemy has high burst and one assassin diving you every fight. Best item direction?',
+    options: ['Wind of Nature or defensive timing item', 'Pure damage second item', 'Anti-heal first no matter what'],
+    correctIndex: 0,
+    explanation: 'You need to survive first so your DPS can stay active.',
+  },
+  {
+    question: 'Enemy has heavy sustain in long fights. Which item theme is highest priority?',
+    options: ['Anti-heal items', 'Only penetration stack', 'Crit greed scaling'],
+    correctIndex: 0,
+    explanation: 'Anti-heal increases effective damage for the whole team.',
+  },
+  {
+    question: 'Enemy front line is tanky and fights are front-to-back. Most consistent approach?',
+    options: ['Sustained DPS with pen/on-hit', 'All-in burst build', 'Always dive backline'],
+    correctIndex: 0,
+    explanation: 'Sustained damage wins extended tank fights.',
+  },
+];
+
+const ensureItemizationQuiz = async () => {
+  const qEl = $('iqQ');
+  const dEl = $('iqD');
+  const aEl = $('iqA');
+  const scoreBox = $('iqScoreBox');
+  const scoreLine = $('iqScoreLine');
+  const tipEl = $('iqTip');
+  if (!qEl || !dEl || !aEl || quizState) return;
+
+  const remoteQuestions = await api.loadQuizQuestions('itemization');
+  const questions = remoteQuestions.length
+    ? remoteQuestions.map((q) => ({ question: q.question, options: q.options, correctIndex: q.correctIndex, explanation: q.explanation }))
+    : defaultQuizQuestions;
+
+  quizState = { idx: 0, score: 0, answered: false, startAt: Date.now(), questions };
+  let leaderboardTimer = null;
+
+  const render = () => {
+    if (!quizState) return;
+    const q = quizState.questions[quizState.idx];
+    quizState.answered = false;
+    qEl.textContent = `Q${quizState.idx + 1}: ${q.question}`;
+    dEl.textContent = 'Choose the best item direction.';
+    aEl.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'nav-button';
+      btn.style.width = '100%';
+      btn.style.textAlign = 'left';
+      btn.textContent = `${String.fromCharCode(65 + i)}) ${opt}`;
+      btn.addEventListener('click', async () => {
+        if (!quizState || quizState.answered) return;
+        quizState.answered = true;
+        const ok = i === q.correctIndex;
+        if (ok) quizState.score += 1;
+        if (scoreBox) scoreBox.style.display = 'block';
+        if (scoreLine) scoreLine.textContent = `Current: ${quizState.score}/${quizState.questions.length}`;
+        if (tipEl) tipEl.textContent = q.explanation || '';
+        btn.style.borderColor = ok ? 'rgba(34,197,94,.45)' : 'rgba(220,38,38,.45)';
+        btn.style.background = ok ? 'rgba(34,197,94,.08)' : 'rgba(220,38,38,.08)';
+      });
+      aEl.appendChild(btn);
+    });
+  };
+
+  window.iqReset = () => {
+    if (!quizState) return;
+    quizState.idx = 0;
+    quizState.score = 0;
+    quizState.startAt = Date.now();
+    if (scoreBox) scoreBox.style.display = 'none';
+    if (leaderboardTimer) {
+      clearInterval(leaderboardTimer);
+      leaderboardTimer = null;
+    }
+    render();
+  };
+
+  window.iqNext = async () => {
+    if (!quizState) return;
+    if (quizState.idx < quizState.questions.length - 1) {
+      quizState.idx += 1;
+      render();
+      return;
+    }
+    const elapsedMs = Date.now() - quizState.startAt;
+    if (scoreBox) scoreBox.style.display = 'block';
+    if (scoreLine) scoreLine.textContent = `Final: ${quizState.score}/${quizState.questions.length}`;
+    if (tipEl) tipEl.textContent = 'Best builds solve the biggest problem first, then scale damage.';
+    if (session?.user?.id) {
+      try { await api.saveQuizResult(session.user.id, 'itemization', quizState.score, quizState.questions.length, elapsedMs); } catch {}
+      try {
+        const refreshLeaderboard = async () => {
+          const rows = await api.loadQuizLeaderboard('itemization', 10);
+          const leaderboard = rows.map((r, idx) => `${idx + 1}. ${r.score}/${r.total_questions} - ${Math.round((r.elapsed_ms || 0) / 1000)}s`).join(' | ');
+          if (tipEl && leaderboard) tipEl.textContent = `Live leaderboard: ${leaderboard}`;
+        };
+        await refreshLeaderboard();
+        if (leaderboardTimer) clearInterval(leaderboardTimer);
+        leaderboardTimer = setInterval(refreshLeaderboard, 5000);
+      } catch {}
+    }
+  };
+
+  render();
+};
+
 const calculateDarkSystem = () => {
   try {
     const matches = parseInt($('dsMatches')?.value) || 0;
@@ -158,6 +372,10 @@ const initChapters = async () => {
   const container = $('chapters-container');
   if (!container) {
     console.error('chapters-container not found!');
+    return;
+  }
+  if (container.children.length > 0) {
+    setupEventListeners();
     return;
   }
   
@@ -259,7 +477,19 @@ const init = async () => {
       else ui.loadCompletedChapters([]);
     });
     initPWAInstall();
-    await initChapters();
+    if (!(window.NAV && typeof window.NAV.goTo === 'function')) {
+      await initChapters();
+    }
+    let tries = 0;
+    const attachWidgets = async () => {
+      ensureReactionGame();
+      await ensureItemizationQuiz();
+      tries += 1;
+      if ((!window.rcStart || !window.iqReset) && tries < 20) {
+        setTimeout(attachWidgets, 300);
+      }
+    };
+    attachWidgets();
     setTimeout(() => {
       setupEventListeners();
     }, 200);
@@ -267,9 +497,25 @@ const init = async () => {
     console.error('Initialization error:', e);
     setTimeout(() => {
       setupEventListeners();
+      let tries = 0;
+      const attachWidgets = async () => {
+        ensureReactionGame();
+        await ensureItemizationQuiz();
+        tries += 1;
+        if ((!window.rcStart || !window.iqReset) && tries < 20) {
+          setTimeout(attachWidgets, 300);
+        }
+      };
+      attachWidgets();
     }, 500);
   }
 };
+
+window._saveProgress = (ch) => markChapterCompleted(ch);
+window._doLogin = doLogin;
+window._doSignup = doSignup;
+window._logout = logout;
+window._saveProfile = updateProfile;
 
 window.app = {
   navigateToPage: ui.navigateToPage,
