@@ -216,19 +216,21 @@ const installPWA = async () => {
 };
 
 const init = async () => {
-  session = await api.getSession();
-  ui.updateAuthUI(session);
-  if (session) await loadProgressForSession();
-
-  api.onAuthStateChange((event, newSession) => {
-    session = newSession;
-    ui.updateAuthUI(newSession);
-    if (newSession) loadProgressForSession();
-    else ui.loadCompletedChapters([]);
-  });
-
-  initPWAInstall();
-  await initChapters();
+  try {
+    session = await api.getSession();
+    ui.updateAuthUI(session);
+    if (session) await loadProgressForSession();
+    api.onAuthStateChange((event, newSession) => {
+      session = newSession;
+      ui.updateAuthUI(newSession);
+      if (newSession) loadProgressForSession();
+      else ui.loadCompletedChapters([]);
+    });
+    initPWAInstall();
+    await initChapters();
+  } catch (e) {
+    console.error('Initialization error:', e);
+  }
 };
 
 window.app = {

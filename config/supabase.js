@@ -1,15 +1,23 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { loadConfig } from './env.js';
 
-const config = await loadConfig();
-const SUPABASE_URL = config.SUPABASE_URL;
-const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
+let sb = null;
+const initSupabase = async () => {
+  try {
+    const config = await loadConfig();
+    const SUPABASE_URL = config.SUPABASE_URL;
+    const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
+    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+      sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  } catch (e) {
+    console.error('Supabase initialization error:', e);
+  }
+};
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error('Supabase credentials missing');
-}
+await initSupabase();
 
-export const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export { sb };
 
 export const CHAPTER_ORDER = [
   'introduction',
