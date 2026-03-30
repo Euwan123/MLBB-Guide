@@ -1,57 +1,71 @@
 import { sb } from '../config/supabase.js';
 
-const toEmail = (username) => `${username.toLowerCase().replace(/[^a-z0-9]/g, '')}@gmail.com`;
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password + 'mlbb_salt_yoo');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
 
 export async function loginWithCredentials(username, password) {
-  const email = toEmail(username);
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) throw new Error('Username or password incorrect');
-  if (!data.session) throw new Error('No session returned');
-  return data.session;
+  const hashed = await hashPassword(password);
+  const { data, error } = await sb
+    .from('users')
+    .select('*')
+    .eq('username', username.toLowerCase())
+    .eq('password_hash', hashed)
+    .single();
+
+  if (error || !data) throw new Error('Username or password incorrect');
+
+  const session = { user: { id: data.id, user_metadata: { username: data.username } } };
+  localStorage.setItem('mlbb_session', JSON.stringify(session));
+  return session;
 }
 
 export async function signupWithCredentials(username, password) {
-  const email = toEmail(username);
-  const { data, error } = await sb.auth.signUp({
-    email,
-    password,
-    options: { data: { username }, emailRedirectTo: window.location.origin },
-  });
+  const { data: existing } = await sb
+    .from('users')
+    .select('id')
+    .eq('username', username.toLowerCase())
+    .single();
+
+  if (existing) throw new Error('This username is already taken');
+
+  const hashed = await hashPassword(password);
+  const { data, error } = await sb
+    .from('users')
+    .insert([{ username: username.toLowerCase(), password_hash: hashed }])
+    .select()
+    .single();
+
   if (error) throw new Error(error.message || 'Signup failed');
-  return data.session;
+
+  const session = { user: { id: data.id, user_metadata: { username: data.username } } };
+  localStorage.setItem('mlbb_session', JSON.stringify(session));
+  return session;
 }
 
 export async function signOut() {
-  const { error } = await sb.auth.signOut();
-  if (error) throw new Error(error.message || 'Logout failed');
+  localStorage.removeItem('mlbb_session');
 }
 
 export async function getSession() {
   try {
-    if (!sb) {
-      console.warn('Supabase not initialized');
-      return null;
-    }
-    const { data: { session } } = await sb.auth.getSession();
-    return session;
-  } catch (e) {
-    console.error('getSession error:', e);
+    const raw = localStorage.getItem('mlbb_session');
+    return raw ? JSON.parse(raw) : null;
+  } catch {
     return null;
   }
 }
 
 export function onAuthStateChange(callback) {
   try {
-    if (!sb) {
-      console.warn('Supabase not initialized, onAuthStateChange skipped');
-      return null;
-    }
-    const { data: { subscription } } = sb.auth.onAuthStateChange(callback);
-    return subscription;
-  } catch (e) {
-    console.error('onAuthStateChange error:', e);
-    return null;
-  }
+    const raw = localStorage.getItem('mlbb_session');
+    if (raw) callback('SIGNED_IN', JSON.parse(raw));
+  } catch {}
+  return null;
 }
 
 export async function uploadProfileImage(userId, file) {
@@ -70,7 +84,7 @@ export async function saveUserProfile(userId, profileData) {
     username: profileData.username,
     bio: profileData.bio || null,
     rank: profileData.rank || null,
-    main_heroes: profileData.mainHeroes ? profileData.mainHeroes.split(',').map((h) => h.trim()) : null,
+    main_heroes: profileData.mainHeroes ? profileData.mainHeroes.split(',').map(h => h.trim()) : null,
     profile_image_url: profileData.profileImageUrl || null,
   });
   if (error) throw new Error(error.message || 'Save failed');
@@ -87,7 +101,7 @@ export async function loadChapterProgress(userId) {
   if (!userId) return [];
   const { data, error } = await sb.from('chapter_progress').select('chapter').eq('user_id', userId);
   if (error) return [];
-  return data.map((r) => r.chapter) || [];
+  return data.map(r => r.chapter) || [];
 }
 
 export async function saveChapterProgress(userId, chapter) {
