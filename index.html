@@ -37,7 +37,7 @@
         <button class="nav-menu-btn" id="pwaInstallBtn" style="display:none;">📱 Install</button>
         <button class="nav-menu-btn" onclick="NAV.goTo('dark-system')">📊 Diagnostic</button>
         <button class="nav-menu-btn" onclick="NAV.goTo('introduction')">📖 Book Guide</button>
-        <button class="nav-menu-btn" onclick="window.location.href='mailto:mryoo.guide@gmail.com'">📧 Contact</button>
+        <button class="nav-menu-btn" onclick="NAV.openModal('contactModal')">📧 Contact</button>
         <button class="nav-menu-btn" id="navSignIn" onclick="NAV.openModal('authModal')">🔐 Sign In</button>
       </div>
       <div id="navProgress" class="nav-progress" style="display:none;">
@@ -114,7 +114,7 @@
       <div class="section-label">Book Guide</div>
       <div class="chapters-group">
         <div class="group-header"><span class="lvl-dot beginner"></span> Beginner Level</div>
-        <div class="chapters-grid">
+        <div class="chapters-scroll">
           <div class="chapter-btn" onclick="NAV.goTo('introduction')">
             <span class="ch-num">B1</span><span class="ch-icon">📖</span>
             <span class="ch-title">Introduction</span>
@@ -162,7 +162,7 @@
 
       <div class="chapters-group">
         <div class="group-header"><span class="lvl-dot intermediate"></span> Intermediate Level</div>
-        <div class="chapters-grid">
+        <div class="chapters-scroll">
           <div class="chapter-btn" onclick="NAV.goTo('macro-micro')">
             <span class="ch-num">M1</span><span class="ch-icon">⚔️</span>
             <span class="ch-title">Macro vs Micro</span>
@@ -192,7 +192,7 @@
 
       <div class="chapters-group">
         <div class="group-header"><span class="lvl-dot advanced"></span> Advanced Level</div>
-        <div class="chapters-grid">
+        <div class="chapters-scroll">
           <div class="chapter-btn" onclick="NAV.goTo('wave-management')">
             <span class="ch-num">A1</span><span class="ch-icon">🌊</span>
             <span class="ch-title">Wave Management</span>
@@ -218,13 +218,15 @@
     <footer>
       <div class="footer-content">
         <div class="footer-links">
-          <span class="footer-link">mryoo.guide@gmail.com</span>
-          <div class="footer-divider"></div>
           <a href="https://mryooguide.com" target="_blank" rel="noopener" class="footer-link">Website</a>
           <div class="footer-divider"></div>
-          <a href="https://www.facebook.com/profile.php?id=61586395430330" target="_blank" rel="noopener" class="footer-link">📘 Facebook</a>
+          <a href="https://www.facebook.com/profile.php?id=61586395430330" target="_blank" rel="noopener" class="footer-link">Facebook</a>
           <div class="footer-divider"></div>
-          <span class="footer-link" onclick="NAV.openModal('termsModal')">Terms of Service</span>
+          <span class="footer-link" onclick="NAV.openModal('contactModal')">Contact</span>
+          <div class="footer-divider"></div>
+          <span class="footer-link" onclick="NAV.openModal('referencesModal')">References</span>
+          <div class="footer-divider"></div>
+          <span class="footer-link" onclick="NAV.openModal('termsModal')">Terms</span>
         </div>
         <div class="footer-credit">© 2026 Mr. Yoo's MLBB Guide. All rights reserved.</div>
       </div>
@@ -292,6 +294,44 @@
         <p style="margin-top:1rem;"><strong style="color:var(--gold);">5. Disclaimers</strong><br>This guide does not guarantee rank increases. Results depend on individual effort and practice.</p>
         <p style="margin-top:1rem;"><strong style="color:var(--gold);">6. Intellectual Property</strong><br>All content belongs to Mr. Yoo's MLBB Guide. Do not reproduce without permission.</p>
         <p style="margin-top:1rem;"><strong style="color:var(--gold);">7. Changes</strong><br>We reserve the right to update these terms at any time.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="contactModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close" onclick="NAV.closeModal('contactModal')">✕</button>
+      <div class="modal-title">Contact</div>
+      <div style="font-size:.95rem;line-height:1.85;color:#c0d4e0;padding:1rem 0;">
+        <div style="display:flex;flex-direction:column;gap:.8rem;align-items:center;text-align:center;">
+          <div style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;letter-spacing:.06em;">Connect with Mr. Yoo</div>
+          <a class="footer-link" href="https://mryooguide.com" target="_blank" rel="noopener">Website</a>
+          <a class="footer-link" href="https://www.facebook.com/profile.php?id=61586395430330" target="_blank" rel="noopener">Facebook</a>
+          <button class="modal-submit modal-submit-alt" type="button" onclick="NAV.closeModal('contactModal')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="referencesModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close" onclick="NAV.closeModal('referencesModal')">✕</button>
+      <div class="modal-title">References</div>
+      <div style="max-height:60vh;overflow-y:auto;font-size:.92rem;line-height:1.85;color:#c0d4e0;padding:1.2rem 0;">
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div>
+            <div style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;letter-spacing:.06em;margin-bottom:.35rem;">Official</div>
+            <a class="footer-link" href="https://www.mobilelegends.com/" target="_blank" rel="noopener">Mobile Legends: Bang Bang</a>
+          </div>
+          <div>
+            <div style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;letter-spacing:.06em;margin-bottom:.35rem;">Pro Play</div>
+            <div style="color:#a0bcd8;">MPL / MDL broadcasts, tournament VODs, patch notes, and meta reports.</div>
+          </div>
+          <div>
+            <div style="color:var(--gold);font-family:'Cinzel',serif;font-weight:700;letter-spacing:.06em;margin-bottom:.35rem;">Notes</div>
+            <div style="color:#a0bcd8;">Strategies can change by patch, rank bracket, and server meta.</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -415,8 +455,8 @@
       },
 
       saveProfile: function() {
-        if (window._saveProfile) {
-          window._saveProfile(
+        if (window.app && typeof window.app.updateProfile === 'function') {
+          window.app.updateProfile(
             document.getElementById('profileBio') ? document.getElementById('profileBio').value : '',
             document.getElementById('profileRank') ? document.getElementById('profileRank').value : '',
             document.getElementById('profileHeroes') ? document.getElementById('profileHeroes').value : ''
@@ -476,11 +516,11 @@
       closeTerms: function() { NAV.closeModal('termsModal'); },
       openDiagnostic: function() { NAV.goTo('dark-system'); },
       openGuide: function() { NAV.goTo('introduction'); },
-      openContact: function() { window.location.href = 'mailto:mryoo.guide@gmail.com'; },
+      openContact: function() { NAV.openModal('contactModal'); },
       toggleMenu: function() { NAV.toggleMenu(); },
       switchTab: function(t) { NAV.switchAuthTab(t); },
       calculateDarkSystem: function() { NAV.calculateDarkSystem(); },
-      updateProfile: function(bio, rank, heroes) { if (window._saveProfile) window._saveProfile(bio, rank, heroes); },
+      updateProfile: function(bio, rank, heroes) { if (window.app && typeof window.app.updateProfile === 'function') { window.app.updateProfile(bio, rank, heroes); } },
       logout: function() { if (window._logout) window._logout(); }
     };
 
