@@ -1,7 +1,7 @@
-const CACHE_NAME = 'mlbb-guide-v1';
+const CACHE_NAME = 'mlbb-guide-v2';
 const STATIC_ASSETS = [
   '/',
-  '/Index.html',
+  '/index.html',
   '/css/base.css',
   '/css/layout.css',
   '/css/components.css',
@@ -12,8 +12,7 @@ const STATIC_ASSETS = [
   '/config/supabase.js',
   '/config/env.js',
   '/config.json',
-  '/manifest.json',
-  '/assest/videos/Fight With You! A Bond Reunited   Mlbb × Naruto   Mobile Legends Bang Bang.mp4'
+  '/manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -21,44 +20,29 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting())
+      .catch(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches.keys().then((cacheNames) =>
+      Promise.all(cacheNames.filter((n) => n !== CACHE_NAME).map((n) => caches.delete(n)))
+    ).then(() => self.clients.claim())
   );
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        if (response) {
-          return response;
-        }
-        
-        return fetch(event.request).then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME)
-            .then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-          
-          return response;
-        });
-      })
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request).then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') return response;
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone)).catch(() => {});
+        return response;
+      }).catch(() => caches.match('/index.html'));
+    })
   );
 });

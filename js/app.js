@@ -1,4 +1,4 @@
-import { sb, CHAPTER_ORDER, CHAPTER_META, CHAPTER_PATHS } from '../config/supabase.js';
+import { sb, CHAPTER_ORDER, CHAPTER_META } from '../config/supabase.js';
 import * as api from './api.js';
 import * as ui from './ui.js';
 import * as logic from './logic.js';
@@ -7,28 +7,18 @@ let session = null;
 let deferredPrompt = null;
 
 const $ = (id) => document.getElementById(id);
-const $$ = (sel) => document.querySelectorAll(sel);
-
-const goPage = (pageId) => ui.navigateToPage(pageId);
-const goHome = () => ui.navigateHome();
 
 const doLogin = async () => {
-  const nm = $('loginName').value.trim();
-  const pw = $('loginPass').value.trim();
+  const nm = $('loginName')?.value.trim();
+  const pw = $('loginPass')?.value.trim();
+  const err = $('loginErr');
+  const btn = $('loginBtn');
 
-  if (!nm || !pw) {
-    $('loginErr').textContent = 'Username and password required';
-    ui.notify('Please enter username and password', 'warning', 2000);
-    return;
-  }
+  if (!nm || !pw) { if (err) err.textContent = 'Username and password required'; return; }
+  if (nm.length < 3) { if (err) err.textContent = 'Username must be at least 3 characters'; return; }
 
-  if (nm.length < 3) {
-    $('loginErr').textContent = 'Username must be at least 3 characters';
-    return;
-  }
-
-  $('loginBtn').disabled = true;
-  $('loginErr').textContent = '';
+  if (btn) btn.disabled = true;
+  if (err) err.textContent = '';
 
   try {
     session = await api.loginWithCredentials(nm, pw);
@@ -37,76 +27,59 @@ const doLogin = async () => {
     await loadProgressForSession();
     ui.notify(`Welcome back, ${nm}!`, 'success', 2500);
   } catch (e) {
-    const msg = e.message?.includes('Invalid') ? 'Username or password incorrect' : (e.message || 'Login failed');
-    $('loginErr').textContent = msg;
-    ui.notify(msg, 'error', 3000);
+    if (err) err.textContent = e.message || 'Login failed';
+    ui.notify(e.message || 'Login failed', 'error', 3000);
   } finally {
-    $('loginBtn').disabled = false;
+    if (btn) btn.disabled = false;
   }
 };
 
 const doSignup = async () => {
-  const nm = $('signupName').value.trim();
-  const pw = $('signupPass').value.trim();
+  const nm = $('signupName')?.value.trim();
+  const pw = $('signupPass')?.value.trim();
+  const err = $('signupErr');
+  const btn = $('signupBtn');
 
-  if (!nm || !pw) {
-    $('signupErr').textContent = 'Username and password required';
-    return;
-  }
-  if (nm.length < 3) {
-    $('signupErr').textContent = 'Username must be at least 3 characters';
-    return;
-  }
-  if (nm.length > 20) {
-    $('signupErr').textContent = 'Username must be 20 characters or less';
-    return;
-  }
-  if (!/^[a-zA-Z0-9_]+$/.test(nm)) {
-    $('signupErr').textContent = 'Username can only contain letters, numbers, and underscores';
-    return;
-  }
-  if (pw.length < 8) {
-    $('signupErr').textContent = 'Password must be at least 8 characters';
-    return;
-  }
+  if (!nm || !pw) { if (err) err.textContent = 'Username and password required'; return; }
+  if (nm.length < 3) { if (err) err.textContent = 'Username must be at least 3 characters'; return; }
+  if (nm.length > 20) { if (err) err.textContent = 'Username must be 20 characters or less'; return; }
+  if (!/^[a-zA-Z0-9_]+$/.test(nm)) { if (err) err.textContent = 'Letters, numbers, underscores only'; return; }
+  if (pw.length < 8) { if (err) err.textContent = 'Password must be at least 8 characters'; return; }
 
-  $('signupBtn').disabled = true;
-  $('signupErr').textContent = '';
+  if (btn) btn.disabled = true;
+  if (err) err.textContent = '';
 
   try {
-    session = await api.signupWithCredentials(nm, pw);
-    if (session) {
+    const newSession = await api.signupWithCredentials(nm, pw);
+    if (newSession) {
+      session = newSession;
       ui.closeAuthModal();
       ui.updateAuthUI(session);
       await loadProgressForSession();
       ui.notify(`Welcome, ${nm}!`, 'success', 2500);
     } else {
-      $('signupErr').textContent = 'Account created! You can now login.';
+      if (err) err.textContent = 'Account created! You can now log in.';
       setTimeout(() => ui.switchAuthTab('login'), 1500);
     }
   } catch (e) {
-    const msg = e.message?.includes('already registered')
-      ? 'This username is already taken'
-      : e.message || 'Signup failed';
-    $('signupErr').textContent = msg.charAt(0).toUpperCase() + msg.slice(1);
+    const msg = e.message?.includes('already registered') ? 'This username is already taken' : (e.message || 'Signup failed');
+    if (err) err.textContent = msg;
   } finally {
-    $('signupBtn').disabled = false;
+    if (btn) btn.disabled = false;
   }
 };
 
 const logout = async () => {
-  await api.signOut();
+  try { await api.signOut(); } catch {}
   session = null;
   ui.loadCompletedChapters([]);
   ui.updateAuthUI(null);
   ui.navigateHome();
+  ui.notify('Logged out', 'success', 2000);
 };
 
 const openProfile = () => {
-  if (!session) {
-    ui.openAuthModal();
-    return;
-  }
+  if (!session) { ui.openAuthModal(); return; }
   ui.openProfileModal();
   loadProfile();
 };
@@ -116,16 +89,13 @@ const loadProfile = async () => {
   try {
     const profile = await api.loadUserProfile(session.user.id);
     if (profile) {
-      $('profileBio').value = profile.bio || '';
-      $('profileRank').value = profile.rank || '';
-      $('profileHeroes').value = profile.main_heroes?.join(', ') || '';
-      if (profile.profile_image_url) {
-        $('profileImagePreview').src = profile.profile_image_url;
-        $('profileImagePreview').style.display = 'block';
-      }
+      const bio = $('profileBio'); if (bio) bio.value = profile.bio || '';
+      const rank = $('profileRank'); if (rank) rank.value = profile.rank || '';
+      const heroes = $('profileHeroes'); if (heroes) heroes.value = profile.main_heroes?.join(', ') || '';
+      const img = $('profileImagePreview');
+      if (img && profile.profile_image_url) { img.src = profile.profile_image_url; img.style.display = 'block'; }
     }
-  } catch (e) {
-  }
+  } catch {}
 };
 
 const updateProfile = async (bio, rank, mainHeroes) => {
@@ -133,17 +103,9 @@ const updateProfile = async (bio, rank, mainHeroes) => {
   try {
     const imageFile = $('profileImageInput')?.files?.[0];
     let profileImageUrl = null;
-    if (imageFile) {
-      profileImageUrl = await api.uploadProfileImage(session.user.id, imageFile);
-    }
+    if (imageFile) profileImageUrl = await api.uploadProfileImage(session.user.id, imageFile);
     const username = session.user.user_metadata?.username || 'User';
-    await api.saveUserProfile(session.user.id, {
-      username,
-      bio: bio || null,
-      rank: rank || null,
-      mainHeroes,
-      profileImageUrl,
-    });
+    await api.saveUserProfile(session.user.id, { username, bio, rank, mainHeroes, profileImageUrl });
     ui.closeProfileModal();
     ui.notify('Profile updated!', 'success', 2000);
   } catch (e) {
@@ -156,42 +118,56 @@ const loadProgressForSession = async () => {
   try {
     const chapters = await api.loadChapterProgress(session.user.id);
     ui.loadCompletedChapters(chapters);
-  } catch (e) {
-  }
+  } catch {}
 };
 
 const markChapterCompleted = async (chapter) => {
   if (!session) return;
+  try { await api.saveChapterProgress(session.user.id, chapter); ui.markChapterDone(chapter); } catch {}
+};
+
+const calculateDarkSystem = () => {
   try {
-    await api.saveChapterProgress(session.user.id, chapter);
-    ui.markChapterDone(chapter);
+    const matches = parseInt($('dsMatches')?.value) || 0;
+    const wr = parseFloat($('dsWinrate')?.value) || 0;
+    const mvps = parseInt($('dsMvp')?.value) || 0;
+    const resultBox = $('dsResult');
+    if (!resultBox) return;
+    if (matches === 0) { resultBox.style.display = 'none'; return; }
+
+    const result = logic.analyzeDarkSystem(matches, wr, mvps);
+    if (!result) { resultBox.style.display = 'none'; return; }
+
+    resultBox.className = `result-box-dark ${result.classificationClass}`;
+    resultBox.innerHTML = `
+      <div class="result-title">${result.classification}</div>
+      <div class="result-stats">
+        <div class="stat"><span class="label">Win Rate</span><span class="value">${result.currentWR.toFixed(1)}%</span><span class="verdict ${result.wrPasses ? 'pass' : 'fail'}">${result.wrPasses ? '✓ Good' : '✗ Low'}</span></div>
+        <div class="stat"><span class="label">Expected WR</span><span class="value">${result.expectedWR}%+</span><span class="verdict"></span></div>
+        <div class="stat"><span class="label">MVP Count</span><span class="value">${result.currentMVP}</span><span class="verdict ${result.mvpPasses ? 'pass' : 'fail'}">${result.mvpPasses ? '✓ Good' : '✗ Low'}</span></div>
+        <div class="stat"><span class="label">Expected MVPs</span><span class="value">${result.expectedMVP}+</span><span class="verdict"></span></div>
+      </div>`;
+    resultBox.style.display = 'block';
   } catch (e) {
+    ui.notify('Check your inputs and try again.', 'error', 3000);
   }
 };
 
 const initChapters = async () => {
   const baseURL = window.location.pathname.includes('/mlbb-guide') ? '/mlbb-guide' : '';
-
   for (const ch of CHAPTER_ORDER) {
     try {
-      const path = `${baseURL}/html/${ch}.html`;
-      const resp = await fetch(path);
-      if (!resp.ok) {
-        continue;
-      }
+      const resp = await fetch(`${baseURL}/html/${ch}.html`);
+      if (!resp.ok) continue;
       const html = await resp.text();
       const el = document.createElement('div');
       el.innerHTML = html;
       el.id = `page-${ch}`;
       el.className = 'page';
       $('chapters-container').appendChild(el);
-    } catch (e) {
-    }
+    } catch {}
   }
-
-  setTimeout(() => {
-    setupEventListeners();
-  }, 100);
+  setupEventListeners();
 };
 
 const setupEventListeners = () => {
@@ -200,9 +176,14 @@ const setupEventListeners = () => {
   if (loginBtn) loginBtn.addEventListener('click', doLogin);
   if (signupBtn) signupBtn.addEventListener('click', doSignup);
 
-  $$('[data-chapter]').forEach((btn) => {
-    const ch = btn.dataset.chapter;
+  const loginPass = $('loginPass');
+  if (loginPass) loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+  const signupPass = $('signupPass');
+  if (signupPass) signupPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSignup(); });
+
+  document.querySelectorAll('[data-chapter]').forEach((btn) => {
     btn.addEventListener('click', () => {
+      const ch = btn.dataset.chapter;
       ui.navigateToPage(ch);
       markChapterCompleted(ch);
     });
@@ -211,110 +192,43 @@ const setupEventListeners = () => {
   ui.updateCompletedBadges();
 };
 
-const calculateDarkSystem = () => {
-  try {
-    const matches = parseInt($('dsMatches').value) || 0;
-    const wr = parseFloat($('dsWinrate').value) || 0;
-    const mvps = parseInt($('dsMvp').value) || 0;
-
-    if (matches === 0) {
-      $('dsResult').style.display = 'none';
-      return;
-    }
-
-    const result = logic.analyzeDarkSystem(matches, wr, mvps);
-    if (!result) {
-      $('dsResult').style.display = 'none';
-      return;
-    }
-
-    const resultBox = $('dsResult');
-    resultBox.className = `result-box-dark ${result.classificationClass}`;
-    resultBox.innerHTML = `
-      <div class="result-title">${result.classification}</div>
-      <div class="result-stats">
-        <div class="stat">
-          <span class="label">Win Rate</span>
-          <span class="value">${result.currentWR.toFixed(1)}%</span>
-          <span class="verdict ${result.wrPasses ? 'pass' : 'fail'}">${result.wrPasses ? '✓ Good' : '✗ Low'}</span>
-        </div>
-        <div class="stat">
-          <span class="label">Expected WR</span>
-          <span class="value">${result.expectedWR}%+</span>
-          <span class="verdict"></span>
-        </div>
-        <div class="stat">
-          <span class="label">MVP Count</span>
-          <span class="value">${result.currentMVP}</span>
-          <span class="verdict ${result.mvpPasses ? 'pass' : 'fail'}">${result.mvpPasses ? '✓ Good' : '✗ Low'}</span>
-        </div>
-        <div class="stat">
-          <span class="label">Expected MVPs</span>
-          <span class="value">${result.expectedMVP}+</span>
-          <span class="verdict"></span>
-        </div>
-      </div>
-    `;
-    resultBox.style.display = 'block';
-  } catch (e) {
-    ui.notify('Error calculating analysis. Please check your inputs.', 'error', 3000);
-  }
-};
-
-const init = async () => {
-  session = await api.getSession();
-  ui.updateAuthUI(session);
-
-  if (session) {
-    await loadProgressForSession();
-  }
-
-  api.onAuthStateChange((event, newSession) => {
-    session = newSession;
-    ui.updateAuthUI(newSession);
-    if (newSession) {
-      loadProgressForSession();
-    } else {
-      ui.loadCompletedChapters([]);
-    }
-  });
-
-  initPWAInstall();
-  initChapters();
-};
-
 const initPWAInstall = () => {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
     const installBtn = $('pwaInstallBtn');
-    if (installBtn) {
-      installBtn.style.display = 'block';
-      installBtn.addEventListener('click', installPWA);
-    }
+    if (installBtn) { installBtn.style.display = 'block'; installBtn.addEventListener('click', installPWA); }
   });
-
   window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     const installBtn = $('pwaInstallBtn');
-    if (installBtn) {
-      installBtn.style.display = 'none';
-    }
-    ui.notify('App installed successfully!', 'success', 3000);
+    if (installBtn) installBtn.style.display = 'none';
+    ui.notify('App installed!', 'success', 3000);
   });
 };
 
 const installPWA = async () => {
   if (!deferredPrompt) return;
-  
   deferredPrompt.prompt();
   const { outcome } = await deferredPrompt.userChoice;
-  
-  if (outcome === 'accepted') {
-    ui.notify('Installing app...', 'success', 2000);
-  }
-  
+  if (outcome === 'accepted') ui.notify('Installing...', 'success', 2000);
   deferredPrompt = null;
+};
+
+const init = async () => {
+  session = await api.getSession();
+  ui.updateAuthUI(session);
+  if (session) await loadProgressForSession();
+
+  api.onAuthStateChange((event, newSession) => {
+    session = newSession;
+    ui.updateAuthUI(newSession);
+    if (newSession) loadProgressForSession();
+    else ui.loadCompletedChapters([]);
+  });
+
+  initPWAInstall();
+  await initChapters();
 };
 
 window.app = {
@@ -339,7 +253,6 @@ window.app = {
   closeTerms: ui.closeTermsModal,
   calculateDarkSystem,
   installPWA,
-  init,
 };
 
 window.nav = {

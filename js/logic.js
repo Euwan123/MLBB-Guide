@@ -1,38 +1,18 @@
 export function analyzeDarkSystem(totalMatches, winRate, mvpCount) {
-  if (totalMatches === 0) {
-    return null;
-  }
-
+  if (totalMatches === 0) return null;
   const benchmarks = getBenchmarks(totalMatches);
   const expectedWR = benchmarks.winRate;
   const expectedMVP = benchmarks.mvpCount;
-
   const wrGood = winRate >= expectedWR;
   const mvpGood = mvpCount >= expectedMVP;
   const mvpRatio = totalMatches > 0 ? Math.round((totalMatches / mvpCount) * 10) / 10 : 0;
 
-  let classification = 'NEEDS IMPROVEMENT';
+  let classification = '⚠️ NEEDS IMPROVEMENT';
   let classificationClass = 'warning';
+  if (wrGood && mvpGood) { classification = '💚 GOOD PLAYER'; classificationClass = 'good'; }
+  else if (!wrGood && !mvpGood) { classification = '💀 DARK SYSTEM'; classificationClass = 'dark'; }
 
-  if (wrGood && mvpGood) {
-    classification = '💚 GOOD PLAYER';
-    classificationClass = 'good';
-  } else if (!wrGood && !mvpGood) {
-    classification = '💀 DARK SYSTEM';
-    classificationClass = 'dark';
-  }
-
-  return {
-    classification,
-    classificationClass,
-    currentWR: winRate,
-    expectedWR,
-    currentMVP: mvpCount,
-    expectedMVP,
-    mvpRatio,
-    wrPasses: wrGood,
-    mvpPasses: mvpGood,
-  };
+  return { classification, classificationClass, currentWR: winRate, expectedWR, currentMVP: mvpCount, expectedMVP, mvpRatio, wrPasses: wrGood, mvpPasses: mvpGood };
 }
 
 function getBenchmarks(matchCount) {
@@ -46,16 +26,14 @@ function getBenchmarks(matchCount) {
 
 export function getRankRecommendation(matchCount) {
   const ranks = [
-    { minMatches: 5000, rank: 'Mythic', description: 'Elite tier - consistent top 1% skill' },
-    { minMatches: 3000, rank: 'Legend', description: 'Advanced tier - strong mechanical skill' },
-    { minMatches: 1000, rank: 'Grandmaster', description: 'Solid player - good game knowledge' },
+    { minMatches: 5000, rank: 'Mythic', description: 'Elite tier' },
+    { minMatches: 3000, rank: 'Legend', description: 'Advanced tier' },
+    { minMatches: 1000, rank: 'Grandmaster', description: 'Solid player' },
     { minMatches: 500, rank: 'Master', description: 'Developing skills' },
     { minMatches: 100, rank: 'Expert', description: 'Learning rank basics' },
     { minMatches: 0, rank: 'Beginner', description: 'New to ranked' },
   ];
-  for (const tier of ranks) {
-    if (matchCount >= tier.minMatches) return tier;
-  }
+  for (const tier of ranks) { if (matchCount >= tier.minMatches) return tier; }
   return ranks[ranks.length - 1];
 }
 
@@ -63,8 +41,7 @@ export function calculateSkillRating(winRate, mvpRate, heroMastery) {
   const wrComponent = (winRate - 50) * 2;
   const mvpComponent = mvpRate * 10;
   const masteryComponent = Math.min(heroMastery / 100, 2);
-  const totalRating = Math.round(wrComponent + mvpComponent + masteryComponent);
-  return Math.max(0, Math.min(100, totalRating));
+  return Math.max(0, Math.min(100, Math.round(wrComponent + mvpComponent + masteryComponent)));
 }
 
 export function analyzeHeroTier(pickRate, winRate) {
@@ -81,13 +58,4 @@ export function shouldBan(pickRate, winRate, personalWRAgainst = null) {
   if (pickRate > 15 && winRate > 55) return true;
   if (personalWRAgainst && personalWRAgainst < 40) return true;
   return false;
-}
-
-export function analyzeRoleStats(role, stats) {
-  return {
-    role,
-    avgWR: stats.avgWR || 0,
-    avgMVP: stats.avgMVP || 0,
-    suggestion: stats.avgWR >= 55 ? 'Strong role - continue' : 'Consider secondary role',
-  };
 }
