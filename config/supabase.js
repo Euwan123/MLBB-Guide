@@ -1,11 +1,45 @@
+/**
+ * Supabase Configuration & Client Setup
+ * - Loads credentials from secure environment configuration
+ * - Never hardcode keys in production
+ * - Environment variables stored in config.json (git-ignored)
+ */
+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { loadConfig, getConfig } from './env.js';
 
-const SUPABASE_URL = 'https://bhvbcwgpsfhzjgaotsjb.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJodmJjd2dwc2ZoempnYW90c2piIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3Nzg2NjAsImV4cCI6MjA5MDM1NDY2MH0.sEQGO9do4vTBmgZUxvV-SoQ7Qbw0gNc9YuxS-O0qvEw';
+// Load environment configuration
+const config = await loadConfig();
+const SUPABASE_URL = config.SUPABASE_URL;
+const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
 
+// Validate configuration
+if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+  throw new Error('❌ Supabase credentials missing! Check config.json or environment variables');
+}
+
+// Initialize Supabase client
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export const CHAPTER_ORDER = ['introduction','quick-reference','role-selection','macro-micro','laning','banning','counter-heroes','mental-tilt','dark-system','meta-tracker','player-tiers','hero-requirements'];
+/**
+ * CHAPTER CONFIGURATION
+ * Order, metadata, and navigation paths for all guide chapters
+ */
+
+export const CHAPTER_ORDER = [
+  'introduction',
+  'quick-reference',
+  'role-selection',
+  'macro-micro',
+  'laning',
+  'banning',
+  'counter-heroes',
+  'mental-tilt',
+  'dark-system',      // Advanced Level
+  'meta-tracker',     // Advanced Level
+  'player-tiers',     // Advanced Level
+  'hero-requirements' // Advanced Level
+];
 
 export const CHAPTER_META = {
   'introduction':{n:'01',t:'Introduction'},
@@ -16,10 +50,12 @@ export const CHAPTER_META = {
   'banning':{n:'06',t:'Banning'},
   'counter-heroes':{n:'07',t:'Counter Heroes'},
   'mental-tilt':{n:'08',t:'Mental & Tilt'},
-  'dark-system':{n:'D1',t:'Are You a Dark System?'},
-  'meta-tracker':{n:'D2',t:'Meta Tracker'},
-  'player-tiers':{n:'D3',t:'Player Tiers'},
-  'hero-requirements':{n:'D4',t:'Hero Requirements'}
+  // Advanced Level (requires mastery)
+  'dark-system':{n:'A1',t:'Are You a Dark System?'},
+  'meta-tracker':{n:'A2',t:'Meta Tracker'},
+  'player-tiers':{n:'A3',t:'Player Tiers'},
+  'hero-requirements':{n:'A4',t:'Hero Requirements'}
 };
 
+// Generate paths for chapter loading
 export const CHAPTER_PATHS = CHAPTER_ORDER.map(ch => `html/${ch}.html`);
