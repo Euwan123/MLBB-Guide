@@ -1,25 +1,11 @@
-/**
- * UI.JS - User Interface & DOM Management
- * Handles all DOM rendering, page navigation, modals, notifications
- * Separates presentation logic from data and business logic
- */
-
 import { CHAPTER_ORDER, CHAPTER_META } from '../config/supabase.js';
 
-// DOM Shortcuts
 const $ = (id) => document.getElementById(id);
 const $$ = (sel) => document.querySelectorAll(sel);
-
-/**
- * NAVIGATION & PAGE ROUTING
- */
 
 let currentPage = 'home';
 let completedChapters = new Set();
 
-/**
- * Navigate to a page/chapter with smooth scroll animation
- */
 export function navigateToPage(pageId) {
   const oldPage = $(`page-${currentPage}`);
   if (oldPage) oldPage.classList.remove('active');
@@ -28,7 +14,6 @@ export function navigateToPage(pageId) {
   const newPage = $(`page-${pageId}`);
   if (newPage) newPage.classList.add('active');
 
-  // Update nav UI
   if (pageId === 'home') {
     $('navBack').classList.remove('show');
     $('navChapter').textContent = '';
@@ -43,37 +28,22 @@ export function navigateToPage(pageId) {
     updateProgressBar(pageId);
   }
 
-  // Smooth scroll to top with animation (300ms)
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
 }
 
-/**
- * Navigate home
- */
 export function navigateHome() {
   navigateToPage('home');
 }
 
-/**
- * Update progress bar
- * @private
- */
 function updateProgressBar(pageId) {
   const idx = CHAPTER_ORDER.indexOf(pageId);
   const pct = idx >= 0 ? Math.round(((idx + 1) / CHAPTER_ORDER.length) * 100) : 0;
   $('navProgressBar').style.width = pct + '%';
 }
 
-/**
- * NOTIFICATIONS
- */
-
-/**
- * Show notification message
- */
 export function notify(message, type = 'success', duration = 3000) {
   const notif = $('notification');
   notif.textContent = message;
@@ -100,7 +70,9 @@ export function notify(message, type = 'success', duration = 3000) {
  */
 export function updateAuthUI(session) {
   const authArea = $('navAuthArea');
+  const menuAuth = $('navMenuAuth');
   authArea.innerHTML = '';
+  if (menuAuth) menuAuth.innerHTML = '';
 
   if (session) {
     const username = session.user.user_metadata?.username || 'User';
@@ -113,33 +85,28 @@ export function updateAuthUI(session) {
       </div>
       <button class="nav-auth-btn logout" onclick="window.app.logout()">Logout</button>
     `;
+    
+    if (menuAuth) {
+      menuAuth.innerHTML = `
+        <button class="nav-menu-btn" onclick="window.app.openProfile()">👤 Profile</button>
+        <button class="nav-menu-btn" onclick="window.app.logout()">🚪 Logout</button>
+      `;
+    }
   } else {
     authArea.innerHTML = `
       <button class="nav-auth-btn login" onclick="window.app.openAuth()">Login</button>
+      <button class="nav-auth-btn login" style="background: rgba(255, 215, 0, 0.2); color: var(--gold);" onclick="window.app.openAuth()">Sign Up</button>
     `;
+    
+    if (menuAuth) {
+      menuAuth.innerHTML = `
+        <button class="nav-menu-btn" onclick="window.app.openAuth()">🔐 Login / Sign Up</button>
+      `;
+    }
   }
 }
 
-/**
- * Switch between auth tabs (login/signup)
- */
 export function switchAuthTab(tabName) {
-  $('formLogin').style.display = tabName === 'login' ? 'flex' : 'none';
-  $('formSignup').style.display = tabName === 'signup' ? 'flex' : 'none';
-
-  $$('.modal-tab').forEach((x) => x.classList.remove('active'));
-  const tabElement = tabName === 'login' ? $('tabLogin') : $('tabSignup');
-  if (tabElement) tabElement.classList.add('active');
-}
-
-/**
- * MODALS
- */
-
-/**
- * Open authentication modal
- */
-export function openAuthModal() {
   closeMenuIfOpen();
   const modal = $('authModal');
   if (modal) {
