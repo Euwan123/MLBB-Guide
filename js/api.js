@@ -28,18 +28,28 @@ export async function signOut() {
 
 export async function getSession() {
   try {
+    if (!sb) {
+      console.warn('Supabase not initialized');
+      return null;
+    }
     const { data: { session } } = await sb.auth.getSession();
     return session;
-  } catch {
+  } catch (e) {
+    console.error('getSession error:', e);
     return null;
   }
 }
 
 export function onAuthStateChange(callback) {
   try {
+    if (!sb) {
+      console.warn('Supabase not initialized, onAuthStateChange skipped');
+      return null;
+    }
     const { data: { subscription } } = sb.auth.onAuthStateChange(callback);
     return subscription;
-  } catch {
+  } catch (e) {
+    console.error('onAuthStateChange error:', e);
     return null;
   }
 }

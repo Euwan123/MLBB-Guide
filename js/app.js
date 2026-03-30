@@ -171,25 +171,34 @@ const initChapters = async () => {
 };
 
 const setupEventListeners = () => {
-  const loginBtn = $('loginBtn');
-  const signupBtn = $('signupBtn');
-  if (loginBtn) loginBtn.addEventListener('click', doLogin);
-  if (signupBtn) signupBtn.addEventListener('click', doSignup);
+  try {
+    const loginBtn = $('loginBtn');
+    const signupBtn = $('signupBtn');
+    if (loginBtn) loginBtn.addEventListener('click', doLogin);
+    if (signupBtn) signupBtn.addEventListener('click', doSignup);
 
-  const loginPass = $('loginPass');
-  if (loginPass) loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
-  const signupPass = $('signupPass');
-  if (signupPass) signupPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSignup(); });
+    const loginPass = $('loginPass');
+    if (loginPass) loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+    const signupPass = $('signupPass');
+    if (signupPass) signupPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSignup(); });
 
-  document.querySelectorAll('[data-chapter]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const ch = btn.dataset.chapter;
-      ui.navigateToPage(ch);
-      markChapterCompleted(ch);
+    const chapterBtns = document.querySelectorAll('[data-chapter]');
+    chapterBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const ch = btn.dataset.chapter;
+        if (ch) {
+          ui.navigateToPage(ch);
+          markChapterCompleted(ch);
+        }
+      });
     });
-  });
 
-  ui.updateCompletedBadges();
+    ui.updateCompletedBadges();
+  } catch (e) {
+    console.error('setupEventListeners error:', e);
+  }
 };
 
 const initPWAInstall = () => {
@@ -228,8 +237,14 @@ const init = async () => {
     });
     initPWAInstall();
     await initChapters();
+    setTimeout(() => {
+      setupEventListeners();
+    }, 200);
   } catch (e) {
     console.error('Initialization error:', e);
+    setTimeout(() => {
+      setupEventListeners();
+    }, 500);
   }
 };
 

@@ -7,24 +7,32 @@ let currentPage = 'home';
 let completedChapters = new Set();
 
 export function navigateToPage(pageId) {
-  const oldPage = $(`page-${currentPage}`);
-  if (oldPage) oldPage.classList.remove('active');
-  currentPage = pageId;
-  const newPage = $(`page-${pageId}`);
-  if (newPage) newPage.classList.add('active');
+  try {
+    const oldPage = $(`page-${currentPage}`);
+    if (oldPage) oldPage.classList.remove('active');
+    currentPage = pageId;
+    const newPage = $(`page-${pageId}`);
+    if (!newPage) {
+      console.error(`Page not found: page-${pageId}`);
+      return;
+    }
+    newPage.classList.add('active');
 
-  if (pageId === 'home') {
-    const nb = $('navBack'); if (nb) nb.classList.remove('show');
-    const nc = $('navChapter'); if (nc) nc.textContent = '';
-    const np = $('navProgress'); if (np) np.style.display = 'none';
-  } else {
-    const nb = $('navBack'); if (nb) nb.classList.add('show');
-    const meta = CHAPTER_META[pageId];
-    const nc = $('navChapter'); if (nc && meta) nc.textContent = `${meta.n} — ${meta.t}`;
-    const np = $('navProgress'); if (np) np.style.display = 'block';
-    updateProgressBar(pageId);
+    if (pageId === 'home') {
+      const nb = $('navBack'); if (nb) nb.classList.remove('show');
+      const nc = $('navChapter'); if (nc) nc.textContent = '';
+      const np = $('navProgress'); if (np) np.style.display = 'none';
+    } else {
+      const nb = $('navBack'); if (nb) nb.classList.add('show');
+      const meta = CHAPTER_META[pageId];
+      const nc = $('navChapter'); if (nc && meta) nc.textContent = `${meta.n} — ${meta.t}`;
+      const np = $('navProgress'); if (np) np.style.display = 'block';
+      updateProgressBar(pageId);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (e) {
+    console.error('navigateToPage error:', e);
   }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 export function navigateHome() { navigateToPage('home'); }
