@@ -8,11 +8,9 @@ export async function loadConfig() {
       return config;
     }
   } catch (e) {
-    console.error('config.json not found');
   }
 
   if (!config.SUPABASE_URL || !config.SUPABASE_ANON_KEY) {
-    console.error('Supabase configuration not found. Please provide config.json with SUPABASE_URL and SUPABASE_ANON_KEY');
   }
 
   return config;

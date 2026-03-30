@@ -7,20 +7,21 @@
   <meta name="keywords" content="Mobile Legends, MLBB, strategy guide, gaming, esports, tips, tricks">
   <meta name="author" content="Mr. Yoo">
   <meta name="theme-color" content="#ffd700">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MLBB Guide">
   <meta name="application-name" content="MLBB Guide">
   <meta name="msapplication-TileColor" content="#07111f">
   <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self'; connect-src 'self' https://bhvbcwgpsfhzjgaotsjb.supabase.co; worker-src 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self'; connect-src 'self' https://bhvbcwgpsfhzjgaotsjb.supabase.co https://cdn.jsdelivr.net; worker-src 'self';">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-XSS-Protection" content="1; mode=block">
   <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
   <title>Mr. Yoo's MLBB Guide - Elite Gaming Strategy</title>
   <link rel="manifest" href="/manifest.json">
-  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMDcxMTFmIi8+CjxwYXRoIGQ9Ik05NiA0OEMxMjQuNDE4IDQ4IDE0OCA3MS41ODIgMTQ4IDEwMEMxNDggMTI4LjQxOCAxMjQuNDE4IDE1MiA5NiAxNTJDNjcuNTgyIDE1MiA0NCAxMjguNDE4IDQ0IDEwMEM0NCA3MS41ODIgNjcuNTgyIDQ4IDk2IDQ4Wk05NiA2OEMxMTMuNjczIDY4IDEyOCA4Mi4zMjcgMTI4IDEwMEMxMjggMTE3LjY3MyAxMTMuNjczIDEzMiA5NiAxMzJDNzguMzI3IDEzMiA2NCAxMTcuNjczIDY0IDEwMEM2NCA4Mi4zMjcgNzguMzI3IDY4IDk2IDY4WiIgZmlsbD0iI2ZmZDcwMCIvPgo8cGF0aCBkPSJNODAgODBIMTEyVjExMkg4MFY4MFoiIGZpbGw9IiMwNzExMWYiLz4KPHN2Zz4=">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjMDcxMTFmIi8+CjxwYXRoIGQ9Ik05NiA0OEMxMjQuNDE4IDQ4IDE0OCA3MS41ODIgMTQ4IDEwMEMxNDggMTI4LjQxOCAxMjQuNDE4IDE1MiA5NiAxNTJDNjcuNTgyIDE1MiA0NCAxMjguNDE4IDQ0IDEwMEM0NCA3MS41ODIgNjcuNTgyIDQ4IDk2IDQ4Wk09NiA2OEMxMTMuNjczIDY4IDEyOCA4Mi4zMjcgMTI4IDEwMEMxMjggMTE3LjY3MyAxMTMuNjczIDEzMiA5NiAxMzJDNzguMzI3IDEzMiA2NCAxMTcuNjczIDY0IDEwMEM2NCA4Mi4zMjcgNzguMzI3IDY4IDk2IDY4WiIgZmlsbD0iI2ZmZDcwMCIvPgo8cGF0aCBkPSJNODAgODBIMTEyVjExMkg4MFY4MFoiIGZpbGw9IiMwNzExMWYiLz4KPHN2Zz4=">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjMDcxMTFmIi8+CjxwYXRoIGQ9Ik0xNiA4QzIwLjQxOCA4IDI0IDExLjU4MiAyNCAxNkMyNCAyMC40MTggMjAuNDE4IDI0IDE2IDI0QzExLjU4MiAyNCA4IDIwLjQxOCA4IDE2QzggMTEuNTgyIDExLjU4MiA4IDE2IDhaTTE2IDEyQzE4LjIxOCAxMiAyMCAxMy43ODIgMjAgMTZDMjAgMTguMjE4IDE4LjIxOCAyMCAxNiAyMEMxMy43ODIgMjAgMTIgMTguMjE4IDEyIDE2QzEyIDEzLjc4MiAxMy43ODIgMTIgMTYgMTJaIiBmaWxsPSIjZmZkNzAwIi8+CjxwYXRoIGQ9Ik0xMyAxN0gxOVYxOUgxM1YxN1oiIGZpbGw9IiMwNzExMWYiLz4KPHN2Zz4=">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/base.css">
@@ -34,14 +35,9 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js').then(function(registration) {
-          console.log('Service worker registered:', registration);
-        }).catch(function(error) {
-          console.error('Service worker registration failed:', error);
+        navigator.serviceWorker.register('/sw.js').catch(function(error) {
         });
       });
-    } else {
-      console.error('Service workers are not supported.');
     }
   </script>
 </head>

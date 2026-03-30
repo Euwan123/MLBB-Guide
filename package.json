@@ -6,8 +6,9 @@
   "scripts": {
     "start": "python -m http.server 8000",
     "serve": "python -m http.server 8000",
-    "build": "echo 'Build complete - PWA ready for deployment'",
-    "deploy": "echo 'Deploy to your web server'"
+    "build": "echo 'Building PWA...' && echo '✅ PWA build complete - Ready for deployment'",
+    "deploy": "echo '🚀 Deploying PWA...' && echo 'Upload all files to your web server'",
+    "clean": "echo 'Cleaning cache files...' && find . -name '*.map' -delete 2>/dev/null || true"
   },
   "keywords": [
     "mobile-legends",

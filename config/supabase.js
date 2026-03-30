@@ -6,7 +6,7 @@ const SUPABASE_URL = config.SUPABASE_URL;
 const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  throw new Error('Supabase credentials missing! Check config.json or environment variables');
+  throw new Error('Supabase credentials missing');
 }
 
 export const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

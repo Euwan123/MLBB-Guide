@@ -17,7 +17,6 @@ export async function loginWithCredentials(username, password) {
     if (!data.session) throw new Error('No session returned');
     return data.session;
   } catch (e) {
-    console.error('Login error:', e);
     throw e;
   }
 }
@@ -33,7 +32,6 @@ export async function signupWithCredentials(username, password) {
     if (error) throw new Error(error.message || 'Signup failed');
     return data.session;
   } catch (e) {
-    console.error('Signup error:', e);
     throw e;
   }
 }
@@ -43,7 +41,6 @@ export async function signOut() {
     const { error } = await sb.auth.signOut();
     if (error) throw new Error(error.message || 'Logout failed');
   } catch (e) {
-    console.error('Logout error:', e);
     throw e;
   }
 }
@@ -54,7 +51,6 @@ export async function getSession() {
     if (error) throw new Error(error.message || 'Session failed');
     return session;
   } catch (e) {
-    console.error('Session error:', e);
     return null;
   }
 }
@@ -64,7 +60,6 @@ export function onAuthStateChange(callback) {
     const { data: { subscription } } = sb.auth.onAuthStateChange(callback);
     return subscription;
   } catch (e) {
-    console.error('Auth listener error:', e);
     return null;
   }
 }
@@ -78,7 +73,6 @@ export async function uploadProfileImage(userId, file) {
     const { data: { publicUrl } } = sb.storage.from('profile_images').getPublicUrl(fileName);
     return publicUrl;
   } catch (e) {
-    console.error('Image upload error:', e);
     throw e;
   }
 }
@@ -96,7 +90,6 @@ export async function saveUserProfile(userId, profileData) {
     });
     if (error) throw new Error(error.message || 'Save failed');
   } catch (e) {
-    console.error('Profile save error:', e);
     throw e;
   }
 }
@@ -108,7 +101,6 @@ export async function loadUserProfile(userId) {
     if (error && error.code !== 'PGRST116') throw new Error(error.message || 'Load failed');
     return data || null;
   } catch (e) {
-    console.error('Profile load error:', e);
     return null;
   }
 }
@@ -120,7 +112,6 @@ export async function loadChapterProgress(userId) {
     if (error) throw new Error(error.message || 'Progress load failed');
     return data.map((r) => r.chapter) || [];
   } catch (e) {
-    console.error('Progress load error:', e);
     return [];
   }
 }
@@ -134,7 +125,6 @@ export async function saveChapterProgress(userId, chapter) {
     );
     if (error) throw new Error(error.message || 'Save failed');
   } catch (e) {
-    console.error('Progress save error:', e);
     throw e;
   }
 }

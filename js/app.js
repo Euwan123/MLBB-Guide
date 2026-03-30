@@ -125,7 +125,6 @@ const loadProfile = async () => {
       }
     }
   } catch (e) {
-    console.log('No profile found');
   }
 };
 
@@ -158,7 +157,6 @@ const loadProgressForSession = async () => {
     const chapters = await api.loadChapterProgress(session.user.id);
     ui.loadCompletedChapters(chapters);
   } catch (e) {
-    console.error('Progress load error:', e);
   }
 };
 
@@ -168,7 +166,6 @@ const markChapterCompleted = async (chapter) => {
     await api.saveChapterProgress(session.user.id, chapter);
     ui.markChapterDone(chapter);
   } catch (e) {
-    console.error('Progress save error:', e);
   }
 };
 
@@ -180,7 +177,6 @@ const initChapters = async () => {
       const path = `${baseURL}/html/${ch}.html`;
       const resp = await fetch(path);
       if (!resp.ok) {
-        console.error(`Failed to load ${ch}: ${resp.status}`);
         continue;
       }
       const html = await resp.text();
@@ -190,7 +186,6 @@ const initChapters = async () => {
       el.className = 'page';
       $('chapters-container').appendChild(el);
     } catch (e) {
-      console.error(`Error loading chapter ${ch}:`, e.message);
     }
   }
 
