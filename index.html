@@ -664,5 +664,40 @@
 
   <script type="module" src="js/app.js"></script>
 
+  <div id="fpsCounter" style="position:fixed;bottom:20px;right:20px;background:rgba(7,17,31,.95);color:#ffd700;padding:.8rem 1.2rem;border:1.5px solid rgba(255,215,0,.4);border-radius:12px;font-family:'Rajdhani',sans-serif;font-size:.85rem;font-weight:700;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,215,0,.1);backdrop-filter:blur(12px);letter-spacing:.06em;white-space:nowrap;">
+    <div style="margin-bottom:.4rem;text-shadow:0 0 8px rgba(255,215,0,.4);">FPS: <span id="fpsValue">60</span></div>
+    <div style="font-size:.75rem;color:rgba(255,215,0,.7);text-shadow:0 0 6px rgba(255,215,0,.2);">🌐 Web</div>
+  </div>
+
+  <script>
+    (function() {
+      let frameCount = 0;
+      let lastTime = performance.now();
+      const fpsValue = document.getElementById('fpsValue');
+      const fpsCounter = document.getElementById('fpsCounter');
+      
+      const updateFPS = () => {
+        frameCount++;
+        const currentTime = performance.now();
+        const elapsed = currentTime - lastTime;
+        
+        if (elapsed >= 1000) {
+          const fps = Math.round(frameCount * 1000 / elapsed);
+          if (fpsValue) fpsValue.textContent = fps;
+          
+          if (fpsCounter) {
+            if (fps < 30) fpsCounter.style.color = '#dc2626';
+            else if (fps < 50) fpsCounter.style.color = '#ea580c';
+            else fpsCounter.style.color = '#ffd700';
+          }
+          frameCount = 0;
+          lastTime = currentTime;
+        }
+        requestAnimationFrame(updateFPS);
+      };
+      updateFPS();
+    })();
+  </script>
+
 </body>
 </html>

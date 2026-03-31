@@ -8,7 +8,6 @@ export async function loadConfig() {
       return config;
     }
   } catch (e) {
-    console.warn('config.json not found, falling back to defaults:', e.message);
   }
   return config;
 }

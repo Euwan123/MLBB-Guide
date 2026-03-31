@@ -277,7 +277,34 @@ const defaultQuizQuestions = [
     correctIndex: 0,
     explanation: 'Sustained damage wins extended tank fights.',
   },
+  {
+    question: 'Your team is ahead but matches are long. What builds win?',
+    options: ['Scale safely with defensive items mixed', 'Full damage every time', 'Support every role'],
+    correctIndex: 0,
+    explanation: 'Scaling safely lets you keep your advantage through mid-late game.',
+  },
+  {
+    question: 'Enemy jungler is feast or famine assassin. How do you itemize?',
+    options: ['Buy defensive items early', 'Ignore and full damage', 'Hide in base'],
+    correctIndex: 0,
+    explanation: 'Early defensive items neutralize feast/famine heroes.',
+  },
+  {
+    question: 'Your team lacks damage but has tanks. Best direction?',
+    options: ['Build penetration and on-hit', 'Pure tank items', 'Heal support'],
+    correctIndex: 0,
+    explanation: 'Penetration makes your tanks damage amplifiers for your DPS.',
+  },
 ];
+
+const shuffleArray = (arr) => {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
 
 const ensureItemizationQuiz = async () => {
   const qEl = $('iqQ');
@@ -289,9 +316,11 @@ const ensureItemizationQuiz = async () => {
   if (!qEl || !dEl || !aEl || quizState) return;
 
   const remoteQuestions = await api.loadQuizQuestions('itemization');
-  const questions = remoteQuestions.length
+  let questions = remoteQuestions.length
     ? remoteQuestions.map((q) => ({ question: q.question, options: q.options, correctIndex: q.correctIndex, explanation: q.explanation }))
     : defaultQuizQuestions;
+  
+  questions = shuffleArray(questions);
 
   quizState = { idx: 0, score: 0, answered: false, startAt: Date.now(), questions };
   let leaderboardTimer = null;

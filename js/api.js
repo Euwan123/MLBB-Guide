@@ -76,10 +76,10 @@ export async function uploadProfileImage(userId, file) {
   if (!userId || !file) throw new Error('User ID and file required');
   const fileName = `${userId}-${Date.now()}.jpg`;
   try {
-    const { data, error } = await sb.storage.from('profile_images').upload(fileName, file, { upsert: true });
+    const { data, error } = await sb.storage.from('profile_images').upload(fileName, file, { upsert: true, contentType: 'image/jpeg' });
     if (error) throw new Error(error.message || 'Upload failed');
-    const { data: urlData } = sb.storage.from('profile_images').getPublicUrl(fileName);
-    return urlData?.publicUrl || null;
+    const publicUrl = sb.storage.from('profile_images').getPublicUrl(fileName).data?.publicUrl;
+    return publicUrl || null;
   } catch (e) {
     return null;
   }
