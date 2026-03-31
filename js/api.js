@@ -8,6 +8,10 @@ async function hashPassword(password) {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+function getAuthHeader() {
+  return { 'Authorization': `Bearer ${sb.auth.session()?.access_token || ''}`, 'Content-Type': 'application/json' };
+}
+
 export async function loginWithCredentials(username, password) {
   const hashed = await hashPassword(password);
   const { data, error } = await sb
@@ -71,46 +75,71 @@ export function onAuthStateChange(callback) {
 export async function uploadProfileImage(userId, file) {
   if (!userId || !file) throw new Error('User ID and file required');
   const fileName = `${userId}-${Date.now()}.jpg`;
-  const { error } = await sb.storage.from('profile_images').upload(fileName, file, { upsert: true });
-  if (error) throw new Error(error.message || 'Upload failed');
-  const { data: { publicUrl } } = sb.storage.from('profile_images').getPublicUrl(fileName);
-  return publicUrl;
+  try {
+    const { data, error } = await sb.storage.from('profile_images').upload(fileName, file, { upsert: true });
+    if (error) throw new Error(error.message || 'Upload failed');
+    const { data: urlData } = sb.storage.from('profile_images').getPublicUrl(fileName);
+    return urlData?.publicUrl || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 export async function saveUserProfile(userId, profileData) {
   if (!userId || !profileData) throw new Error('User ID and profile data required');
-  const { error } = await sb.from('user_profiles').upsert({
-    user_id: userId,
-    username: profileData.username,
-    bio: profileData.bio || null,
-    rank: profileData.rank || null,
-    main_heroes: profileData.mainHeroes ? profileData.mainHeroes.split(',').map(h => h.trim()) : null,
-    profile_image_url: profileData.profileImageUrl || null,
-  });
-  if (error) throw new Error(error.message || 'Save failed');
+  try {
+    const payload = {
+      user_id: userId,
+      username: profileData.username || null,
+      bio: profileData.bio || null,
+      rank: profileData.rank || null,
+      win_rate: profileData.winRate || null,
+      main_role: profileData.mainRole || null,
+      total_matches: profileData.totalMatches || null,
+      server_region: profileData.serverRegion || null,
+      social_media: profileData.socialMedia || null,
+      main_heroes: profileData.mainHeroes ? profileData.mainHeroes.split(',').map(h => h.trim()) : null,
+      profile_image_url: profileData.profileImageUrl || null,
+    };
+    const { data, error } = await sb.from('user_profiles').upsert([payload], { onConflict: 'user_id' });
+    if (error) throw new Error(error.message || 'Save failed');
+    return data;
+  } catch (e) {
+    throw e;
+  }
 }
 
 export async function loadUserProfile(userId) {
-  if (!userId) throw new Error('User ID required');
-  const { data, error } = await sb.from('user_profiles').select('*').eq('user_id', userId).single();
-  if (error && error.code !== 'PGRST116') return null;
-  return data || null;
+  if (!userId) return null;
+  try {
+    const { data, error } = await sb.from('user_profiles').select('*').eq('user_id', userId).single();
+    if (error) return null;
+    return data || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 export async function loadChapterProgress(userId) {
   if (!userId) return [];
-  const { data, error } = await sb.from('chapter_progress').select('chapter').eq('user_id', userId);
-  if (error) return [];
-  return data.map(r => r.chapter) || [];
+  try {
+    const { data, error } = await sb.from('chapter_progress').select('chapter').eq('user_id', userId);
+    if (error) return [];
+    return (Array.isArray(data) ? data.map(r => r.chapter) : []) || [];
+  } catch (e) {
+    return [];
+  }
 }
 
 export async function saveChapterProgress(userId, chapter) {
   if (!userId || !chapter) return;
-  const { error } = await sb.from('chapter_progress').upsert(
-    [{ user_id: userId, chapter }],
-    { onConflict: 'user_id,chapter' }
-  );
-  if (error) throw new Error(error.message || 'Save failed');
+  try {
+    const { data, error } = await sb.from('chapter_progress').upsert([{ user_id: userId, chapter }], { onConflict: 'user_id,chapter' });
+    if (error) return;
+    return data;
+  } catch (e) {
+    return null;
+  }
 }
 
 export async function loadQuizQuestions(quizKey) {

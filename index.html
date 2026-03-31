@@ -2,16 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
   <meta name="description" content="Elite Mobile Legends Bang Bang Strategy Guide - Built from 8,000+ matches and pro analysis">
   <meta name="theme-color" content="#ffd700">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="MLBB Guide">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'><text y='32' font-size='32' fill='%23ffd700'>⚔</text></svg>">
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://bhvbcwgpsfhzjgaotsjb.supabase.co">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <title>Mr. Yoo's MLBB Guide — Elite Gaming Strategy</title>
   <link rel="manifest" href="/manifest.json">
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
@@ -320,28 +327,27 @@
     <div class="modal">
       <button class="modal-close" onclick="NAV.closeModal('profileModal')">✕</button>
       <div class="modal-title">👤 Your Profile</div>
-      <div style="max-height:65vh;overflow-y:auto;">
       <div class="modal-form">
-        <div id="profileImageSection">
-          <label class="modal-label">Profile Picture</label>
-          <img id="profileImagePreview" src="" alt="Profile" style="display:none;width:80px;height:80px;border-radius:50%;margin-bottom:.8rem;object-fit:cover;border:2px solid rgba(255,215,0,.4);">
-          <input type="file" id="profileImageInput" class="modal-input" accept="image/*">
+        <div id="profileImageSection" style="text-align:center;padding-bottom:1rem;border-bottom:1px solid rgba(255,215,0,.1);">
+          <label class="modal-label" style="display:block;text-align:center;">Profile Picture</label>
+          <img id="profileImagePreview" src="" alt="Profile" style="display:none;width:100px;height:100px;border-radius:50%;margin:1rem auto;object-fit:cover;border:3px solid rgba(255,215,0,.4);box-shadow:0 0 20px rgba(255,215,0,.2);">
+          <input type="file" id="profileImageInput" class="modal-input" accept="image/*" style="margin-top:.5rem;">
         </div>
         
         <label class="modal-label">Display Name</label>
         <input type="text" id="profileName" class="modal-input" placeholder="Your gaming name" maxlength="30">
         
         <label class="modal-label">Bio / About</label>
-        <textarea id="profileBio" class="modal-input" placeholder="Tell others about your playstyle and experience" style="resize:vertical;height:70px;" maxlength="300"></textarea>
+        <textarea id="profileBio" class="modal-input" placeholder="Tell others about your playstyle" style="resize:vertical;height:80px;min-height:80px;" maxlength="300"></textarea>
         
         <label class="modal-label">Current Rank</label>
         <input type="text" id="profileRank" class="modal-input" placeholder="e.g., Mythic Glory">
         
-        <label class="modal-label">Win Rate</label>
+        <label class="modal-label">Solo Win Rate</label>
         <input type="text" id="profileWinRate" class="modal-input" placeholder="e.g., 65%">
         
         <label class="modal-label">Main Role</label>
-        <input type="text" id="profileRole" class="modal-input" placeholder="e.g., Mid Laner, Support, Jungler">
+        <input type="text" id="profileRole" class="modal-input" placeholder="e.g., Mid Laner, Support">
         
         <label class="modal-label">Main Heroes (Top 3)</label>
         <input type="text" id="profileHeroes" class="modal-input" placeholder="e.g., Ling, Selena, Gusion" maxlength="100">
@@ -352,11 +358,10 @@
         <label class="modal-label">Server / Region</label>
         <input type="text" id="profileServer" class="modal-input" placeholder="e.g., SEA, NA, EU">
         
-        <label class="modal-label">Social Media (Optional)</label>
+        <label class="modal-label">Social Media</label>
         <input type="text" id="profileSocial" class="modal-input" placeholder="YouTube, Twitch, Facebook URL">
         
-        <button class="modal-submit" type="button" onclick="NAV.saveProfile()">Save Profile</button>
-      </div>
+        <button class="modal-submit" type="button" onclick="NAV.saveProfile()" style="margin-top:1rem;">Save Profile</button>
       </div>
     </div>
   </div>

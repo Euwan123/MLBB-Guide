@@ -91,27 +91,54 @@ const loadProfile = async () => {
   try {
     const profile = await api.loadUserProfile(session.user.id);
     if (profile) {
-      const bio = $('profileBio'); if (bio) bio.value = profile.bio || '';
-      const rank = $('profileRank'); if (rank) rank.value = profile.rank || '';
-      const heroes = $('profileHeroes'); if (heroes) heroes.value = profile.main_heroes?.join(', ') || '';
+      const fields = {
+        profileName: profile.username,
+        profileBio: profile.bio,
+        profileRank: profile.rank,
+        profileWinRate: profile.win_rate,
+        profileRole: profile.main_role,
+        profileHeroes: profile.main_heroes?.join(', '),
+        profileMatches: profile.total_matches,
+        profileServer: profile.server_region,
+        profileSocial: profile.social_media
+      };
+      for (const [id, value] of Object.entries(fields)) {
+        const el = $(id);
+        if (el) el.value = value || '';
+      }
       const img = $('profileImagePreview');
-      if (img && profile.profile_image_url) { img.src = profile.profile_image_url; img.style.display = 'block'; }
+      if (img && profile.profile_image_url) {
+        img.src = profile.profile_image_url;
+        img.style.display = 'block';
+      }
     }
-  } catch {}
+  } catch (e) {}
 };
 
-const updateProfile = async (bio, rank, mainHeroes) => {
+const updateProfile = async () => {
   if (!session) return;
   try {
     const imageFile = $('profileImageInput')?.files?.[0];
     let profileImageUrl = null;
     if (imageFile) profileImageUrl = await api.uploadProfileImage(session.user.id, imageFile);
     const username = session.user.user_metadata?.username || 'User';
-    await api.saveUserProfile(session.user.id, { username, bio, rank, mainHeroes, profileImageUrl });
+    const profileData = {
+      username: username,
+      bio: $('profileBio')?.value || null,
+      rank: $('profileRank')?.value || null,
+      winRate: $('profileWinRate')?.value || null,
+      mainRole: $('profileRole')?.value || null,
+      mainHeroes: $('profileHeroes')?.value || null,
+      totalMatches: $('profileMatches')?.value || null,
+      serverRegion: $('profileServer')?.value || null,
+      socialMedia: $('profileSocial')?.value || null,
+      profileImageUrl: profileImageUrl
+    };
+    await api.saveUserProfile(session.user.id, profileData);
     ui.closeProfileModal();
     ui.notify('Profile updated!', 'success', 2000);
   } catch (e) {
-    ui.notify('Profile update failed: ' + e.message, 'error', 3000);
+    ui.notify('Profile update failed: ' + (e.message || 'Unknown error'), 'error', 3000);
   }
 };
 
@@ -458,10 +485,13 @@ const installPWA = async () => {
 const init = async () => {
   try {
     try {
-      const { error } = await sb.from('chapter_progress').select('chapter').limit(1);
-      if (error) ui.notify('Supabase connection issue: ' + error.message, 'warning', 5000);
-    } catch {
-      ui.notify('Supabase connection issue. Check credentials and network.', 'warning', 5000);
+      const { error } = await Promise.race([
+        sb.from('chapter_progress').select('chapter').limit(1),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 5000))
+      ]);
+      if (error) ui.notify('Could not connect to database. Working offline.', 'warning', 4000);
+    } catch (e) {
+      ui.notify('Database connection failed. Using local storage.', 'warning', 3000);
     }
     session = await api.getSession();
     ui.updateAuthUI(session);
@@ -540,5 +570,31 @@ window.nav = {
   goHome: ui.navigateHome,
   goTo: ui.navigateToPage,
 };
+
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(() => {
+    if ('IntersectionObserver' in window) {
+      const images = document.querySelectorAll('img[data-src]');
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        });
+      });
+      images.forEach(img => imageObserver.observe(img));
+    }
+  });
+}
+
+if ('connection' in navigator) {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection && (connection.effectiveType === '4g' || connection.effectiveType === '3g')) {
+    document.body.classList.add('slow-connection');
+  }
+}
 
 document.addEventListener('DOMContentLoaded', init);
