@@ -539,7 +539,7 @@ nav {
   transform:translateY(-50%);
   color:var(--gold);
   opacity:.35;
-  font-size:1.2rem;
+  font-size:1.8rem;
   transition:opacity .25s, transform .25s;
 }
 .chapter-btn:hover .ch-arrow { opacity:.9; transform:translateY(-50%) translateX(4px); }

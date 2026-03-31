@@ -59,7 +59,7 @@
         <div class="hero-badge">⚡ The Guide No Other Content Creator Will Tell You</div>
         <h1 class="hero-title">Mr. Yoo's<br><span class="hero-title-accent">MLBB Guide</span></h1>
         <p class="hero-sub">Non-Smurf · Real Account · Solo / Duo Queue</p>
-        <p class="hero-desc">Built from 8,000+ matches, 3 champion tournament wins, and deep analysis of 400+ pro matches across MPL, MDL, M7 and more. Playing since Season 1.</p>
+        <p class="hero-desc">This website is built to guide you. It contains about 90% of MLBB tactics, tricks, and core knowledge—reading it will upgrade how you think, rotate, draft, and win.</p>
 
         <div class="stats-strip">
           <div class="stat-item"><span class="stat-num">70%</span><span class="stat-label">Solo WR</span></div>
@@ -75,7 +75,7 @@
     <div class="chapters-wrapper">
       <div class="section-row">
         <div class="section-label">Test Yourself</div>
-        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-diagnostic', this)">Minimize</button>
+        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-diagnostic', this)">▾</button>
       </div>
       <div class="chapters-group" id="group-diagnostic">
         <div class="group-header">Diagnostic &amp; Foundation</div>
@@ -117,7 +117,7 @@
 
       <div class="section-row">
         <div class="section-label">Book Guide</div>
-        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-book', this)">Minimize</button>
+        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-book', this)">▾</button>
       </div>
       <div id="group-book">
       <div class="chapters-group">
@@ -237,7 +237,7 @@
 
       <div class="section-row">
         <div class="section-label">Game Hub</div>
-        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-gamehub', this)">Minimize</button>
+        <button class="section-toggle" type="button" onclick="NAV.toggleGroup('group-gamehub', this)">▾</button>
       </div>
       <div class="chapters-group" id="group-gamehub">
         <div class="group-header"><span class="lvl-dot advanced"></span> Game Hub</div>
@@ -320,19 +320,43 @@
     <div class="modal">
       <button class="modal-close" onclick="NAV.closeModal('profileModal')">✕</button>
       <div class="modal-title">👤 Your Profile</div>
+      <div style="max-height:65vh;overflow-y:auto;">
       <div class="modal-form">
         <div id="profileImageSection">
           <label class="modal-label">Profile Picture</label>
-          <img id="profileImagePreview" src="" alt="Profile" style="display:none;width:64px;height:64px;border-radius:50%;margin-bottom:.5rem;object-fit:cover;">
+          <img id="profileImagePreview" src="" alt="Profile" style="display:none;width:80px;height:80px;border-radius:50%;margin-bottom:.8rem;object-fit:cover;border:2px solid rgba(255,215,0,.4);">
           <input type="file" id="profileImageInput" class="modal-input" accept="image/*">
         </div>
-        <label class="modal-label">Bio</label>
-        <textarea id="profileBio" class="modal-input" placeholder="Your gaming bio" style="resize:vertical;height:60px;"></textarea>
+        
+        <label class="modal-label">Display Name</label>
+        <input type="text" id="profileName" class="modal-input" placeholder="Your gaming name" maxlength="30">
+        
+        <label class="modal-label">Bio / About</label>
+        <textarea id="profileBio" class="modal-input" placeholder="Tell others about your playstyle and experience" style="resize:vertical;height:70px;" maxlength="300"></textarea>
+        
         <label class="modal-label">Current Rank</label>
         <input type="text" id="profileRank" class="modal-input" placeholder="e.g., Mythic Glory">
-        <label class="modal-label">Main Heroes</label>
-        <input type="text" id="profileHeroes" class="modal-input" placeholder="e.g., Ling, Selena, Gusion">
+        
+        <label class="modal-label">Win Rate</label>
+        <input type="text" id="profileWinRate" class="modal-input" placeholder="e.g., 65%">
+        
+        <label class="modal-label">Main Role</label>
+        <input type="text" id="profileRole" class="modal-input" placeholder="e.g., Mid Laner, Support, Jungler">
+        
+        <label class="modal-label">Main Heroes (Top 3)</label>
+        <input type="text" id="profileHeroes" class="modal-input" placeholder="e.g., Ling, Selena, Gusion" maxlength="100">
+        
+        <label class="modal-label">Total Matches</label>
+        <input type="text" id="profileMatches" class="modal-input" placeholder="e.g., 8,000+">
+        
+        <label class="modal-label">Server / Region</label>
+        <input type="text" id="profileServer" class="modal-input" placeholder="e.g., SEA, NA, EU">
+        
+        <label class="modal-label">Social Media (Optional)</label>
+        <input type="text" id="profileSocial" class="modal-input" placeholder="YouTube, Twitch, Facebook URL">
+        
         <button class="modal-submit" type="button" onclick="NAV.saveProfile()">Save Profile</button>
+      </div>
       </div>
     </div>
   </div>
@@ -342,13 +366,25 @@
       <button class="modal-close" onclick="NAV.closeModal('termsModal')">✕</button>
       <div class="modal-title">Terms of Service</div>
       <div style="max-height:60vh;overflow-y:auto;font-size:.9rem;line-height:1.8;color:#c0d4e0;padding:1.5rem 0;">
-        <p><strong style="color:var(--gold);">1. Usage Rights</strong><br>This guide is for personal, educational use only.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">2. Account Security</strong><br>You are responsible for your account credentials.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">3. Privacy</strong><br>Your data is stored securely. We do not share it with third parties.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">4. Content Accuracy</strong><br>MLBB strategies may change with patches. Use alongside real-world experience.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">5. Disclaimers</strong><br>This guide does not guarantee rank increases. Results depend on individual effort and practice.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">6. Intellectual Property</strong><br>All content belongs to Mr. Yoo's MLBB Guide. Do not reproduce without permission.</p>
-        <p style="margin-top:1rem;"><strong style="color:var(--gold);">7. Changes</strong><br>We reserve the right to update these terms at any time.</p>
+        <p><strong style="color:var(--gold);">1. Service Agreement</strong><br>By accessing Mr. Yoo's MLBB Guide, you agree to comply with these Terms of Service and all applicable laws and regulations. This guide provides strategic insights and educational content for Mobile Legends: Bang Bang players.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">2. Usage Rights & Restrictions</strong><br>This content is licensed for personal, educational, and non-commercial use only. You may not reproduce, distribute, modify, or sell this material without explicit written permission. Unauthorized copying or redistribution is strictly prohibited.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">3. Account & Data Security</strong><br>You are solely responsible for maintaining the confidentiality of your account credentials. Any activity conducted on your account is your responsibility. We implement industry-standard security measures, but cannot guarantee absolute protection against unauthorized access.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">4. User Privacy & Data Handling</strong><br>Your personal data is processed securely and stored in encrypted databases. We do not share user information with third parties without explicit consent. See our Privacy Policy for detailed information on data collection and usage.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">5. Content Accuracy & Disclaimers</strong><br>MLBB is a dynamic game with frequent patches and balance changes. While we strive to keep content accurate, strategies may become outdated. This guide is not a substitute for personal practice and real-world experience.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">6. Limitation of Liability</strong><br>This guide provides educational insights without guarantee of rank improvement. Results depend on individual effort, practice, and adaptation. We are not liable for any rank losses, item usage mistakes, or game-related outcomes.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">7. Intellectual Property Rights</strong><br>All content, graphics, texts, and interactive features are the intellectual property of Mr. Yoo's MLBB Guide. Unauthorized reproduction, distribution, or modification is prohibited and may result in legal action.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">8. Third-Party Content</strong><br>This guide may contain references to external services, tools, or creators. We are not responsible for third-party content, services, or policies.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">9. Modification of Terms</strong><br>We reserve the right to update these terms at any time. Continued use of the service implies acceptance of updated terms.</p>
+        
+        <p style="margin-top:1rem;"><strong style="color:var(--gold);">10. Termination of Access</strong><br>We reserve the right to suspend or terminate access to users who violate these terms or engage in harmful conduct.</p>
       </div>
     </div>
   </div>
@@ -486,7 +522,7 @@
         if (!el) return;
         var isHidden = el.style.display === 'none';
         el.style.display = isHidden ? '' : 'none';
-        if (btn) btn.textContent = isHidden ? 'Minimize' : 'Expand';
+        if (btn) btn.textContent = isHidden ? '▾' : '▸';
       },
 
       openModal: function(id) {

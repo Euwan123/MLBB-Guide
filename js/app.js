@@ -371,7 +371,6 @@ const initChapters = async () => {
   const baseURL = window.location.pathname.includes('/mlbb-guide') ? '/mlbb-guide' : '';
   const container = $('chapters-container');
   if (!container) {
-    console.error('chapters-container not found!');
     return;
   }
   if (container.children.length > 0) {
@@ -385,7 +384,6 @@ const initChapters = async () => {
       const url = `${baseURL}/html/${ch}.html`;
       const resp = await fetch(url);
       if (!resp.ok) {
-        console.warn(`Failed to load ${ch}: ${resp.status}`);
         continue;
       }
       const html = await resp.text();
@@ -396,10 +394,8 @@ const initChapters = async () => {
       container.appendChild(el);
       loadedCount++;
     } catch (e) {
-      console.error(`Error loading chapter ${ch}:`, e);
     }
   }
-  console.log(`Loaded ${loadedCount}/${CHAPTER_ORDER.length} chapters`);
   setupEventListeners();
 };
 
@@ -416,19 +412,15 @@ const setupEventListeners = () => {
     if (signupPass) signupPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSignup(); });
 
     const chapterBtns = document.querySelectorAll('[data-chapter]');
-    console.log(`Found ${chapterBtns.length} chapter buttons`);
     
     chapterBtns.forEach((btn) => {
       const ch = btn.dataset.chapter;
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log(`Clicked chapter button: ${ch}`);
         if (ch) {
           const pageId = ch;
-          console.log(`Navigating to: ${pageId}`);
           const page = $(`page-${pageId}`);
-          console.log(`Page element found: ${!!page}`);
           ui.navigateToPage(pageId);
           markChapterCompleted(ch);
         }
@@ -436,9 +428,7 @@ const setupEventListeners = () => {
     });
 
     ui.updateCompletedBadges();
-    console.log('setupEventListeners complete');
   } catch (e) {
-    console.error('setupEventListeners error:', e);
   }
 };
 
@@ -467,6 +457,12 @@ const installPWA = async () => {
 
 const init = async () => {
   try {
+    try {
+      const { error } = await sb.from('chapter_progress').select('chapter').limit(1);
+      if (error) ui.notify('Supabase connection issue: ' + error.message, 'warning', 5000);
+    } catch {
+      ui.notify('Supabase connection issue. Check credentials and network.', 'warning', 5000);
+    }
     session = await api.getSession();
     ui.updateAuthUI(session);
     if (session) await loadProgressForSession();
@@ -494,7 +490,6 @@ const init = async () => {
       setupEventListeners();
     }, 200);
   } catch (e) {
-    console.error('Initialization error:', e);
     setTimeout(() => {
       setupEventListeners();
       let tries = 0;

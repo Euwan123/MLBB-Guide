@@ -8,18 +8,18 @@ let completedChapters = new Set();
 
 export function navigateToPage(pageId) {
   try {
-    console.log(`[NAVIGATE] Attempting to navigate to: ${pageId}`);
     const oldPage = $(`page-${currentPage}`);
-    if (oldPage) oldPage.classList.remove('active');
+    if (oldPage) {
+      oldPage.classList.remove('active');
+      oldPage.style.display = 'none';
+    }
     currentPage = pageId;
     const newPage = $(`page-${pageId}`);
-    console.log(`[NAVIGATE] New page element found: ${!!newPage}`);
     if (!newPage) {
-      console.error(`[NAVIGATE] Page not found: page-${pageId}`);
       return;
     }
+    newPage.style.display = 'block';
     newPage.classList.add('active');
-    console.log(`[NAVIGATE] Page activated: page-${pageId}`);
 
     if (pageId === 'home') {
       const nb = $('navBack'); if (nb) nb.classList.remove('show');
@@ -32,10 +32,8 @@ export function navigateToPage(pageId) {
       const np = $('navProgress'); if (np) np.style.display = 'block';
       updateProgressBar(pageId);
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    console.log(`[NAVIGATE] Successfully navigated to: ${pageId}`);
+    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 10);
   } catch (e) {
-    console.error('[NAVIGATE] Error:', e);
   }
 }
 

@@ -13,8 +13,7 @@ const STATIC_ASSETS = [
   '/js/logic.js',
   '/js/ui.js',
   '/config/supabase.js',
-  '/config/env.js',
-  '/config.json'
+  '/config/env.js'
 ];
 
 self.addEventListener('install', (event) => {
